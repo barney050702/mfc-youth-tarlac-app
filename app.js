@@ -2914,8 +2914,29 @@ fileImportInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
+  if (file.name.endsWith('.json')) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      try {
+        const data = JSON.parse(event.target.result);
+        pendingActivityImport = Array.isArray(data) ? data : [data];
+        if (pendingActivityImport.length === 0) {
+          alert('Could not find any activity records in the JSON file.');
+        } else {
+          promptActivityImport();
+        }
+      } catch (err) {
+        console.error('JSON parse error:', err);
+        alert('Could not parse the JSON file.');
+      }
+      fileImportInput.value = '';
+    };
+    reader.readAsText(file);
+    return;
+  }
+
   if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
-    alert('Only Excel files (.xlsx, .xls) are allowed.');
+    alert('Only Excel files (.xlsx, .xls) and JSON files are allowed.');
     fileImportInput.value = '';
     return;
   }
