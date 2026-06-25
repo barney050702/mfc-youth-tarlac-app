@@ -2009,7 +2009,9 @@ body.view-only .agenda-list-actions {
 .welcome-logo {
   width: 96px;
   height: 96px;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: transparent;
   filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.35));
   animation: welcome-float 4s ease-in-out infinite;
 }
@@ -2683,7 +2685,10 @@ body.view-only .agenda-list-actions {
 
 .sidebar-logo img {
   height: 40px;
-  width: auto;
+  width: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: transparent;
 }
 
 .sidebar-logo h2 {
