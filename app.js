@@ -801,6 +801,23 @@ const statusFilter = document.getElementById('filter-status');
 const btnRefreshData = document.getElementById('btn-refresh-data');
 
 function renderActivities() {
+  const bannerTitle = document.getElementById('activities-banner-title');
+  const bannerSubtitle = document.getElementById('activities-banner-subtitle');
+  if (bannerTitle && bannerSubtitle) {
+    if (currentActivityFilters.semester === 'first-semester') {
+      bannerTitle.textContent = 'First Semester (Jan - Jun)';
+      bannerSubtitle.textContent = 'Activities accomplished during the first semester.';
+    } else if (currentActivityFilters.semester === 'second-semester') {
+      bannerTitle.textContent = 'Second Semester (Jul - Dec)';
+      bannerSubtitle.textContent = 'Activities accomplished during the second semester.';
+    } else if (currentActivityFilters.semester === 'covenanted') {
+      bannerTitle.textContent = 'Covenanted Activities';
+      bannerSubtitle.textContent = 'Activities specifically for covenanted members.';
+    } else {
+      bannerTitle.textContent = 'Accomplished Activities';
+      bannerSubtitle.textContent = 'View the complete history of your accomplished activities and access related documents.';
+    }
+  }
   let filteredData = dbActivities.getFiltered(currentActivityFilters);
   filteredData = filteredData.filter(item => item.status === 'Accomplished');
   
