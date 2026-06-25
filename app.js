@@ -672,8 +672,13 @@ class MembersDatabase {
         age: parseInt(record.age) || 0,
         birthday: record.birthday || '',
         address: record.address || '',
-        parents_contact: record.parents_contact || ''
-      });
+        parents_contact: record.parents_contact || '',
+        youthcamp_date: record.youthcamp_date || '',
+        youthcamp_title: record.youthcamp_title || '',
+        covenanted_date: record.covenanted_date || ''
+      };
+      this.members.push(newMember);
+      if (db) db.collection('members').doc(maxId.toString()).set(newMember);
     });
     this.saveToStorage();
   }
