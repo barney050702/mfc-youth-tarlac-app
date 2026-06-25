@@ -4485,6 +4485,201 @@ async function handleSendChatMessage() {
   try {
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
+const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.setTextColor(30, 64, 175);
+  doc.text('MFC Youth Tarlac - ' + type, 14, 22);
+
+  doc.setFontSize(14);
+  doc.setTextColor(0, 0, 0);
+  doc.text('Activity: ' + activity.activity, 14, 32);
+
+  let yPos = 32;
+  if (activity.title) {
+    yPos += 6;
+    doc.setFontSize(12);
+    doc.text('Title: ' + activity.title, 14, yPos);
+  }
+
+  yPos += 8;
+  doc.setFontSize(11);
+  doc.text('Date: ' + (activity.date || '-') + ' | Held In: ' + (activity.held_in || '-') + ' | Venue: ' + (activity.venue || '-'), 14, yPos);
+
+  yPos += 6;
+  doc.text('Participants: ' + activity.participants + ' present', 14, yPos);
+
+  // Generate Attendees Table
+  const attendeesList = [];
+  if (activity.attendee_ids && activity.attendee_ids.length > 0) {
+    const allMembers = dbMembers.getAll();
+    activity.attendee_ids.forEach(id => {
+      const m = allMembers.find(member => String(member.id) === String(id));
+      if (m) {
+        attendeesList.push([m.name, m.chapter_area || '-', m.role || '-']);
+      }
+    });
+  }
+
+  yPos += 10;
+  if (attendeesList.length > 0) {
+    if (doc.autoTable) {
+      doc.autoTable({
+        startY: yPos,
+        head: [['Member Name', 'Chapter / Area', 'Role']],
+        body: attendeesList,
+        theme: 'striped',
+        headStyles: { fillColor: [15, 23, 42] },
+        styles: { fontSize: 10 }
+      });
+    } else {
+      doc.text('Attendees table could not be loaded.', 14, yPos);
+    }
+  } else {
+    doc.text('No attendees recorded.', 14, yPos);
+  }
+
+  doc.save(activity.activity.replace(/\s+/g, '_') + '_' + type + '.pdf');
+};
+
+const btnRefreshHistory = document.getElementById('btn-refresh-history');
+if (btnRefreshHistory) {
+  btnRefreshHistory.addEventListener('click', () => {
+    btnRefreshHistory.innerHTML = '<i data-lucide="refresh-cw" class="spin-animation"></i> REFRESH HISTORY';
+    lucide.createIcons();
+    setTimeout(() => {
+      renderActivities();
+      btnRefreshHistory.innerHTML = '<i data-lucide="refresh-cw"></i> REFRESH HISTORY';
+      lucide.createIcons();
+    }, 500);
+  });
+}
+
+// ==========================================
+// AI CHATBOT FUNCTIONALITY
+// ==========================================
+
+const btnToggleChatbot = document.getElementById('btn-toggle-chatbot');
+const chatbotWindow = document.getElementById('chatbot-window');
+const btnCloseChatbot = document.getElementById('btn-close-chatbot');
+const chatbotInput = document.getElementById('chatbot-input');
+const btnSendChat = document.getElementById('btn-send-chat');
+const chatbotMessages = document.getElementById('chatbot-messages');
+
+const btnAiConfigTrigger = document.getElementById('btn-ai-config-trigger');
+const aiConfigModal = document.getElementById('ai-config-modal');
+const btnCloseAiModal = document.getElementById('btn-close-ai-modal');
+const btnCancelAiConfig = document.getElementById('btn-cancel-ai-config');
+const aiConfigForm = document.getElementById('ai-config-form');
+const fieldGeminiKey = document.getElementById('field-gemini-key');
+
+// Chatbot UI Toggle
+if (btnToggleChatbot) {
+  // Always show the trigger button for everyone
+  btnToggleChatbot.classList.remove('hidden');
+
+  btnToggleChatbot.addEventListener('click', () => {
+    chatbotWindow.classList.remove('hidden');
+    chatbotInput.focus();
+  });
+}
+
+if (btnCloseChatbot) {
+  btnCloseChatbot.addEventListener('click', () => {
+    chatbotWindow.classList.add('hidden');
+  });
+}
+
+// AI Config Modal Toggle (Admin Only)
+if (btnAiConfigTrigger) {
+  btnAiConfigTrigger.addEventListener('click', () => {
+    fieldGeminiKey.value = localStorage.getItem('gemini_api_key') || '';
+    aiConfigModal.classList.remove('hidden');
+  });
+}
+
+if (btnCloseAiModal) {
+  btnCloseAiModal.addEventListener('click', () => aiConfigModal.classList.add('hidden'));
+}
+
+if (btnCancelAiConfig) {
+  btnCancelAiConfig.addEventListener('click', () => aiConfigModal.classList.add('hidden'));
+}
+
+if (aiConfigForm) {
+  aiConfigForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const key = fieldGeminiKey.value.trim();
+    if (key) {
+      localStorage.setItem('gemini_api_key', key);
+      if (typeof showToast === 'function') {
+        showToast('AI Configuration Saved!', 'success');
+      } else {
+        alert('AI Configuration Saved!');
+      }
+      aiConfigModal.classList.add('hidden');
+    }
+  });
+}
+
+// Handle Chat Input
+if (chatbotInput && btnSendChat) {
+  chatbotInput.addEventListener('input', () => {
+    btnSendChat.disabled = chatbotInput.value.trim().length === 0;
+  });
+
+  chatbotInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !btnSendChat.disabled) {
+      handleSendChatMessage();
+    }
+  });
+
+  btnSendChat.addEventListener('click', handleSendChatMessage);
+}
+
+function appendChatMessage(text, sender) {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `chat-message ${sender}-message`;
+  
+  const bubbleDiv = document.createElement('div');
+  bubbleDiv.className = 'chat-bubble';
+  bubbleDiv.textContent = text;
+  
+  messageDiv.appendChild(bubbleDiv);
+  chatbotMessages.appendChild(messageDiv);
+  
+  // Scroll to bottom
+  chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  return bubbleDiv;
+}
+
+async function handleSendChatMessage() {
+  const userText = chatbotInput.value.trim();
+  if (!userText) return;
+
+  // 1. Append user message
+  appendChatMessage(userText, 'user');
+  
+  // 2. Clear input
+  chatbotInput.value = '';
+  btnSendChat.disabled = true;
+
+  // 3. Check for API key
+  const apiKey = localStorage.getItem('gemini_api_key');
+  if (!apiKey) {
+    setTimeout(() => {
+      appendChatMessage('Sorry, the AI is not configured yet. Please ask your admin to set up the Gemini API Key in the settings.', 'ai');
+    }, 500);
+    return;
+  }
+
+  // 4. Append loading bubble
+  const loadingBubble = appendChatMessage('Typing...', 'ai');
+
+  // 5. Call Gemini API
+  try {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -4506,6 +4701,6 @@ async function handleSendChatMessage() {
 
   } catch (error) {
     console.error('Gemini API Error:', error);
-    loadingBubble.textContent = 'Oops! I encountered an error connecting to the AI. Please check the API key.';
+    loadingBubble.textContent = 'Error connecting to AI: ' + error.message + '. Please check that your API key is correct and valid.';
   }
 }
