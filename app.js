@@ -200,6 +200,51 @@ const SAMPLE_ACTIVITIES = [
 ];
 
 // ==========================================
+// 1.5 FIREBASE CLOUD SYNC INITIALIZATION
+// ==========================================
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC7jhQiLGx-2UH51ecsCex4QkATDxkslzw",
+  authDomain: "mfc-youth-portal.firebaseapp.com",
+  projectId: "mfc-youth-portal",
+  storageBucket: "mfc-youth-portal.firebasestorage.app",
+  messagingSenderId: "159791974431",
+  appId: "1:159791974431:web:9364e826b3a4577c5c6d2a",
+  measurementId: "G-GH8XX4DJNB"
+};
+
+let db = null;
+try {
+  if (typeof firebase !== 'undefined') {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    console.log("Firebase initialized successfully.");
+  }
+} catch (e) {
+  console.error("Firebase initialization failed:", e);
+}
+
+function refreshActiveView() {
+  const tabDashboard = document.getElementById('sidebar-tab-dashboard');
+  const tabActivities = document.getElementById('sidebar-tab-activities');
+  const tabMembers = document.getElementById('sidebar-tab-members');
+  const tabAttendance = document.getElementById('sidebar-tab-attendance');
+  const tabFunds = document.getElementById('sidebar-tab-funds');
+  const tabAgenda = document.getElementById('sidebar-tab-agenda');
+  const tabLeaders = document.getElementById('sidebar-tab-leaders');
+  const tabOrgChart = document.getElementById('sidebar-tab-org-chart');
+  
+  if (tabDashboard?.classList.contains('active')) renderDashboard();
+  if (tabActivities?.classList.contains('active')) renderActivities();
+  if (tabMembers?.classList.contains('active')) renderMembers();
+  if (tabAttendance?.classList.contains('active')) renderAttendanceSheet();
+  if (tabFunds?.classList.contains('active')) { renderFunds(); renderMonthlySummary(); }
+  if (tabAgenda?.classList.contains('active')) { renderUpcomingAgenda(); renderLateAgendaList(); renderAccomplishedAgendaList(); }
+  if (tabLeaders?.classList.contains('active')) renderLeaders();
+  if (tabOrgChart?.classList.contains('active')) renderOrgChart();
+}
+
+// ==========================================
 // 2. CORE DATABASES CLASSES
 // ==========================================
 
@@ -207,6 +252,32 @@ class ActivityDatabase {
   constructor() {
     this.storageKey = 'activities_db_records_v2';
     this.activities = this.loadFromStorage();
+    if (db) this.setupFirebaseSync();
+  }
+
+  setupFirebaseSync() {
+    db.collection('activities').onSnapshot(snapshot => {
+      let isFirstLoad = false;
+      if (snapshot.empty && this.activities.length > 0) {
+        // Seed Firebase from local
+        this.activities.forEach(act => {
+          db.collection('activities').doc(act.id.toString()).set(act);
+        });
+        isFirstLoad = true;
+      }
+      
+      if (!isFirstLoad) {
+        const newData = [];
+        snapshot.forEach(doc => {
+          newData.push(doc.data());
+        });
+        if (newData.length > 0 || snapshot.empty) {
+          this.activities = newData;
+          this.saveToStorage();
+          refreshActiveView();
+        }
+      }
+    });
   }
 
   loadFromStorage() {
@@ -254,10 +325,11 @@ class ActivityDatabase {
   }
 
   add(record) {
-    const newId = this.activities.length > 0 ? Math.max(...this.activities.map(a => a.id)) + 1 : 1;
+    const newId = this.activities.length > 0 ? Math.max(...this.activities.map(a => parseInt(a.id))) + 1 : 1;
     const newRecord = { id: newId, ...record };
     this.activities.push(newRecord);
     this.saveToStorage();
+    if (db) db.collection('activities').doc(newId.toString()).set(newRecord);
     return newRecord;
   }
 
@@ -266,6 +338,7 @@ class ActivityDatabase {
     if (index !== -1) {
       this.activities[index] = { ...this.activities[index], ...updatedFields };
       this.saveToStorage();
+      if (db) db.collection('activities').doc(id.toString()).set(this.activities[index]);
       return true;
     }
     return false;
@@ -276,6 +349,7 @@ class ActivityDatabase {
     if (index !== -1) {
       this.activities.splice(index, 1);
       this.saveToStorage();
+      if (db) db.collection('activities').doc(id.toString()).delete();
       return true;
     }
     return false;
@@ -284,11 +358,12 @@ class ActivityDatabase {
   import(records, mode = 'overwrite') {
     if (mode === 'overwrite') {
       this.activities = [];
+      if (db) db.collection('activities').get().then(snap => snap.forEach(doc => doc.ref.delete()));
     }
-    let maxId = this.activities.length > 0 ? Math.max(...this.activities.map(a => a.id)) : 0;
+    let maxId = this.activities.length > 0 ? Math.max(...this.activities.map(a => parseInt(a.id))) : 0;
     records.forEach(record => {
       maxId++;
-      this.activities.push({
+      const newAct = {
         id: maxId,
         month: record.month || '',
         week: record.week || '',
@@ -301,7 +376,9 @@ class ActivityDatabase {
         venue: record.venue || '',
         coordinator_id: record.coordinator_id || null,
         attendee_ids: Array.isArray(record.attendee_ids) ? record.attendee_ids : []
-      });
+      };
+      this.activities.push(newAct);
+      if (db) db.collection('activities').doc(maxId.toString()).set(newAct);
     });
     this.saveToStorage();
   }
@@ -437,13 +514,38 @@ class MembersDatabase {
           existingNames.add(key);
           added++;
         }
-      });
 
       if (added > 0) {
         this.saveToStorage();
       }
       localStorage.setItem(SCREENSHOT_PATCH_KEY, 'true');
     }
+    
+    if (db) this.setupFirebaseSync();
+  }
+
+  setupFirebaseSync() {
+    db.collection('members').onSnapshot(snapshot => {
+      let isFirstLoad = false;
+      if (snapshot.empty && this.members.length > 0) {
+        this.members.forEach(member => {
+          db.collection('members').doc(member.id.toString()).set(member);
+        });
+        isFirstLoad = true;
+      }
+      
+      if (!isFirstLoad) {
+        const newData = [];
+        snapshot.forEach(doc => {
+          newData.push(doc.data());
+        });
+        if (newData.length > 0 || snapshot.empty) {
+          this.members = newData;
+          this.saveToStorage();
+          if (typeof refreshActiveView === 'function') refreshActiveView();
+        }
+      }
+    });
   }
 
   loadFromStorage() {
@@ -503,6 +605,7 @@ class MembersDatabase {
     };
     this.members.push(newRecord);
     this.saveToStorage();
+    if (db) db.collection('members').doc(newId.toString()).set(newRecord);
     return newRecord;
   }
 
@@ -515,6 +618,7 @@ class MembersDatabase {
         age: parseInt(updatedFields.age) || 0
       };
       this.saveToStorage();
+      if (db) db.collection('members').doc(id.toString()).set(this.members[index]);
       return true;
     }
     return false;
@@ -525,7 +629,6 @@ class MembersDatabase {
     if (index !== -1) {
       this.members.splice(index, 1);
       
-      // Relational cleanup in activities
       const dbActs = new ActivityDatabase();
       let changed = false;
       dbActs.getAll().forEach(act => {
@@ -542,20 +645,22 @@ class MembersDatabase {
       if (changed) dbActs.saveToStorage();
 
       this.saveToStorage();
-      renderActivities();
+      if (db) db.collection('members').doc(id.toString()).delete();
+      if (typeof renderActivities === 'function') renderActivities();
       return true;
     }
     return false;
   }
 
-  import(records, mode = 'append') {
+  import(records, mode = 'overwrite') {
     if (mode === 'overwrite') {
       this.members = [];
+      if (db) db.collection('members').get().then(snap => snap.forEach(doc => doc.ref.delete()));
     }
     let maxId = this.members.length > 0 ? Math.max(...this.members.map(m => m.id)) : 0;
     records.forEach(record => {
       maxId++;
-      this.members.push({
+      const newMember = {
         id: maxId,
         name: record.name || 'Unnamed Member',
         chapter_area: record.chapter_area || '',
@@ -604,6 +709,31 @@ class FundsDatabase {
     } else {
       this.records = this.loadFromStorage();
     }
+    if (db) this.setupFirebaseSync();
+  }
+  
+  setupFirebaseSync() {
+    db.collection('funds').onSnapshot(snapshot => {
+      let isFirstLoad = false;
+      if (snapshot.empty && this.records.length > 0) {
+        this.records.forEach(record => {
+          db.collection('funds').doc(record.id.toString()).set(record);
+        });
+        isFirstLoad = true;
+      }
+      
+      if (!isFirstLoad) {
+        const newData = [];
+        snapshot.forEach(doc => {
+          newData.push(doc.data());
+        });
+        if (newData.length > 0 || snapshot.empty) {
+          this.records = newData;
+          this.saveToStorage();
+          if (typeof refreshActiveView === 'function') refreshActiveView();
+        }
+      }
+    });
   }
   loadFromStorage() {
     const data = localStorage.getItem(this.storageKey);
@@ -623,20 +753,31 @@ class FundsDatabase {
     });
   }
   add(record) {
-    const newId = this.records.length > 0 ? Math.max(...this.records.map(r => r.id)) + 1 : 1;
+    const newId = this.records.length > 0 ? Math.max(...this.records.map(r => parseInt(r.id))) + 1 : 1;
     const newRecord = { id: newId, date: record.date || '', type: record.type || 'Expense', category: record.category || '', description: record.description || '', amount: parseFloat(record.amount) || 0, notes: record.notes || '' };
     this.records.push(newRecord);
     this.saveToStorage();
+    if (db) db.collection('funds').doc(newId.toString()).set(newRecord);
     return newRecord;
   }
   update(id, fields) {
     const i = this.records.findIndex(r => r.id === parseInt(id));
-    if (i !== -1) { this.records[i] = { ...this.records[i], ...fields, amount: parseFloat(fields.amount) || 0 }; this.saveToStorage(); return true; }
+    if (i !== -1) { 
+      this.records[i] = { ...this.records[i], ...fields, amount: parseFloat(fields.amount) || 0 }; 
+      this.saveToStorage(); 
+      if (db) db.collection('funds').doc(id.toString()).set(this.records[i]);
+      return true; 
+    }
     return false;
   }
   delete(id) {
     const i = this.records.findIndex(r => r.id === parseInt(id));
-    if (i !== -1) { this.records.splice(i, 1); this.saveToStorage(); return true; }
+    if (i !== -1) { 
+      this.records.splice(i, 1); 
+      this.saveToStorage(); 
+      if (db) db.collection('funds').doc(id.toString()).delete();
+      return true; 
+    }
     return false;
   }
 }
