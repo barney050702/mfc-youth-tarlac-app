@@ -2077,18 +2077,37 @@ window.editMember = function(id) {
   fieldMemberStatus.value = record.status || 'Active';
   fieldMemberRole.value = record.role || '';
   fieldMemberEmail.value = record.email || '';
-  fieldMemberBirthday.value = record.birthday || '';
+  
+  function formatDateForInput(val) {
+    if (!val) return '';
+    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
+    const parts = val.split('/');
+    if (parts.length === 3) {
+      const m = parts[0].padStart(2, '0');
+      const d = parts[1].padStart(2, '0');
+      const y = parts[2];
+      if (y.length === 4) return `${y}-${m}-${d}`;
+    }
+    const dDate = new Date(val);
+    if (!isNaN(dDate.getTime())) return dDate.toISOString().split('T')[0];
+    return '';
+  }
+
+  fieldMemberBirthday.value = formatDateForInput(record.birthday);
   fieldMemberAge.value = record.age || '';
   fieldMemberAddress.value = record.address || '';
   fieldMemberContact.value = record.contact || '';
   fieldMemberParentsContact.value = record.parents_contact || '';
-  fieldMemberYouthcampDate.value = record.youthcamp_date || '';
+  fieldMemberYouthcampDate.value = formatDateForInput(record.youthcamp_date);
   fieldMemberYouthcampTitle.value = record.youthcamp_title || '';
+  
+  // Set covenanted date if available
+  const covenantedField = document.getElementById('field-member-covenanted-date');
+  if (covenantedField) covenantedField.value = formatDateForInput(record.covenanted_date);
+
   if (typeof setMemberAvatarPreview === 'function') {
     setMemberAvatarPreview(record.avatar || null);
   }
-  const covenantedField = document.getElementById('field-member-covenanted-date');
-  if (covenantedField) covenantedField.value = record.covenanted_date || '';
 
   memberModalTitle.textContent = 'Edit Member';
   memberModal.classList.remove('hidden');
