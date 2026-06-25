@@ -813,8 +813,8 @@ const panelOrgChart = document.getElementById('panel-orgchart');
 const btnAddMember = document.getElementById('btn-add-member');
 
 // Admin Auth State & Default Passcode Seed
-if (!localStorage.getItem('admin_passcode')) {
-  localStorage.setItem('admin_passcode', 'admin123');
+if (!localStorage.getItem('admin_passcode') || localStorage.getItem('admin_passcode') === 'admin123') {
+  localStorage.setItem('admin_passcode', 'mfcyouthtarlac');
 }
 let isAdmin = localStorage.getItem('is_admin') === 'true';
 
