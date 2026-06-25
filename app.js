@@ -12,7 +12,7 @@ const SAMPLE_MEMBERS = [
   { id: 6, name: 'Clara Del Pilar', chapter_area: 'UPPER CORE', role: 'Chapter Servant', contact: '+63 916 234 5678', email: 'clara.uc@example.com', status: 'Active', age: 29, birthday: '1997-03-05', address: 'Paniqui, Tarlac', parents_contact: '' },
   { id: 7, name: 'Andres Bonifacio', chapter_area: 'LIT', role: 'LIT Head', contact: '+63 927 345 6789', email: 'andres.lit@example.com', status: 'Active', age: 26, birthday: '2000-11-30', address: 'Tarlac City', parents_contact: '' },
   { id: 8, name: 'Gabriela Silang', chapter_area: 'TRAINING', role: 'Training Head', contact: '+63 938 456 7890', email: 'gabriela.training@example.com', status: 'Active', age: 27, birthday: '1999-05-10', address: 'Paniqui, Tarlac', parents_contact: '' },
-  
+
   // 64 New Members imported from Spreadsheet (IDs 9-72)
   { id: 9, name: 'Mark Allen S. Nosaves', chapter_area: 'EAST', role: 'Member', contact: '9923937559', email: '', status: 'Active', age: 13, birthday: '3/23/2013', address: 'Matatalaib, Tarlac', parents_contact: '9919235478' },
   { id: 10, name: 'Precious Diane Z. Samson', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 13, birthday: '3/20/2013', address: 'San Manuel, Tarlac', parents_contact: '9919235478' },
@@ -233,7 +233,7 @@ function refreshActiveView() {
   const tabAgenda = document.getElementById('sidebar-tab-agenda');
   const tabLeaders = document.getElementById('sidebar-tab-leaders');
   const tabOrgChart = document.getElementById('sidebar-tab-org-chart');
-  
+
   if (tabDashboard?.classList.contains('active')) renderDashboard();
   if (tabActivities?.classList.contains('active')) renderActivities();
   if (tabMembers?.classList.contains('active')) renderMembers();
@@ -265,7 +265,7 @@ class ActivityDatabase {
         });
         isFirstLoad = true;
       }
-      
+
       if (!isFirstLoad) {
         const newData = [];
         snapshot.forEach(doc => {
@@ -313,7 +313,7 @@ class ActivityDatabase {
       if (filters.month && item.month !== filters.month) return false;
       if (filters.status && item.status !== filters.status) return false;
       if (filters.chapter && item.chapter_area !== filters.chapter) return false;
-      
+
       if (filters.semester) {
         const firstSemMonths = ['January', 'February', 'March', 'April', 'May', 'June'];
         const secondSemMonths = ['July', 'August', 'September', 'October', 'November', 'December'];
@@ -387,7 +387,7 @@ class ActivityDatabase {
 class MembersDatabase {
   constructor() {
     this.storageKey = 'members_db_records_v2';
-    
+
     // Migration: automatically overwrite with new 64 spreadsheet members seed on first load
     // Using v6 versioning to handle expanded fields and Attendance tab syncing
     const seeded64 = localStorage.getItem('seeded_zero_v1');
@@ -395,7 +395,7 @@ class MembersDatabase {
       localStorage.setItem(this.storageKey, JSON.stringify([]));
       localStorage.setItem('seeded_zero_v1', 'true');
       this.members = [];
-      
+
       // Sync activities default seed
       const actDb = new ActivityDatabase();
       localStorage.setItem(actDb.storageKey, JSON.stringify([]));
@@ -408,41 +408,41 @@ class MembersDatabase {
     const EAST_PATCH_KEY = 'east_members_patch_v1';
     if (!localStorage.getItem(EAST_PATCH_KEY)) {
       const eastMembers = [
-        { name: 'Mark Allen S. Nosaves',    chapter_area: 'EAST', role: 'Member', contact: '9923037559', email: '', status: 'Active', age: 13, birthday: '3/23/2013',  address: 'Matatalaib, Tarlac',              parents_contact: '9919235478' },
-        { name: 'Precious Diane Z. Samson', chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 13, birthday: '3/20/2013',  address: 'San Manuel, Tarlac',               parents_contact: '9919235478' },
-        { name: 'Clark Kent Z. Samson',     chapter_area: 'EAST', role: 'Member', contact: '9933643376', email: '', status: 'Active', age: 8,  birthday: '8/24/2016',  address: 'San Manuel, Tarlac',               parents_contact: '9919235478' },
-        { name: 'Cedrick Jewel G. Puyawan', chapter_area: 'EAST', role: 'Member', contact: '9455002513', email: '', status: 'Active', age: 14, birthday: '9/12/2011',  address: 'San Manuel, Tarlac',               parents_contact: '9954628428' },
-        { name: 'Jhozhua L. Corpuz',        chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 13, birthday: '12/29/2012', address: 'San Manuel, Tarlac',               parents_contact: '9108330947' },
-        { name: 'Enzo Luis A. Labon',       chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 14, birthday: '10/28/2011', address: 'San Manuel, Tarlac',               parents_contact: '' },
-        { name: 'Jhaztin Carl Corpuz',      chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 16, birthday: '02/28/2010', address: 'San Manuel, Tarlac',               parents_contact: '9108330973' },
-        { name: 'John Marion Sigua',        chapter_area: 'EAST', role: 'Member', contact: '9122712254', email: '', status: 'Active', age: 12, birthday: '09/08/2013', address: 'Maliwalo Tarlac',                  parents_contact: '9456885921' },
-        { name: 'Carmelo Anthony G. Sigua', chapter_area: 'EAST', role: 'Member', contact: '9153025737', email: '', status: 'Active', age: 16, birthday: '09/28/2009', address: 'Maliwalo Tarlac',                  parents_contact: '9456885921' },
-        { name: 'Jovel D. Garcia',          chapter_area: 'EAST', role: 'Member', contact: '9038360124', email: '', status: 'Active', age: 14, birthday: '7/19/2011',  address: 'Maliwalo Tarlac',                  parents_contact: '9386056160' },
-        { name: 'Jeanette Mary Salazar',    chapter_area: 'EAST', role: 'Member', contact: '9101368605', email: '', status: 'Active', age: 18, birthday: '9/8/2007',   address: 'Sitio Buni Bura',                  parents_contact: '9094708294' },
-        { name: 'Jeonard Francis Catap',    chapter_area: 'EAST', role: 'Member', contact: '9701807117', email: '', status: 'Active', age: 18, birthday: '8/29/2007',  address: 'Culipat, Tarlac City',             parents_contact: '9121256554' },
-        { name: 'Miguel Antonio Tañedo',    chapter_area: 'EAST', role: 'Member', contact: '9919791125', email: '', status: 'Active', age: 18, birthday: '10/18/2011', address: 'San Sebastian, Tarlac City',       parents_contact: '9584867998' },
-        { name: 'Gabriel R. Magat',         chapter_area: 'EAST', role: 'Member', contact: '9604138208', email: '', status: 'Active', age: 14, birthday: '01/16/2012', address: 'Sitio Calevo Tibag, Tarlac City',  parents_contact: '9634409663' },
-        { name: 'Rajh Bernardo',            chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 14, birthday: '11/21/2014', address: 'San Manuel, Tarlac',               parents_contact: '9482145691' },
-        { name: 'Jaycee Antonio',           chapter_area: 'EAST', role: 'Member', contact: '9202031881', email: '', status: 'Active', age: 14, birthday: '11/23/2011', address: 'Batang Batang Tarlac City',        parents_contact: '9389293791' },
-        { name: 'Aljune Lagmay',            chapter_area: 'EAST', role: 'Member', contact: '9564393473', email: '', status: 'Active', age: 16, birthday: '11/07/2012', address: 'Batang Batang Tarlac City',        parents_contact: '' },
-        { name: 'Jilian Baquerto',          chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 14, birthday: '05/05/2010', address: 'Lalapac Victoria Tarlac',          parents_contact: '965617117' },
-        { name: 'Rocel Yusi',               chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 15, birthday: '7/31/2011',  address: 'Lalapac Victoria Tarlac',          parents_contact: '965617117' },
-        { name: 'Justine A. Officiar',      chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 15, birthday: '12/5/2010',  address: 'Batang Batang Tarlac City',        parents_contact: '9092069693' },
-        { name: 'Darlina Kathe Seaismundo', chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 16, birthday: '05/05/2011', address: 'Batang Batang Tarlac City',        parents_contact: '9670072185' },
-        { name: 'Karl Andrei Nunag',        chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 14, birthday: '4/11/2011',  address: 'Batang Batang Tarlac City',        parents_contact: '951429950' },
-        { name: 'Johnny P. Eugenio',        chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 14, birthday: '1/16/2012',  address: 'Batang Batang Tarlac City',        parents_contact: '9928788142' },
-        { name: 'Reeza Manthas L. Peralta', chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 16, birthday: '3/8/2010',   address: 'Batang Batang Tarlac City',        parents_contact: '9772332580' },
-        { name: 'Rishelyne S. Balansag',    chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 16, birthday: '4/23/2010',  address: 'Batang Batang Tarlac City',        parents_contact: '9919857944' },
-        { name: 'Ceana Ghail R. Benson',    chapter_area: 'EAST', role: 'Member', contact: '9658796230', email: '', status: 'Active', age: 17, birthday: '2/14/2009',  address: 'Lapaz',                            parents_contact: '9910958697' },
-        { name: 'John Carlo S. Daguro',     chapter_area: 'EAST', role: 'Member', contact: '9942527797', email: '', status: 'Active', age: 16, birthday: '12/10/2009', address: 'Batang Batang Tarlac City',        parents_contact: '' },
-        { name: 'Ella Tolentino',           chapter_area: 'EAST', role: 'Member', contact: '9641514850', email: '', status: 'Active', age: 17, birthday: '5/23/2009',  address: 'San Pascual, Tarlac City',         parents_contact: '9101715799' },
-        { name: 'Rona Tacutaco',            chapter_area: 'EAST', role: 'Member', contact: '9851636519', email: '', status: 'Active', age: 16, birthday: '8/9/2009',   address: 'San Pascual, Tarlac City',         parents_contact: '9569470391' },
-        { name: 'Aira Landingin',           chapter_area: 'EAST', role: 'Member', contact: '9708718879', email: '', status: 'Active', age: 16, birthday: '7/7/2009',   address: 'San Pascual, Tarlac City',         parents_contact: '9758435309' },
-        { name: 'Ayesha B. Gadiana',        chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 9,  birthday: '8/2/2016',   address: 'San Isidro, Tarlac City',          parents_contact: '9305555256' },
-        { name: 'Sean Ilagan',              chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 14, birthday: '10/14/2011', address: 'Paniqui Tarlac',                   parents_contact: '9457716246' },
-        { name: 'Louis Ilagan',             chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 12, birthday: '12/26/2013', address: 'Paniqui Tarlac',                   parents_contact: '9457716246' },
-        { name: 'Andrean Jade Bravana',     chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 11, birthday: '8/1/2014',   address: 'San Isidro, Tarlac City',          parents_contact: '' },
-        { name: 'Prince John B. Gadiana',   chapter_area: 'EAST', role: 'Member', contact: '',           email: '', status: 'Active', age: 12, birthday: '3/28/2014',  address: 'San Isidro, Tarlac City',          parents_contact: '' },
+        { name: 'Mark Allen S. Nosaves', chapter_area: 'EAST', role: 'Member', contact: '9923037559', email: '', status: 'Active', age: 13, birthday: '3/23/2013', address: 'Matatalaib, Tarlac', parents_contact: '9919235478' },
+        { name: 'Precious Diane Z. Samson', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 13, birthday: '3/20/2013', address: 'San Manuel, Tarlac', parents_contact: '9919235478' },
+        { name: 'Clark Kent Z. Samson', chapter_area: 'EAST', role: 'Member', contact: '9933643376', email: '', status: 'Active', age: 8, birthday: '8/24/2016', address: 'San Manuel, Tarlac', parents_contact: '9919235478' },
+        { name: 'Cedrick Jewel G. Puyawan', chapter_area: 'EAST', role: 'Member', contact: '9455002513', email: '', status: 'Active', age: 14, birthday: '9/12/2011', address: 'San Manuel, Tarlac', parents_contact: '9954628428' },
+        { name: 'Jhozhua L. Corpuz', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 13, birthday: '12/29/2012', address: 'San Manuel, Tarlac', parents_contact: '9108330947' },
+        { name: 'Enzo Luis A. Labon', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '10/28/2011', address: 'San Manuel, Tarlac', parents_contact: '' },
+        { name: 'Jhaztin Carl Corpuz', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '02/28/2010', address: 'San Manuel, Tarlac', parents_contact: '9108330973' },
+        { name: 'John Marion Sigua', chapter_area: 'EAST', role: 'Member', contact: '9122712254', email: '', status: 'Active', age: 12, birthday: '09/08/2013', address: 'Maliwalo Tarlac', parents_contact: '9456885921' },
+        { name: 'Carmelo Anthony G. Sigua', chapter_area: 'EAST', role: 'Member', contact: '9153025737', email: '', status: 'Active', age: 16, birthday: '09/28/2009', address: 'Maliwalo Tarlac', parents_contact: '9456885921' },
+        { name: 'Jovel D. Garcia', chapter_area: 'EAST', role: 'Member', contact: '9038360124', email: '', status: 'Active', age: 14, birthday: '7/19/2011', address: 'Maliwalo Tarlac', parents_contact: '9386056160' },
+        { name: 'Jeanette Mary Salazar', chapter_area: 'EAST', role: 'Member', contact: '9101368605', email: '', status: 'Active', age: 18, birthday: '9/8/2007', address: 'Sitio Buni Bura', parents_contact: '9094708294' },
+        { name: 'Jeonard Francis Catap', chapter_area: 'EAST', role: 'Member', contact: '9701807117', email: '', status: 'Active', age: 18, birthday: '8/29/2007', address: 'Culipat, Tarlac City', parents_contact: '9121256554' },
+        { name: 'Miguel Antonio Tañedo', chapter_area: 'EAST', role: 'Member', contact: '9919791125', email: '', status: 'Active', age: 18, birthday: '10/18/2011', address: 'San Sebastian, Tarlac City', parents_contact: '9584867998' },
+        { name: 'Gabriel R. Magat', chapter_area: 'EAST', role: 'Member', contact: '9604138208', email: '', status: 'Active', age: 14, birthday: '01/16/2012', address: 'Sitio Calevo Tibag, Tarlac City', parents_contact: '9634409663' },
+        { name: 'Rajh Bernardo', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '11/21/2014', address: 'San Manuel, Tarlac', parents_contact: '9482145691' },
+        { name: 'Jaycee Antonio', chapter_area: 'EAST', role: 'Member', contact: '9202031881', email: '', status: 'Active', age: 14, birthday: '11/23/2011', address: 'Batang Batang Tarlac City', parents_contact: '9389293791' },
+        { name: 'Aljune Lagmay', chapter_area: 'EAST', role: 'Member', contact: '9564393473', email: '', status: 'Active', age: 16, birthday: '11/07/2012', address: 'Batang Batang Tarlac City', parents_contact: '' },
+        { name: 'Jilian Baquerto', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '05/05/2010', address: 'Lalapac Victoria Tarlac', parents_contact: '965617117' },
+        { name: 'Rocel Yusi', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 15, birthday: '7/31/2011', address: 'Lalapac Victoria Tarlac', parents_contact: '965617117' },
+        { name: 'Justine A. Officiar', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 15, birthday: '12/5/2010', address: 'Batang Batang Tarlac City', parents_contact: '9092069693' },
+        { name: 'Darlina Kathe Seaismundo', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '05/05/2011', address: 'Batang Batang Tarlac City', parents_contact: '9670072185' },
+        { name: 'Karl Andrei Nunag', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '4/11/2011', address: 'Batang Batang Tarlac City', parents_contact: '951429950' },
+        { name: 'Johnny P. Eugenio', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '1/16/2012', address: 'Batang Batang Tarlac City', parents_contact: '9928788142' },
+        { name: 'Reeza Manthas L. Peralta', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '3/8/2010', address: 'Batang Batang Tarlac City', parents_contact: '9772332580' },
+        { name: 'Rishelyne S. Balansag', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '4/23/2010', address: 'Batang Batang Tarlac City', parents_contact: '9919857944' },
+        { name: 'Ceana Ghail R. Benson', chapter_area: 'EAST', role: 'Member', contact: '9658796230', email: '', status: 'Active', age: 17, birthday: '2/14/2009', address: 'Lapaz', parents_contact: '9910958697' },
+        { name: 'John Carlo S. Daguro', chapter_area: 'EAST', role: 'Member', contact: '9942527797', email: '', status: 'Active', age: 16, birthday: '12/10/2009', address: 'Batang Batang Tarlac City', parents_contact: '' },
+        { name: 'Ella Tolentino', chapter_area: 'EAST', role: 'Member', contact: '9641514850', email: '', status: 'Active', age: 17, birthday: '5/23/2009', address: 'San Pascual, Tarlac City', parents_contact: '9101715799' },
+        { name: 'Rona Tacutaco', chapter_area: 'EAST', role: 'Member', contact: '9851636519', email: '', status: 'Active', age: 16, birthday: '8/9/2009', address: 'San Pascual, Tarlac City', parents_contact: '9569470391' },
+        { name: 'Aira Landingin', chapter_area: 'EAST', role: 'Member', contact: '9708718879', email: '', status: 'Active', age: 16, birthday: '7/7/2009', address: 'San Pascual, Tarlac City', parents_contact: '9758435309' },
+        { name: 'Ayesha B. Gadiana', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 9, birthday: '8/2/2016', address: 'San Isidro, Tarlac City', parents_contact: '9305555256' },
+        { name: 'Sean Ilagan', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '10/14/2011', address: 'Paniqui Tarlac', parents_contact: '9457716246' },
+        { name: 'Louis Ilagan', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 12, birthday: '12/26/2013', address: 'Paniqui Tarlac', parents_contact: '9457716246' },
+        { name: 'Andrean Jade Bravana', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 11, birthday: '8/1/2014', address: 'San Isidro, Tarlac City', parents_contact: '' },
+        { name: 'Prince John B. Gadiana', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 12, birthday: '3/28/2014', address: 'San Isidro, Tarlac City', parents_contact: '' },
       ];
 
       // Get current max ID
@@ -521,7 +521,7 @@ class MembersDatabase {
       }
       localStorage.setItem(SCREENSHOT_PATCH_KEY, 'true');
     }
-    
+
     if (db) this.setupFirebaseSync();
   }
 
@@ -534,7 +534,7 @@ class MembersDatabase {
         });
         isFirstLoad = true;
       }
-      
+
       if (!isFirstLoad) {
         const newData = [];
         snapshot.forEach(doc => {
@@ -613,8 +613,8 @@ class MembersDatabase {
   update(id, updatedFields) {
     const index = this.members.findIndex(m => m.id === parseInt(id));
     if (index !== -1) {
-      this.members[index] = { 
-        ...this.members[index], 
+      this.members[index] = {
+        ...this.members[index],
         ...updatedFields,
         age: parseInt(updatedFields.age) || 0
       };
@@ -629,7 +629,7 @@ class MembersDatabase {
     const index = this.members.findIndex(m => m.id === parseInt(id));
     if (index !== -1) {
       this.members.splice(index, 1);
-      
+
       const dbActs = new ActivityDatabase();
       let changed = false;
       dbActs.getAll().forEach(act => {
@@ -717,7 +717,7 @@ class FundsDatabase {
     }
     if (db) this.setupFirebaseSync();
   }
-  
+
   setupFirebaseSync() {
     db.collection('funds').onSnapshot(snapshot => {
       let isFirstLoad = false;
@@ -727,7 +727,7 @@ class FundsDatabase {
         });
         isFirstLoad = true;
       }
-      
+
       if (!isFirstLoad) {
         const newData = [];
         snapshot.forEach(doc => {
@@ -744,7 +744,7 @@ class FundsDatabase {
   loadFromStorage() {
     const data = localStorage.getItem(this.storageKey);
     if (!data) { localStorage.setItem(this.storageKey, JSON.stringify(SAMPLE_FUNDS)); return [...SAMPLE_FUNDS]; }
-    try { return JSON.parse(data); } catch(e) { return []; }
+    try { return JSON.parse(data); } catch (e) { return []; }
   }
   saveToStorage() { localStorage.setItem(this.storageKey, JSON.stringify(this.records)); }
   getAll() { return this.records; }
@@ -768,21 +768,21 @@ class FundsDatabase {
   }
   update(id, fields) {
     const i = this.records.findIndex(r => r.id === parseInt(id));
-    if (i !== -1) { 
-      this.records[i] = { ...this.records[i], ...fields, amount: parseFloat(fields.amount) || 0 }; 
-      this.saveToStorage(); 
+    if (i !== -1) {
+      this.records[i] = { ...this.records[i], ...fields, amount: parseFloat(fields.amount) || 0 };
+      this.saveToStorage();
       if (db) db.collection('funds').doc(id.toString()).set(this.records[i]);
-      return true; 
+      return true;
     }
     return false;
   }
   delete(id) {
     const i = this.records.findIndex(r => r.id === parseInt(id));
-    if (i !== -1) { 
-      this.records.splice(i, 1); 
-      this.saveToStorage(); 
+    if (i !== -1) {
+      this.records.splice(i, 1);
+      this.saveToStorage();
       if (db) db.collection('funds').doc(id.toString()).delete();
-      return true; 
+      return true;
     }
     return false;
   }
@@ -811,10 +811,9 @@ const panelOrgChart = document.getElementById('panel-orgchart');
 // Header action buttons
 
 const btnAddMember = document.getElementById('btn-add-member');
-const btnAddLeader = document.getElementById('btn-add-leader');
 
 // Admin Auth State & Default Passcode Seed
-if (!localStorage.getItem('admin_passcode') || localStorage.getItem('admin_passcode') === 'admin123') {
+if (!localStorage.getItem('admin_passcode') || localStorage.getItem('admin_passcode') === 'mfcyouthtarlac') {
   localStorage.setItem('admin_passcode', 'mfcyouthtarlac');
 }
 let isAdmin = localStorage.getItem('is_admin') === 'true';
@@ -832,7 +831,7 @@ function switchTab(tabName, subTabName = null) {
   panelAgenda?.classList.add('hidden');
   panelLeaders?.classList.add('hidden');
   panelOrgChart?.classList.add('hidden');
-  
+
   tabDashboard?.classList.remove('active');
   tabActivities?.classList.remove('active');
   tabMembers?.classList.remove('active');
@@ -841,17 +840,17 @@ function switchTab(tabName, subTabName = null) {
   tabAgenda?.classList.remove('active');
   tabLeaders?.classList.remove('active');
   tabOrgChart?.classList.remove('active');
-  
+
   document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
   document.querySelectorAll('.sidebar-sublink').forEach(link => link.classList.remove('active'));
-  
+
   const sidebarActiveTab = document.getElementById(`sidebar-tab-${tabName}`);
   if (sidebarActiveTab) sidebarActiveTab.classList.add('active');
-  
+
   if (subTabName) {
     const sidebarActiveSubTab = document.getElementById(`sidebar-subtab-${tabName}-${subTabName}`);
     if (sidebarActiveSubTab) sidebarActiveSubTab.classList.add('active');
-    
+
     if (tabName === 'members') {
       const chapterValue = subTabName.toUpperCase();
       const filterEl = document.getElementById('filter-member-chapter');
@@ -874,9 +873,9 @@ function switchTab(tabName, subTabName = null) {
       currentActivityFilters.semester = '';
     }
   }
-  
+
   closeSidebar();
-  
+
   if (tabName === 'dashboard') {
     if (tabDashboard) tabDashboard.classList.add('active');
     if (panelDashboard) panelDashboard.classList.remove('hidden');
@@ -968,10 +967,10 @@ function renderActivities() {
   }
   let filteredData = dbActivities.getFiltered(currentActivityFilters);
   filteredData = filteredData.filter(item => item.status === 'Accomplished');
-  
+
   const members = dbMembers.getAll();
   const activeMembersCount = members.filter(m => (m.status || 'Active').toLowerCase() === 'active').length;
-  
+
   // Sort ascending by date
   filteredData.sort((a, b) => {
     const dateA = a.date ? new Date(a.date.split(' or ')[0]) : new Date(0);
@@ -981,7 +980,7 @@ function renderActivities() {
 
   if (!cardsContainer) return;
   cardsContainer.innerHTML = '';
-  
+
   if (filteredData.length === 0) {
     noRecordsMessage.classList.remove('hidden');
   } else {
@@ -990,7 +989,7 @@ function renderActivities() {
       const statusClass = item.status ? item.status.toLowerCase() : 'pending';
       const statusLabel = item.status || 'Pending';
       const statusBadge = `<span class="activity-card-badge status-${statusClass}">${statusLabel}</span>`;
-      
+
       let attendeeTagsHtml = '';
       if (Array.isArray(item.attendee_ids) && item.attendee_ids.length > 0) {
         item.attendee_ids.forEach(id => {
@@ -1000,13 +999,13 @@ function renderActivities() {
           }
         });
       }
-      
+
       const pCount = Array.isArray(item.attendee_ids) ? item.attendee_ids.length : 0;
       const rate = activeMembersCount > 0 ? ((pCount / activeMembersCount) * 100).toFixed(1) : '0.0';
-      
+
       const dateText = formatDateRange(item.date, item.date_end) || 'No Date';
       const subtitleText = item.chapter_area ? `${item.chapter_area} Chapter / Area` : 'All Chapters / Areas';
-      
+
       const card = document.createElement('div');
       card.className = 'activity-card';
       card.innerHTML = `
@@ -1049,7 +1048,7 @@ function renderActivities() {
       cardsContainer.appendChild(card);
     });
   }
-  
+
   renderDashboard();
   renderFullAgendaList();
   renderLateAgendaList();
@@ -1069,7 +1068,7 @@ function renderDashboard() {
   if (pendingStatEl) {
     pendingStatEl.textContent = allData.filter(item => !item.status || item.status === 'Pending').length;
   }
-  
+
   renderTodaySchedule();
   renderUpcomingActivities();
   updateDashboardChart();
@@ -1080,12 +1079,12 @@ let activityStatusChartInstance = null;
 function updateDashboardChart() {
   const allData = dbActivities.getAll();
   const total = allData.length;
-  
+
   let accomplished = 0;
   let cancelled = 0;
   let rescheduled = 0;
   let pending = 0;
-  
+
   allData.forEach(item => {
     const s = item.status || '';
     if (s === 'Accomplished') accomplished++;
@@ -1096,11 +1095,11 @@ function updateDashboardChart() {
 
   const ctx = document.getElementById('activityStatusChart');
   if (!ctx) return;
-  
+
   const chartData = [accomplished, cancelled, rescheduled, pending];
   const chartLabels = ['Accomplished', 'Cancelled', 'Rescheduled', 'Pending'];
   const chartColors = ['#10b981', '#ef4444', '#f59e0b', '#3b82f6'];
-  
+
   if (activityStatusChartInstance) {
     activityStatusChartInstance.data.datasets[0].data = chartData;
     activityStatusChartInstance.update();
@@ -1125,7 +1124,7 @@ function updateDashboardChart() {
             },
             tooltip: {
               callbacks: {
-                label: function(context) {
+                label: function (context) {
                   return ` ${context.label} - ${context.raw}`;
                 }
               }
@@ -1135,7 +1134,7 @@ function updateDashboardChart() {
       });
     }
   }
-  
+
   const legendEl = document.getElementById('activityStatusLegend');
   if (legendEl) {
     let legendHtml = '';
@@ -1149,12 +1148,12 @@ function updateDashboardChart() {
     });
     legendEl.innerHTML = legendHtml;
   }
-  
+
   const tableEl = document.getElementById('activityStatusTable');
   if (tableEl) {
     const totalCountEl = document.getElementById('chart-total-count');
     if (totalCountEl) totalCountEl.textContent = total;
-    
+
     const tbody = tableEl.querySelector('tbody');
     let rowsHtml = '';
     chartLabels.forEach((label, i) => {
@@ -1178,7 +1177,7 @@ function renderTodaySchedule() {
   const allActivities = dbActivities.getAll();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  
+
   const todaysActivities = allActivities.filter(act => {
     if (!act.date) return false;
     const rawDate = act.date.split(' or ')[0].trim();
@@ -1187,12 +1186,12 @@ function renderTodaySchedule() {
     d.setHours(0, 0, 0, 0);
     return d.getTime() === today.getTime();
   });
-  
+
   todaysActivities.sort((a, b) => {
     const da = new Date(today);
-    if (a.time) { const [h,m] = a.time.split(':'); da.setHours(parseInt(h,10), parseInt(m,10)); }
+    if (a.time) { const [h, m] = a.time.split(':'); da.setHours(parseInt(h, 10), parseInt(m, 10)); }
     const db = new Date(today);
-    if (b.time) { const [h,m] = b.time.split(':'); db.setHours(parseInt(h,10), parseInt(m,10)); }
+    if (b.time) { const [h, m] = b.time.split(':'); db.setHours(parseInt(h, 10), parseInt(m, 10)); }
     return da - db;
   });
 
@@ -1239,7 +1238,7 @@ function renderUpcomingActivities() {
   const allActivities = dbActivities.getAll();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  
+
   const upcomingActivities = allActivities.filter(act => {
     if (!act.date) return false;
     const rawDate = act.date.split(' or ')[0].trim();
@@ -1251,14 +1250,14 @@ function renderUpcomingActivities() {
 
   upcomingActivities.sort((a, b) => {
     const da = new Date(a.date.split(' or ')[0].trim());
-    if (a.time) { const [h,m] = a.time.split(':'); da.setHours(parseInt(h,10), parseInt(m,10)); }
+    if (a.time) { const [h, m] = a.time.split(':'); da.setHours(parseInt(h, 10), parseInt(m, 10)); }
     const db = new Date(b.date.split(' or ')[0].trim());
-    if (b.time) { const [h,m] = b.time.split(':'); db.setHours(parseInt(h,10), parseInt(m,10)); }
+    if (b.time) { const [h, m] = b.time.split(':'); db.setHours(parseInt(h, 10), parseInt(m, 10)); }
     return da - db;
   });
 
   const nextFive = upcomingActivities.slice(0, 5);
-  
+
   const contentEl = document.getElementById('upcoming-activity-content');
   if (!contentEl) return;
 
@@ -1273,7 +1272,7 @@ function renderUpcomingActivities() {
     let html = '<div style="display: flex; flex-direction: column; gap: 0;">';
     nextFive.forEach(act => {
       const formattedDate = new Date(act.date.split(' or ')[0].trim()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      
+
       let timeFormatted = 'TBA';
       if (act.time) {
         const [h, m] = act.time.split(':');
@@ -1317,30 +1316,30 @@ function renderUpcomingAgenda() {
     d.setHours(0, 0, 0, 0);
     return d >= today; // only today or future
   });
-  
+
   // Sort ascending by date
   upcoming.sort((a, b) => {
     const dateA = a.date ? new Date(a.date.split(' or ')[0]) : new Date(0);
-    if (a.time && dateA.getTime() !== 0) { const [h,m] = a.time.split(':'); dateA.setHours(parseInt(h,10), parseInt(m,10)); }
+    if (a.time && dateA.getTime() !== 0) { const [h, m] = a.time.split(':'); dateA.setHours(parseInt(h, 10), parseInt(m, 10)); }
     const dateB = b.date ? new Date(b.date.split(' or ')[0]) : new Date(0);
-    if (b.time && dateB.getTime() !== 0) { const [h,m] = b.time.split(':'); dateB.setHours(parseInt(h,10), parseInt(m,10)); }
+    if (b.time && dateB.getTime() !== 0) { const [h, m] = b.time.split(':'); dateB.setHours(parseInt(h, 10), parseInt(m, 10)); }
     return dateA - dateB;
   });
-  
+
   // Update badge count
   const countEl = document.getElementById('agenda-count');
   if (countEl) {
     countEl.textContent = `${upcoming.length} Upcoming`;
   }
-  
+
   const container = document.getElementById('agenda-list-container');
   if (!container) return;
-  
+
   container.innerHTML = '';
-  
+
   // Get top 3 upcoming
   const topUpcoming = upcoming.slice(0, 3);
-  
+
   if (topUpcoming.length === 0) {
     container.innerHTML = `
       <div class="agenda-empty">
@@ -1351,24 +1350,24 @@ function renderUpcomingAgenda() {
     lucide.createIcons();
     return;
   }
-  
+
   topUpcoming.forEach(item => {
     const card = document.createElement('div');
     const chapterClass = item.chapter_area ? item.chapter_area.toLowerCase().replace(' ', '-') : 'none';
     card.className = `agenda-card chapter-${chapterClass}`;
-    
+
     let chapterBadge = '';
     if (item.chapter_area) {
       chapterBadge = `<span class="badge badge-chapter ${chapterClass}">${item.chapter_area}</span>`;
     }
-    
+
     let statusBadge = '';
     if (item.status) {
       statusBadge = `<span class="badge badge-status ${item.status.toLowerCase()}">${item.status}</span>`;
     } else {
       statusBadge = `<span class="badge badge-status pending">Pending</span>`;
     }
-    
+
     let markBtn = '';
     if (isAdmin) {
       markBtn = `
@@ -1377,7 +1376,7 @@ function renderUpcomingAgenda() {
         </button>
       `;
     }
-    
+
     card.innerHTML = `
       <div class="agenda-card-details">
         <span class="agenda-card-date">${formatDateString(item.date)} ${item.week ? `• ${item.week}` : ''}</span>
@@ -1396,7 +1395,7 @@ function renderUpcomingAgenda() {
     `;
     container.appendChild(card);
   });
-  
+
   lucide.createIcons();
 }
 
@@ -1462,7 +1461,7 @@ function buildAgendaRows(activities) {
     let countdownClass = '';
     let countdownNum = '?';
     let countdownLbl = 'days';
-    
+
     if (item.status === 'Accomplished') {
       countdownClass = 'accomplished'; countdownNum = '✔'; countdownLbl = 'DONE';
     } else if (daysUntil === null) {
@@ -1560,11 +1559,11 @@ function renderAccomplishedAgendaList() {
   const allActivities = dbActivities.getAll();
 
   const accomplished = allActivities.filter(act => act.status === 'Accomplished')
-  .sort((a, b) => {
-    const dA = a.date ? new Date(a.date.split(' or ')[0]) : new Date(0);
-    const dB = b.date ? new Date(b.date.split(' or ')[0]) : new Date(0);
-    return dB - dA; // most recently accomplished first
-  });
+    .sort((a, b) => {
+      const dA = a.date ? new Date(a.date.split(' or ')[0]) : new Date(0);
+      const dB = b.date ? new Date(b.date.split(' or ')[0]) : new Date(0);
+      return dB - dA; // most recently accomplished first
+    });
 
   const section = document.getElementById('accomplished-agenda-section');
   const countEl = document.getElementById('accomplished-agenda-count');
@@ -1676,14 +1675,14 @@ function renderLateActivities() {
   lucide.createIcons();
 }
 
-window.quickAccomplishActivity = function(id) {
+window.quickAccomplishActivity = function (id) {
   const activity = dbActivities.getAll().find(a => a.id === id);
   if (!activity) return;
-  
+
   const ok = dbActivities.update(id, {
     status: 'Accomplished'
   });
-  
+
   if (ok) {
     renderActivities();
     // If the attendance tab has this activity selected, update its fields
@@ -1718,11 +1717,11 @@ statusFilter.addEventListener('change', updateActivityFilters);
 btnRefreshData.addEventListener('click', () => {
   const icon = btnRefreshData.querySelector('i');
   if (icon) icon.classList.add('rotating');
-  
+
   // Reload data from DB
   renderActivities();
   lucide.createIcons();
-  
+
   setTimeout(() => {
     if (icon) icon.classList.remove('rotating');
   }, 500);
@@ -1782,7 +1781,7 @@ function getMonthAndWeek(dateStr) {
 
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   const monthName = months[date.getMonth()];
-  
+
   const day = date.getDate();
   let weekName = '';
   if (day <= 7) weekName = '1st Week';
@@ -1790,7 +1789,7 @@ function getMonthAndWeek(dateStr) {
   else if (day <= 21) weekName = '3rd Week';
   else if (day <= 28) weekName = '4th Week';
   else weekName = '5th Week';
-  
+
   return { month: monthName, week: weekName };
 }
 
@@ -1855,7 +1854,7 @@ function renderMembers() {
   filteredData.sort((a, b) => {
     const nameA = formatMemberName(a.name || '');
     const nameB = formatMemberName(b.name || '');
-    return nameA.localeCompare(nameB, undefined, {sensitivity: 'base'});
+    return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
   });
 
   memberTableBody.innerHTML = '';
@@ -1867,7 +1866,7 @@ function renderMembers() {
       const tr = document.createElement('tr');
       const statusClass = item.status ? item.status.toLowerCase() : 'inactive';
       const statusBadge = `<span class="badge badge-status ${statusClass}">${item.status || 'Inactive'}</span>`;
-      
+
       let chapterBadge = '';
       if (item.chapter_area) {
         const chapterClass = item.chapter_area.toLowerCase().replace(' ', '-');
@@ -1930,7 +1929,7 @@ function renderMembers() {
   totalMembersStatEl.textContent = chapterMembers.length;
   activeMembersStatEl.textContent = chapterMembers.filter(m => m.status === 'Active').length;
   inactiveMembersStatEl.textContent = chapterMembers.filter(m => m.status === 'Inactive').length;
-  
+
   leadersMembersStatEl.textContent = chapterMembers.filter(m => {
     const role = (m.role || '').toLowerCase();
     return role.includes('servant') || role.includes('head') || role.includes('coordinator') || role.includes('leader');
@@ -2040,7 +2039,7 @@ activityForm.addEventListener('submit', (e) => {
   renderActivities();
 });
 
-window.editActivity = function(id) {
+window.editActivity = function (id) {
   const record = dbActivities.getAll().find(a => a.id === id);
   if (!record) return;
 
@@ -2068,7 +2067,7 @@ window.editActivity = function(id) {
   activityModal.classList.remove('hidden');
 };
 
-window.deleteActivity = function(id) {
+window.deleteActivity = function (id) {
   if (confirm('Are you sure you want to delete this activity? This action cannot be undone.')) {
     dbActivities.delete(id);
     renderActivities();
@@ -2121,7 +2120,7 @@ function setMemberAvatarPreview(dataUrl) {
     btnClearMemberAvatar.style.display = 'none';
     memberAvatarArea.style.borderColor = 'rgba(255,255,255,0.2)';
     fieldMemberAvatarData.value = '';
-    if(fieldMemberAvatarInput) fieldMemberAvatarInput.value = '';
+    if (fieldMemberAvatarInput) fieldMemberAvatarInput.value = '';
   }
 }
 
@@ -2140,7 +2139,7 @@ if (fieldMemberAvatarInput) {
     reader.onload = (e) => {
       cropperImage.src = e.target.result;
       cropperModal.classList.remove('hidden');
-      
+
       if (currentCropper) {
         currentCropper.destroy();
       }
@@ -2207,15 +2206,6 @@ btnAddMember.addEventListener('click', () => {
   memberModal.classList.remove('hidden');
 });
 
-if (btnAddLeader) {
-  btnAddLeader.addEventListener('click', () => {
-    memberForm.reset();
-    fieldMemberId.value = '';
-    memberModalTitle.textContent = 'Add Servant Leader';
-    memberModal.classList.remove('hidden');
-  });
-}
-
 function closeMemberModal() {
   memberModal.classList.add('hidden');
   memberForm.reset();
@@ -2254,7 +2244,7 @@ memberForm.addEventListener('submit', (e) => {
   renderMembers();
 });
 
-window.editMember = function(id) {
+window.editMember = function (id) {
   const record = dbMembers.getAll().find(m => m.id === id);
   if (!record) return;
 
@@ -2264,7 +2254,7 @@ window.editMember = function(id) {
   fieldMemberStatus.value = record.status || 'Active';
   fieldMemberRole.value = record.role || '';
   fieldMemberEmail.value = record.email || '';
-  
+
   function formatDateForInput(val) {
     if (!val) return '';
     if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
@@ -2287,7 +2277,7 @@ window.editMember = function(id) {
   fieldMemberParentsContact.value = record.parents_contact || '';
   fieldMemberYouthcampDate.value = formatDateForInput(record.youthcamp_date);
   fieldMemberYouthcampTitle.value = record.youthcamp_title || '';
-  
+
   // Set covenanted date if available
   const covenantedField = document.getElementById('field-member-covenanted-date');
   if (covenantedField) covenantedField.value = formatDateForInput(record.covenanted_date);
@@ -2300,7 +2290,7 @@ window.editMember = function(id) {
   memberModal.classList.remove('hidden');
 };
 
-window.deleteMember = function(id) {
+window.deleteMember = function (id) {
   if (confirm('Are you sure you want to delete this member? This will clear them as coordinator or attendee from activities. This action cannot be undone.')) {
     dbMembers.delete(id);
     renderMembers();
@@ -2333,7 +2323,7 @@ const btnProfileEdit = document.getElementById('btn-profile-edit');
 
 let currentProfileMemberId = null;
 
-window.viewMemberProfile = function(memberId) {
+window.viewMemberProfile = function (memberId) {
   currentProfileMemberId = parseInt(memberId);
   const member = dbMembers.getAll().find(m => m.id === parseInt(memberId));
   if (!member) return;
@@ -2348,8 +2338,8 @@ window.viewMemberProfile = function(memberId) {
   const profileAvatarImg = document.getElementById('profile-avatar-img');
   const profileAvatarIcon = document.getElementById('profile-avatar-icon');
   if (member.avatar) {
-    if (profileAvatarImg) { 
-      profileAvatarImg.src = member.avatar; 
+    if (profileAvatarImg) {
+      profileAvatarImg.src = member.avatar;
       profileAvatarImg.style.display = 'block';
       profileAvatarImg.style.cursor = 'pointer';
       profileAvatarImg.onclick = () => {
@@ -2590,7 +2580,7 @@ fundForm.addEventListener('submit', (e) => {
   renderFunds();
 });
 
-window.editFund = function(id) {
+window.editFund = function (id) {
   const r = dbFunds.getAll().find(x => x.id === id);
   if (!r) return;
   fieldFundId.value = r.id;
@@ -2607,7 +2597,7 @@ window.editFund = function(id) {
   lucide.createIcons();
 };
 
-window.deleteFund = function(id) {
+window.deleteFund = function (id) {
   if (confirm('Delete this record? This cannot be undone.')) {
     dbFunds.delete(id);
     renderFunds();
@@ -2643,7 +2633,7 @@ const attendanceSheetTable = document.getElementById('attendance-sheet-table');
 const attendanceSheetBody = document.getElementById('attendance-sheet-body');
 const noAttendanceMembersMessage = document.getElementById('no-attendance-members-message');
 
-let attendanceSheetAttendees = []; 
+let attendanceSheetAttendees = [];
 let currentAttendanceActivityId = null;
 let currentAttendanceSearch = '';
 
@@ -2658,8 +2648,8 @@ function renderMonthlySummary() {
   const totalMembers = dbMembers.getAll().length;
 
   // Group by month (use the `month` field, fallback to parsing date)
-  const monthOrder = ['January','February','March','April','May','June',
-                      'July','August','September','October','November','December'];
+  const monthOrder = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'];
   const groups = {};
 
   activities.forEach(act => {
@@ -2709,11 +2699,11 @@ function renderMonthlySummary() {
   // Totals row
   const totals = sortedMonths.reduce((acc, m) => {
     const g = groups[m];
-    acc.total    += g.total;
-    acc.acc      += g.accomplished;
-    acc.can      += g.cancelled;
-    acc.att      += g.attendance;
-    acc.uniq      = new Set([...acc.uniq, ...g.uniqueIds]);
+    acc.total += g.total;
+    acc.acc += g.accomplished;
+    acc.can += g.cancelled;
+    acc.att += g.attendance;
+    acc.uniq = new Set([...acc.uniq, ...g.uniqueIds]);
     return acc;
   }, { total: 0, acc: 0, can: 0, att: 0, uniq: new Set() });
 
@@ -2758,7 +2748,7 @@ function populateAttendanceActivitySelect() {
 
   const currentVal = attendanceActivitySelect.value;
   attendanceActivitySelect.innerHTML = '<option value="">Choose a specific scheduled Activity...</option>';
-  
+
   // Hide the secondary chapter dropdown forever since we now list exact events
   if (attendanceChapterWrapper) {
     attendanceChapterWrapper.classList.add('hidden');
@@ -2772,7 +2762,7 @@ function populateAttendanceActivitySelect() {
     const titlePart = act.title ? ` (${act.title})` : '';
     const chapterPart = act.chapter_area ? ` - ${act.chapter_area}` : '';
     const datePart = act.date ? ` [${formatDateRange(act.date, act.date_end)}]` : '';
-    
+
     const label = `${type}${titlePart}${chapterPart}${datePart}`;
 
     const el = document.createElement('option');
@@ -2817,7 +2807,7 @@ function loadActivityAttendance(activityId) {
   selectActivityPrompt.classList.add('hidden');
   attendanceInfoCard.classList.remove('hidden');
   attendanceSheetTable.classList.remove('hidden');
-  
+
   if (attendanceSaveStatus) {
     if (isAdmin) {
       attendanceSaveStatus.className = 'save-status-container saved';
@@ -2889,13 +2879,13 @@ function renderAttendanceSheet() {
     noAttendanceMembersMessage.classList.remove('hidden');
   } else {
     noAttendanceMembersMessage.classList.add('hidden');
-    
+
     filteredMembers.forEach(m => {
       const tr = document.createElement('tr');
       const isPresent = attendanceSheetAttendees.includes(m.id);
       const toggleBtnClass = isPresent ? 'present' : 'absent';
       const toggleBtnText = isPresent ? '<i data-lucide="check-circle-2"></i> Present' : '<i data-lucide="x-circle"></i> Absent';
-      
+
       let chapterBadge = '';
       if (m.chapter_area) {
         const chapterClass = m.chapter_area.toLowerCase().replace(' ', '-');
@@ -2928,13 +2918,13 @@ function renderAttendanceSheet() {
 
 function saveAttendanceAutosave() {
   if (!currentAttendanceActivityId) return;
-  
+
   const act = dbActivities.getAll().find(a => a.id === Number(currentAttendanceActivityId));
   if (act) {
     act.attendee_ids = [...attendanceSheetAttendees];
     act.participants = attendanceSheetAttendees.length;
     dbActivities.update(act.id, act);
-    
+
     // Instantly update the top summary to reflect new attendance counts
     renderMonthlySummary();
   }
@@ -2942,11 +2932,11 @@ function saveAttendanceAutosave() {
   if (attendanceSaveStatus && saveStatusText) {
     attendanceSaveStatus.className = 'save-status-container saving';
     saveStatusText.textContent = 'Saving changes...';
-    
+
     if (window.autosaveTimeout) {
       clearTimeout(window.autosaveTimeout);
     }
-    
+
     window.autosaveTimeout = setTimeout(() => {
       attendanceSaveStatus.className = 'save-status-container saved';
       saveStatusText.textContent = 'All changes saved locally';
@@ -2958,15 +2948,15 @@ function autoUpdateInactiveMembers() {
   const allActs = dbActivities.getAll()
     .filter(a => a.status === 'Accomplished' || a.status === 'Late')
     .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-    
+
   if (allActs.length === 0) return;
-  
+
   const members = dbMembers.getAll();
   let updatedAny = false;
-  
+
   members.forEach(m => {
     if (m.status !== 'Active') return; // Only mark active ones as inactive
-    
+
     let consecutiveAbsences = 0;
     for (let i = 0; i < allActs.length; i++) {
       const act = allActs[i];
@@ -2981,30 +2971,30 @@ function autoUpdateInactiveMembers() {
       }
       if (consecutiveAbsences >= 10) break;
     }
-    
+
     if (consecutiveAbsences >= 10) {
       m.status = 'Inactive';
       dbMembers.update(m.id, m);
       updatedAny = true;
     }
   });
-  
+
   if (updatedAny) {
     // If we're currently on the members tab, it will re-render
     renderMembers();
   }
 }
 
-window.toggleAttendeeStatus = function(memberId) {
+window.toggleAttendeeStatus = function (memberId) {
   const id = parseInt(memberId);
   const idx = attendanceSheetAttendees.indexOf(id);
-  
+
   if (idx !== -1) {
     attendanceSheetAttendees.splice(idx, 1);
   } else {
     attendanceSheetAttendees.push(id);
   }
-  
+
   renderAttendanceSheet();
   saveAttendanceAutosave();
 };
@@ -3046,7 +3036,7 @@ btnAttendanceClearAll.addEventListener('click', () => {
 
   const idsToClear = filtered.map(m => m.id);
   attendanceSheetAttendees = attendanceSheetAttendees.filter(id => !idsToClear.includes(id));
-  
+
   renderAttendanceSheet();
   saveAttendanceAutosave();
 });
@@ -3073,7 +3063,7 @@ fileImportInput.addEventListener('change', (e) => {
 
   if (file.name.endsWith('.json')) {
     const reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = function (event) {
       try {
         const data = JSON.parse(event.target.result);
         pendingActivityImport = Array.isArray(data) ? data : [data];
@@ -3099,7 +3089,7 @@ fileImportInput.addEventListener('change', (e) => {
   }
 
   const reader = new FileReader();
-  reader.onload = function(event) {
+  reader.onload = function (event) {
     try {
       const data = new Uint8Array(event.target.result);
       const workbook = XLSX.read(data, { type: 'array', cellDates: true });
@@ -3158,7 +3148,7 @@ fileImportMemberInput.addEventListener('change', (e) => {
   if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = function(event) {
+  reader.onload = function (event) {
     const fileContent = event.target.result;
     if (file.name.endsWith('.json')) {
       try {
@@ -3221,13 +3211,13 @@ function parseSheetRows(rows, type) {
   function toDbDate(val, rawCell) {
     if (rawCell instanceof Date && !isNaN(rawCell.getTime())) {
       const d = rawCell;
-      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
     if (val) {
       const ts = Date.parse(val);
       if (!isNaN(ts)) {
         const d = new Date(ts);
-        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       }
     }
     return val || '';
@@ -3235,18 +3225,18 @@ function parseSheetRows(rows, type) {
 
   if (type === 'activities') {
     // Detect column positions — all optional, fall back to -1 (blank)
-    const monthIdx       = headers.findIndex(h => h.includes('month'));
-    const weekIdx        = headers.findIndex(h => h.includes('week'));
-    const dateIdx        = headers.findIndex(h => h.includes('date') && !h.includes('end'));
-    const dateEndIdx     = headers.findIndex(h => h.includes('end date') || h.includes('date end') || h.includes('date_end'));
-    const activityIdx    = headers.findIndex(h => h.includes('activity') || h.includes('event') || h.includes('title') || h.includes('name'));
-    const chapterIdx     = headers.findIndex(h => h.includes('chapter') || h.includes('area'));
+    const monthIdx = headers.findIndex(h => h.includes('month'));
+    const weekIdx = headers.findIndex(h => h.includes('week'));
+    const dateIdx = headers.findIndex(h => h.includes('date') && !h.includes('end'));
+    const dateEndIdx = headers.findIndex(h => h.includes('end date') || h.includes('date end') || h.includes('date_end'));
+    const activityIdx = headers.findIndex(h => h.includes('activity') || h.includes('event') || h.includes('title') || h.includes('name'));
+    const chapterIdx = headers.findIndex(h => h.includes('chapter') || h.includes('area'));
     const coordinatorIdx = headers.findIndex(h => h.includes('coordinator') || h.includes('leader'));
-    const statusIdx      = headers.findIndex(h => h.includes('status'));
-    const heldIdx        = headers.findIndex(h => h.includes('held') || h.includes('mode'));
-    const participantsIdx= headers.findIndex(h => h.includes('participant') || h.includes('# of'));
-    const venueIdx       = headers.findIndex(h => h.includes('venue') || h.includes('location'));
-    const attendeesIdx   = headers.findIndex(h => h.includes('attendee') || h.includes('participants list'));
+    const statusIdx = headers.findIndex(h => h.includes('status'));
+    const heldIdx = headers.findIndex(h => h.includes('held') || h.includes('mode'));
+    const participantsIdx = headers.findIndex(h => h.includes('participant') || h.includes('# of'));
+    const venueIdx = headers.findIndex(h => h.includes('venue') || h.includes('location'));
+    const attendeesIdx = headers.findIndex(h => h.includes('attendee') || h.includes('participants list'));
 
     for (let i = 1; i < rows.length; i++) {
       const line = rows[i];
@@ -3263,11 +3253,11 @@ function parseSheetRows(rows, type) {
       }
 
       // Dates — handle both string values and native JS Date objects from SheetJS
-      const rawDateCell    = dateIdx !== -1    ? line[dateIdx]    : null;
+      const rawDateCell = dateIdx !== -1 ? line[dateIdx] : null;
       const rawDateEndCell = dateEndIdx !== -1 ? line[dateEndIdx] : null;
-      const rawDate        = getCell(line, dateIdx);
-      const rawDateEnd     = getCell(line, dateEndIdx);
-      const dbDate    = toDbDate(rawDate,    rawDateCell);
+      const rawDate = getCell(line, dateIdx);
+      const rawDateEnd = getCell(line, dateEndIdx);
+      const dbDate = toDbDate(rawDate, rawDateCell);
       const dbDateEnd = toDbDate(rawDateEnd, rawDateEndCell);
 
       // Coordinator lookup (match by name, leave null if not found)
@@ -3289,25 +3279,25 @@ function parseSheetRows(rows, type) {
       }
 
       const item = {
-        month:          getCell(line, monthIdx),
-        week:           getCell(line, weekIdx),
-        date:           dbDate,
-        date_end:       dbDateEnd,
-        activity:       activityVal,
-        chapter_area:   getCell(line, chapterIdx).toUpperCase(),
-        status:         getCell(line, statusIdx),
-        held_in:        getCell(line, heldIdx),
-        participants:   parseInt(getCell(line, participantsIdx)) || 0,
-        venue:          getCell(line, venueIdx),
+        month: getCell(line, monthIdx),
+        week: getCell(line, weekIdx),
+        date: dbDate,
+        date_end: dbDateEnd,
+        activity: activityVal,
+        chapter_area: getCell(line, chapterIdx).toUpperCase(),
+        status: getCell(line, statusIdx),
+        held_in: getCell(line, heldIdx),
+        participants: parseInt(getCell(line, participantsIdx)) || 0,
+        venue: getCell(line, venueIdx),
         coordinator_id: coordId,
-        attendee_ids:   attIds
+        attendee_ids: attIds
       };
 
       // Auto-fill month/week from date if they were blank in the sheet
       if (!item.month && item.date && /^\d{4}-\d{2}-\d{2}$/.test(item.date)) {
         const calc = getMonthAndWeek(item.date);
         item.month = calc.month;
-        item.week  = item.week || calc.week;
+        item.week = item.week || calc.week;
       }
 
       parsedRecords.push(item);
@@ -3323,7 +3313,7 @@ function parseCSV(text, type) {
 
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
-    const next = text[i+1];
+    const next = text[i + 1];
     if (c === '"') {
       if (inQuotes && next === '"') {
         row[row.length - 1] += '"';
@@ -3524,7 +3514,7 @@ btnExportCsv.addEventListener('click', () => {
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF('landscape');
-  
+
   doc.setFontSize(16);
   doc.text('Activities Export', 14, 15);
   doc.setFontSize(10);
@@ -3571,7 +3561,7 @@ btnExportMemberCsv.addEventListener('click', () => {
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF('landscape');
-  
+
   doc.setFontSize(16);
   doc.text('Members Export', 14, 15);
   doc.setFontSize(10);
@@ -3612,7 +3602,7 @@ function updateRoleUI() {
   const dropdownAvatar = document.getElementById('dropdown-avatar');
   const saveStatusText = document.getElementById('save-status-text');
   const attendanceSaveStatus = document.getElementById('attendance-save-status');
-  
+
   if (isAdmin) {
     body.classList.remove('view-only');
     if (adminOnlyMenu) adminOnlyMenu.classList.remove('hidden');
@@ -3628,7 +3618,7 @@ function updateRoleUI() {
       dropdownAvatar.innerHTML = '<i data-lucide="shield-check" style="width: 20px; height: 20px; color: white;"></i>';
       dropdownAvatar.style.background = '#4f46e5';
     }
-    
+
     if (currentAttendanceActivityId) {
       if (saveStatusText && attendanceSaveStatus) {
         attendanceSaveStatus.className = 'save-status-container saved';
@@ -3650,7 +3640,7 @@ function updateRoleUI() {
       dropdownAvatar.innerHTML = '<i data-lucide="user" style="width: 20px; height: 20px; color: var(--text-dim);"></i>';
       dropdownAvatar.style.background = 'rgba(255, 255, 255, 0.1)';
     }
-    
+
     if (currentAttendanceActivityId) {
       if (saveStatusText && attendanceSaveStatus) {
         attendanceSaveStatus.className = 'save-status-container';
@@ -3658,7 +3648,7 @@ function updateRoleUI() {
       }
     }
   }
-  
+
   // Update visibility of Add buttons for current active tab
   const activeTab = document.querySelector('.tab-btn.active');
   const btnAgendaAddAct = document.getElementById('btn-agenda-add-activity');
@@ -3668,28 +3658,23 @@ function updateRoleUI() {
     const tabName = activeTab.id.replace('tab-', '');
     if (tabName === 'members') {
       btnAddMember.classList.toggle('hidden', !isAdmin);
-      if (btnAddLeader) btnAddLeader.classList.add('hidden');
-    } else if (tabName === 'leaders') {
-      btnAddMember.classList.add('hidden');
-      if (btnAddLeader) btnAddLeader.classList.toggle('hidden', !isAdmin);
     } else {
       btnAddMember.classList.add('hidden');
-      if (btnAddLeader) btnAddLeader.classList.add('hidden');
     }
   }
-  
+
   renderFullAgendaList();
   renderLateAgendaList();
   renderAccomplishedAgendaList();
 
-// Toggle Show All / Show Less for full agenda
-const btnToggleFullAgenda = document.getElementById('btn-toggle-full-agenda');
-if (btnToggleFullAgenda) {
-  btnToggleFullAgenda.addEventListener('click', () => {
-    fullAgendaShowAll = !fullAgendaShowAll;
-    renderFullAgendaList();
-  });
-}
+  // Toggle Show All / Show Less for full agenda
+  const btnToggleFullAgenda = document.getElementById('btn-toggle-full-agenda');
+  if (btnToggleFullAgenda) {
+    btnToggleFullAgenda.addEventListener('click', () => {
+      fullAgendaShowAll = !fullAgendaShowAll;
+      renderFullAgendaList();
+    });
+  }
 }
 
 // Screen navigation helpers
@@ -3724,7 +3709,7 @@ document.getElementById('welcome-visitor-form').addEventListener('submit', (e) =
   const firstName = document.getElementById('welcome-visitor-firstname').value.trim();
   const lastName = document.getElementById('welcome-visitor-lastname').value.trim();
   const errorEl = document.getElementById('welcome-visitor-error');
-  
+
   const allMembers = dbMembers.getAll();
   let matchedName = null;
   const isMember = allMembers.some(m => {
@@ -3736,7 +3721,7 @@ document.getElementById('welcome-visitor-form').addEventListener('submit', (e) =
     }
     return false;
   });
-  
+
   if (!isMember) {
     if (errorEl) {
       errorEl.textContent = 'Invalid name. Must be a registered member.';
@@ -3744,7 +3729,7 @@ document.getElementById('welcome-visitor-form').addEventListener('submit', (e) =
     }
     return;
   }
-  
+
   if (errorEl) errorEl.classList.add('hidden');
   isAdmin = false;
   localStorage.setItem('is_admin', 'false');
@@ -3762,7 +3747,7 @@ document.getElementById('welcome-admin-form').addEventListener('submit', (e) => 
   const inputPasscode = document.getElementById('welcome-passcode-field').value;
   const correctPasscode = localStorage.getItem('admin_passcode') || 'mfcyouthtarlac';
   const welcomeError = document.getElementById('welcome-auth-error');
-  
+
   if (adminName === 'mfcyouthtarlac' && inputPasscode === correctPasscode) {
     isAdmin = true;
     localStorage.setItem('is_admin', 'true');
@@ -3817,25 +3802,25 @@ document.getElementById('change-passcode-form').addEventListener('submit', (e) =
   const confirmPasscode = document.getElementById('field-confirm-passcode').value;
   const correctPasscode = localStorage.getItem('admin_passcode');
   const passcodeErrorMsg = document.getElementById('passcode-error-msg');
-  
+
   if (currentPasscode !== correctPasscode) {
     passcodeErrorMsg.textContent = 'Current passcode is incorrect.';
     passcodeErrorMsg.classList.remove('hidden');
     return;
   }
-  
+
   if (newPasscode.length < 4) {
     passcodeErrorMsg.textContent = 'New passcode must be at least 4 characters long.';
     passcodeErrorMsg.classList.remove('hidden');
     return;
   }
-  
+
   if (newPasscode !== confirmPasscode) {
     passcodeErrorMsg.textContent = 'New passcode and confirmation do not match.';
     passcodeErrorMsg.classList.remove('hidden');
     return;
   }
-  
+
   localStorage.setItem('admin_passcode', newPasscode);
   document.getElementById('change-passcode-modal').classList.add('hidden');
   alert('Admin passcode updated successfully!');
@@ -3907,14 +3892,14 @@ function renderLeaders() {
   const allMembers = dbMembers.getAll();
   // Filter members whose role is not empty and not just 'Member'
   const leaders = allMembers.filter(m => m.role && m.role.trim() !== '' && m.role.toLowerCase() !== 'member');
-  
+
   // Sort alphabetically by formatted name (Last Name first, case-insensitive)
   leaders.sort((a, b) => {
     const nameA = formatMemberName(a.name || '');
     const nameB = formatMemberName(b.name || '');
-    return nameA.localeCompare(nameB, undefined, {sensitivity: 'base'});
+    return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
   });
-  
+
   if (totalLeadersStat) {
     totalLeadersStat.textContent = leaders.length;
   }
@@ -3950,13 +3935,13 @@ function renderLeaders() {
 
 function renderOrgChart() {
   const members = dbMembers.getAll().filter(m => m.status === 'Active');
-  
+
   const containerAreaYouth = document.getElementById('org-names-area-youth');
   const containerAreaLit = document.getElementById('org-names-area-lit');
   const containerMissionVol = document.getElementById('org-names-mission-volunteer');
-  
+
   if (!containerAreaYouth) return;
-  
+
   const renderList = (container, rolePattern, chapterMatch = null) => {
     if (!container) return;
     const matched = members.filter(m => {
@@ -3967,7 +3952,7 @@ function renderOrgChart() {
     matched.sort((a, b) => {
       const nameA = formatMemberName(a.name || '');
       const nameB = formatMemberName(b.name || '');
-      return nameA.localeCompare(nameB, undefined, {sensitivity: 'base'});
+      return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
     });
     if (matched.length === 0) {
       container.innerHTML = '<p class="empty-names">Vacant</p>';
@@ -3975,18 +3960,18 @@ function renderOrgChart() {
       container.innerHTML = matched.map(m => `<p draggable="true" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)" data-member-id="${m.id}" title="${m.name}">${m.name}</p>`).join('');
     }
   };
-  
+
   renderList(containerAreaYouth, 'area youth');
   renderList(containerAreaLit, 'area lit');
-  
+
   const regions = ['East', 'North', 'West', 'South', 'Central'];
-  
+
   regions.forEach(region => {
     const rLower = region.toLowerCase();
     renderList(document.getElementById(`org-names-chapter-${rLower}`), 'chapter', region);
     renderList(document.getElementById(`org-names-unit-${rLower}`), 'unit', region);
     renderList(document.getElementById(`org-names-household-${rLower}`), 'household', region);
-    
+
     // For members, match exactly "Member" or "Participant" or empty role
     const containerMember = document.getElementById(`org-names-member-${rLower}`);
     if (containerMember) {
@@ -4005,43 +3990,43 @@ function renderOrgChart() {
 }
 
 // Drag and Drop Handlers
-window.handleDragStart = function(e) {
+window.handleDragStart = function (e) {
   e.dataTransfer.setData('text/plain', e.target.getAttribute('data-member-id'));
   e.dataTransfer.effectAllowed = 'move';
   e.target.style.opacity = '0.5';
 };
 
-window.handleDragEnd = function(e) {
+window.handleDragEnd = function (e) {
   e.target.style.opacity = '1';
 };
 
-window.handleDragOver = function(e) {
+window.handleDragOver = function (e) {
   e.preventDefault(); // Allows dropping
   e.dataTransfer.dropEffect = 'move';
   const card = e.currentTarget;
   card.classList.add('drag-over');
 };
 
-window.handleDragEnter = function(e) {
+window.handleDragEnter = function (e) {
   e.preventDefault();
   const card = e.currentTarget;
   card.classList.add('drag-over');
 };
 
-window.handleDragLeave = function(e) {
+window.handleDragLeave = function (e) {
   const card = e.currentTarget;
   card.classList.remove('drag-over');
 };
 
-window.handleDrop = function(e) {
+window.handleDrop = function (e) {
   e.preventDefault();
   const card = e.currentTarget;
   card.classList.remove('drag-over');
-  
+
   const memberId = e.dataTransfer.getData('text/plain');
   const newRole = card.getAttribute('data-role');
   const newChapter = card.getAttribute('data-chapter');
-  
+
   if (memberId && newRole) {
     const member = dbMembers.getById(memberId);
     if (member) {
@@ -4054,14 +4039,14 @@ window.handleDrop = function(e) {
         member.chapter_area = newChapter;
         changed = true;
       }
-      
+
       if (changed) {
         dbMembers.update(member.id, member);
         renderOrgChart(); // re-render the chart
-        
+
         // Ensure members table reflects new chapter_area if it's active
         if (document.getElementById('tab-members').classList.contains('active')) {
-           renderMembers();
+          renderMembers();
         }
       }
     }
@@ -4069,7 +4054,7 @@ window.handleDrop = function(e) {
 };
 
 // Custom Editable Titles
-window.saveCustomTitle = function(id, text) {
+window.saveCustomTitle = function (id, text) {
   localStorage.setItem('title-' + id, text.trim());
 };
 
@@ -4124,7 +4109,7 @@ function toggleSubmenu(submenuId) {
   const submenu = document.getElementById(submenuId);
   if (submenu) {
     submenu.classList.toggle('hidden');
-    
+
     const iconId = submenuId + '-icon';
     const icon = document.getElementById(iconId);
     if (icon) {
@@ -4148,43 +4133,43 @@ const sidebarOverlay = document.getElementById('sidebar-overlay');
 if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
 
 // Theme Customization Manager
-(function() {
+(function () {
   const themeDrawer = document.getElementById('theme-drawer');
   const themeOverlay = document.getElementById('sidebar-overlay'); // sharing the sidebar overlay
   const themeFloatingTrigger = document.getElementById('theme-floating-trigger');
   const btnCloseTheme = document.getElementById('btn-close-theme');
-  
+
   const modeButtons = document.querySelectorAll('.theme-mode-btn');
   const colorButtons = document.querySelectorAll('.theme-color-btn');
-  
+
   const radiusSlider = document.getElementById('theme-radius-slider');
   const radiusValueDisplay = document.getElementById('radius-value-display');
-  
+
   const fontSlider = document.getElementById('theme-font-slider');
   const fontValueDisplay = document.getElementById('font-value-display');
-  
+
   // Load preferences from localStorage
   let savedMode = localStorage.getItem('theme-mode') || 'auto';
   let savedColor = localStorage.getItem('theme-color') || 'indigo';
   let savedRadius = localStorage.getItem('theme-radius') || '4';
   let savedFontSize = localStorage.getItem('theme-font-size') || '0.8125';
-  
+
   // Apply initial settings
   applyThemeMode(savedMode);
   applyThemeColor(savedColor);
   applyThemeRadius(savedRadius);
   applyThemeFontSize(savedFontSize);
-  
+
   // Set up event listeners
-  
+
   if (themeFloatingTrigger) {
     themeFloatingTrigger.addEventListener('click', openThemeDrawer);
   }
-  
+
   if (btnCloseTheme) {
     btnCloseTheme.addEventListener('click', closeThemeDrawer);
   }
-  
+
   // Mode selectors
   modeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -4194,7 +4179,7 @@ if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
       applyThemeMode(mode);
     });
   });
-  
+
   // Color selectors
   colorButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -4204,7 +4189,7 @@ if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
       applyThemeColor(color);
     });
   });
-  
+
   // Border radius slider
   if (radiusSlider) {
     radiusSlider.value = savedRadius;
@@ -4217,7 +4202,7 @@ if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
       applyThemeRadius(val);
     });
   }
-  
+
   // Font size slider
   if (fontSlider) {
     fontSlider.value = savedFontSize;
@@ -4230,18 +4215,18 @@ if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
       applyThemeFontSize(val);
     });
   }
-  
+
   function openThemeDrawer() {
     closeSidebar(); // Ensure sidebar closes when theme drawer opens
     if (themeDrawer) themeDrawer.classList.add('active');
     if (themeOverlay) themeOverlay.classList.add('active');
-    
+
     // Make sure Lucide icons inside theme drawer are generated
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
       window.lucide.createIcons();
     }
   }
-  
+
   function closeThemeDrawer() {
     if (themeDrawer) themeDrawer.classList.remove('active');
     // Only remove active from overlay if sidebar is also not active
@@ -4250,10 +4235,10 @@ if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
       themeOverlay.classList.remove('active');
     }
   }
-  
+
   function applyThemeMode(mode) {
     document.documentElement.setAttribute('data-theme', mode);
-    
+
     // Update active class on mode buttons
     modeButtons.forEach(btn => {
       if (btn.getAttribute('data-mode') === mode) {
@@ -4263,10 +4248,10 @@ if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
       }
     });
   }
-  
+
   function applyThemeColor(color) {
     document.documentElement.setAttribute('data-accent', color);
-    
+
     // Update active class on color buttons
     colorButtons.forEach(btn => {
       if (btn.getAttribute('data-color') === color) {
@@ -4276,55 +4261,55 @@ if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
       }
     });
   }
-  
+
   function applyThemeRadius(radius) {
     document.documentElement.style.setProperty('--radius-base', radius + 'px');
   }
-  
+
   function applyThemeFontSize(fontSize) {
     document.documentElement.style.fontSize = fontSize + 'rem';
   }
-  
+
   // Hook overlay click to also cover theme drawer close
   if (themeOverlay) {
     themeOverlay.addEventListener('click', closeThemeDrawer);
   }
 })();
 
-window.downloadActivityPDF = function(activityId, type) {
+window.downloadActivityPDF = function (activityId, type) {
   const activity = dbActivities.getAll().find(a => a.id === activityId);
   if (!activity) return;
-  
+
   if (!window.jspdf) {
     alert('PDF generator is still loading. Please try again in a moment.');
     return;
   }
-  
+
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
-  
+
   doc.setFontSize(18);
   doc.setTextColor(30, 64, 175);
   doc.text('MFC Youth Tarlac - ' + type, 14, 22);
-  
+
   doc.setFontSize(14);
   doc.setTextColor(0, 0, 0);
   doc.text('Activity: ' + activity.activity, 14, 32);
-  
+
   let yPos = 32;
-  if(activity.title) {
+  if (activity.title) {
     yPos += 6;
     doc.setFontSize(12);
     doc.text('Title: ' + activity.title, 14, yPos);
   }
-  
+
   yPos += 8;
   doc.setFontSize(11);
   doc.text('Date: ' + (activity.date || '-') + ' | Held In: ' + (activity.held_in || '-') + ' | Venue: ' + (activity.venue || '-'), 14, yPos);
-  
+
   yPos += 6;
   doc.text('Participants: ' + activity.participants + ' present', 14, yPos);
-  
+
   // Generate Attendees Table
   const attendeesList = [];
   if (activity.attendee_ids && activity.attendee_ids.length > 0) {
@@ -4336,7 +4321,7 @@ window.downloadActivityPDF = function(activityId, type) {
       }
     });
   }
-  
+
   yPos += 10;
   if (attendeesList.length > 0) {
     if (doc.autoTable) {
@@ -4354,7 +4339,7 @@ window.downloadActivityPDF = function(activityId, type) {
   } else {
     doc.text('No attendees recorded.', 14, yPos);
   }
-  
+
   doc.save(activity.activity.replace(/\s+/g, '_') + '_' + type + '.pdf');
 };
 
