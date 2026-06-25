@@ -3758,29 +3758,35 @@ document.getElementById('welcome-admin-form').addEventListener('submit', (e) => 
   e.preventDefault();
   const adminName = document.getElementById('welcome-admin-username').value;
   const inputPasscode = document.getElementById('welcome-passcode-field').value;
-  const correctPasscode = localStorage.getItem('admin_passcode') || 'mfcyouthtarlac';
   const welcomeError = document.getElementById('welcome-auth-error');
 
-  if (adminName === 'mfcyouthtarlac' && inputPasscode === correctPasscode) {
-    isAdmin = true;
-    localStorage.setItem('is_admin', 'true');
-    localStorage.setItem('current_username', adminName || 'Admin');
-    welcomeError.classList.add('hidden');
-    document.getElementById('welcome-passcode-field').value = '';
-    document.getElementById('welcome-admin-username').value = '';
-    updateRoleUI();
-    hideWelcomeScreen();
-    lucide.createIcons();
+  if (typeof firebase !== 'undefined' && firebase.auth) {
+    firebase.auth().signInWithEmailAndPassword(adminName, inputPasscode)
+      .then((userCredential) => {
+        isAdmin = true;
+        localStorage.setItem('is_admin', 'true');
+        localStorage.setItem('current_username', userCredential.user.email);
+        welcomeError.classList.add('hidden');
+        document.getElementById('welcome-passcode-field').value = '';
+        document.getElementById('welcome-admin-username').value = '';
+        updateRoleUI();
+        hideWelcomeScreen();
+        lucide.createIcons();
+      })
+      .catch((error) => {
+        welcomeError.textContent = 'Invalid admin email or password. Please try again.';
+        welcomeError.classList.remove('hidden');
+        const inputField = document.getElementById('welcome-passcode-field');
+        inputField.style.borderColor = 'var(--danger)';
+        inputField.style.boxShadow = '0 0 0 3px var(--danger-glow)';
+        setTimeout(() => {
+          inputField.style.borderColor = '';
+          inputField.style.boxShadow = '';
+        }, 1500);
+      });
   } else {
-    welcomeError.textContent = 'Invalid admin username or passcode. Please try again.';
+    welcomeError.textContent = 'Firebase Authentication is not initialized.';
     welcomeError.classList.remove('hidden');
-    const inputField = document.getElementById('welcome-passcode-field');
-    inputField.style.borderColor = 'var(--danger)';
-    inputField.style.boxShadow = '0 0 0 3px var(--danger-glow)';
-    setTimeout(() => {
-      inputField.style.borderColor = '';
-      inputField.style.boxShadow = '';
-    }, 1500);
   }
 });
 
@@ -3813,17 +3819,10 @@ document.getElementById('change-passcode-form').addEventListener('submit', (e) =
   const currentPasscode = document.getElementById('field-current-passcode').value;
   const newPasscode = document.getElementById('field-new-passcode').value;
   const confirmPasscode = document.getElementById('field-confirm-passcode').value;
-  const correctPasscode = localStorage.getItem('admin_passcode');
   const passcodeErrorMsg = document.getElementById('passcode-error-msg');
 
-  if (currentPasscode !== correctPasscode) {
-    passcodeErrorMsg.textContent = 'Current passcode is incorrect.';
-    passcodeErrorMsg.classList.remove('hidden');
-    return;
-  }
-
-  if (newPasscode.length < 4) {
-    passcodeErrorMsg.textContent = 'New passcode must be at least 4 characters long.';
+  if (newPasscode.length < 6) {
+    passcodeErrorMsg.textContent = 'New passcode must be at least 6 characters long.';
     passcodeErrorMsg.classList.remove('hidden');
     return;
   }
@@ -3834,9 +3833,25 @@ document.getElementById('change-passcode-form').addEventListener('submit', (e) =
     return;
   }
 
-  localStorage.setItem('admin_passcode', newPasscode);
-  document.getElementById('change-passcode-modal').classList.add('hidden');
-  alert('Admin passcode updated successfully!');
+  const user = firebase.auth().currentUser;
+  if (user) {
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPasscode);
+    user.reauthenticateWithCredential(credential).then(() => {
+      user.updatePassword(newPasscode).then(() => {
+        alert('Passcode successfully updated!');
+        document.getElementById('change-passcode-modal').classList.add('hidden');
+      }).catch((error) => {
+        passcodeErrorMsg.textContent = 'Error updating passcode: ' + error.message;
+        passcodeErrorMsg.classList.remove('hidden');
+      });
+    }).catch((error) => {
+      passcodeErrorMsg.textContent = 'Current passcode is incorrect.';
+      passcodeErrorMsg.classList.remove('hidden');
+    });
+  } else {
+    passcodeErrorMsg.textContent = 'You must be logged in to change your passcode.';
+    passcodeErrorMsg.classList.remove('hidden');
+  }
 });
 
 // ==========================================
