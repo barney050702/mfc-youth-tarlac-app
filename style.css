@@ -1889,6 +1889,11 @@ body.view-only .agenda-list-actions {
   .header-actions .btn {
     width: 100%;
   }
+  
+  .profile-dropdown-menu {
+    left: 0;
+    right: auto;
+  }
 
   .controls-panel {
     flex-direction: column;
