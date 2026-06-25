@@ -2078,7 +2078,7 @@ body.view-only .agenda-list-actions {
 .btn-visitor {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-color);
-  color: var(--text-main);
+  color: #f3f4f6;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -2474,12 +2474,16 @@ body.view-only .agenda-list-actions {
   background: rgba(15, 23, 42, 0.6);
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: var(--text-main);
+  color: #f3f4f6;
   font-family: var(--font-main);
   font-size: 0.95rem;
   outline: none;
   transition: border var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
   text-align: center;
+}
+
+.welcome-input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .welcome-input-group input:focus {
