@@ -908,6 +908,10 @@ function switchTab(tabName, subTabName = null) {
   } else if (tabName === 'leaders') {
     tabLeaders?.classList.add('active');
     panelLeaders?.classList.remove('hidden');
+    if (isAdmin) {
+      const btnAddLeader = document.getElementById('btn-add-leader');
+      if (btnAddLeader) btnAddLeader.classList.remove('hidden');
+    }
     renderLeaders();
   } else if (tabName === 'orgchart') {
     tabOrgChart?.classList.add('active');
