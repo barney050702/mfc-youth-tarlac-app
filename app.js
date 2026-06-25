@@ -3745,7 +3745,7 @@ document.getElementById('welcome-admin-form').addEventListener('submit', (e) => 
   e.preventDefault();
   const adminName = document.getElementById('welcome-admin-username').value;
   const inputPasscode = document.getElementById('welcome-passcode-field').value;
-  const correctPasscode = localStorage.getItem('admin_passcode') || 'admin123';
+  const correctPasscode = localStorage.getItem('admin_passcode') || 'mfcyouthtarlac';
   const welcomeError = document.getElementById('welcome-auth-error');
   
   if (adminName === 'mfcyouthtarlac' && inputPasscode === correctPasscode) {
