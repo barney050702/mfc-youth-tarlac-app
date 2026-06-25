@@ -168,15 +168,10 @@
     </aside>
     <!-- Header -->
     <header class="app-header">
-      <div class="logo-area" style="display: flex; align-items: center;">
-        <div style="display: flex; align-items: center; gap: 1.5rem; color: var(--primary); margin-right: 1.5rem; padding-left: 0.5rem;">
-          <i data-lucide="menu" id="main-menu-trigger" style="width: 24px; height: 24px; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1"></i>
-          <i data-lucide="search" style="width: 20px; height: 20px; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1"></i>
-        </div>
-        <img src="logo.png" alt="MFC Youth Logo" class="logo-image">
-        <div>
-          <h1>MFC YOUTH TARLAC DATA</h1>
-          <p class="subtitle">Make all youth know Christ</p>
+      <div class="logo-area">
+        <div class="header-nav-icons">
+          <i data-lucide="menu" id="main-menu-trigger"></i>
+          <i data-lucide="search" id="main-search-trigger"></i>
         </div>
       </div>
       <div class="header-actions">
@@ -233,7 +228,10 @@
           </div>
           
           <div style="width: 1px; height: 28px; background-color: rgba(255,255,255,0.15);"></div>
-          <span style="font-weight: 800; font-size: 1.15rem; letter-spacing: 0.5px; cursor: default; user-select: none; color: var(--primary);">MFC YOUTH TARLAC PORTAL</span>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <img src="logo.png" alt="MFC Youth Logo" style="height: 32px; width: auto;">
+            <span style="font-weight: 800; font-size: 1.15rem; letter-spacing: 0.5px; cursor: default; user-select: none; color: var(--primary);">MFC YOUTH TARLAC PORTAL</span>
+          </div>
         </div>
     </header>
 
