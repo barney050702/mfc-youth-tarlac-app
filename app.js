@@ -3489,15 +3489,25 @@ document.getElementById('btn-dropdown-logout').addEventListener('click', () => {
 // Welcome screen Actions
 document.getElementById('welcome-visitor-form').addEventListener('submit', (e) => {
   e.preventDefault();
-  const visitorName = document.getElementById('welcome-visitor-username').value.trim();
+  const firstName = document.getElementById('welcome-visitor-firstname').value.trim();
+  const lastName = document.getElementById('welcome-visitor-lastname').value.trim();
   const errorEl = document.getElementById('welcome-visitor-error');
   
   const allMembers = dbMembers.getAll();
-  const isMember = allMembers.some(m => m.name && m.name.toLowerCase() === visitorName.toLowerCase());
+  let matchedName = null;
+  const isMember = allMembers.some(m => {
+    if (!m.name) return false;
+    const lowerName = m.name.toLowerCase();
+    if (lowerName.includes(firstName.toLowerCase()) && lowerName.includes(lastName.toLowerCase())) {
+      matchedName = m.name;
+      return true;
+    }
+    return false;
+  });
   
   if (!isMember) {
     if (errorEl) {
-      errorEl.textContent = 'Invalid username. Must be a registered member.';
+      errorEl.textContent = 'Invalid name. Must be a registered member.';
       errorEl.classList.remove('hidden');
     }
     return;
@@ -3506,8 +3516,9 @@ document.getElementById('welcome-visitor-form').addEventListener('submit', (e) =
   if (errorEl) errorEl.classList.add('hidden');
   isAdmin = false;
   localStorage.setItem('is_admin', 'false');
-  localStorage.setItem('current_username', visitorName);
-  document.getElementById('welcome-visitor-username').value = '';
+  localStorage.setItem('current_username', matchedName);
+  document.getElementById('welcome-visitor-firstname').value = '';
+  document.getElementById('welcome-visitor-lastname').value = '';
   updateRoleUI();
   hideWelcomeScreen();
   lucide.createIcons();

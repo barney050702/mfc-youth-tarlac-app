@@ -39,11 +39,14 @@
       <div class="welcome-actions">
         <!-- Visitor Login Form -->
         <form id="welcome-visitor-form" class="welcome-admin-form">
-          <div class="welcome-input-group" style="margin-bottom: 0.25rem;">
+          <div class="welcome-input-group" style="margin-bottom: 0.5rem;">
             <i data-lucide="user" class="input-icon"></i>
-            <input type="text" id="welcome-visitor-username" placeholder="Enter Username..." required>
+            <input type="text" id="welcome-visitor-firstname" placeholder="Enter First Name..." required>
           </div>
-          <p style="font-size: 0.8rem; color: var(--text-muted); text-align: left; margin-bottom: 0.5rem; padding-left: 0.5rem;">e.g., First Name Last Name</p>
+          <div class="welcome-input-group" style="margin-bottom: 0.5rem;">
+            <i data-lucide="user" class="input-icon"></i>
+            <input type="text" id="welcome-visitor-lastname" placeholder="Enter Last Name..." required>
+          </div>
           <p id="welcome-visitor-error" class="error-msg hidden" style="margin-bottom: 0.5rem;"></p>
           <button type="submit" class="btn btn-visitor btn-lg" style="width: 100%;">
             <i data-lucide="eye"></i> Enter as Visitor (View Only)
