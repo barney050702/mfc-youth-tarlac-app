@@ -3520,7 +3520,7 @@ document.getElementById('welcome-admin-form').addEventListener('submit', (e) => 
   const correctPasscode = localStorage.getItem('admin_passcode') || 'admin123';
   const welcomeError = document.getElementById('welcome-auth-error');
   
-  if (inputPasscode === correctPasscode) {
+  if (adminName === 'mfcyouthtarlac' && inputPasscode === correctPasscode) {
     isAdmin = true;
     localStorage.setItem('is_admin', 'true');
     localStorage.setItem('current_username', adminName || 'Admin');
@@ -3531,7 +3531,7 @@ document.getElementById('welcome-admin-form').addEventListener('submit', (e) => 
     hideWelcomeScreen();
     lucide.createIcons();
   } else {
-    welcomeError.textContent = 'Invalid admin passcode. Please try again.';
+    welcomeError.textContent = 'Invalid admin username or passcode. Please try again.';
     welcomeError.classList.remove('hidden');
     const inputField = document.getElementById('welcome-passcode-field');
     inputField.style.borderColor = 'var(--danger)';
