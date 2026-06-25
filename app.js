@@ -3519,6 +3519,7 @@ function updateRoleUI() {
   const dropdownAvatar = document.getElementById('dropdown-avatar');
   const saveStatusText = document.getElementById('save-status-text');
   const attendanceSaveStatus = document.getElementById('attendance-save-status');
+  const bannerUserName = document.getElementById('banner-user-name');
 
   if (isAdmin) {
     body.classList.remove('view-only');
@@ -3526,6 +3527,7 @@ function updateRoleUI() {
     if (btnAuth) btnAuth.classList.add('hidden'); // Hide login button from menu
     const currentName = localStorage.getItem('current_username') || 'MFC Youth Tarlac Moderator';
     if (dropdownUserName) dropdownUserName.textContent = currentName;
+    if (bannerUserName) bannerUserName.textContent = currentName;
     if (dropdownUserEmail) dropdownUserEmail.textContent = 'Full Access Mode';
     const sidebarUserName = document.getElementById('sidebar-user-name');
     const sidebarUserRole = document.getElementById('sidebar-user-role');
@@ -3548,6 +3550,7 @@ function updateRoleUI() {
     if (btnAuth) btnAuth.classList.remove('hidden'); // Show login button in menu
     const currentName = localStorage.getItem('current_username') || 'Guest User';
     if (dropdownUserName) dropdownUserName.textContent = currentName;
+    if (bannerUserName) bannerUserName.textContent = currentName;
     if (dropdownUserEmail) dropdownUserEmail.textContent = 'View-Only Mode';
     const sidebarUserName = document.getElementById('sidebar-user-name');
     const sidebarUserRole = document.getElementById('sidebar-user-role');
