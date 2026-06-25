@@ -1164,7 +1164,7 @@ function renderUpcomingActivities() {
           </div>
           <div class="dashboard-schedule-info">
             <h4 class="dashboard-schedule-title">${act.activity}</h4>
-            <p class="dashboard-schedule-subtitle">${act.title ? act.title : (act.chapter_area || '-')} â€¢ ${formattedDate}</p>
+            <p class="dashboard-schedule-subtitle">${act.title ? act.title : (act.chapter_area || '-')} • ${formattedDate}</p>
             <p class="dashboard-schedule-venue">${act.venue || 'TBA'}</p>
           </div>
         </div>
@@ -1254,7 +1254,7 @@ function renderUpcomingAgenda() {
 
     card.innerHTML = `
       <div class="agenda-card-details">
-        <span class="agenda-card-date">${formatDateString(item.date)} ${item.week ? `â€¢ ${item.week}` : ''}</span>
+        <span class="agenda-card-date">${formatDateString(item.date)} ${item.week ? `• ${item.week}` : ''}</span>
         <h3 class="agenda-card-title">${item.activity}</h3>
         <div class="agenda-card-badges">
           ${chapterBadge}
@@ -1374,9 +1374,9 @@ function buildAgendaRows(activities) {
         <span class="ali-title">${item.activity}</span>
         <div class="ali-meta">
           <span>${formatDateString(item.date)}</span>
-          ${item.time ? `<span class="dot">â€¢</span><span>${timeFormatted}</span>` : ''}
-          ${item.week ? `<span class="dot">â€¢</span><span>${item.week}</span>` : ''}
-          ${item.venue ? `<span class="dot">â€¢</span><span>ðŸ“ ${item.venue}</span>` : ''}
+          ${item.time ? `<span class="dot">•</span><span>${timeFormatted}</span>` : ''}
+          ${item.week ? `<span class="dot">•</span><span>${item.week}</span>` : ''}
+          ${item.venue ? `<span class="dot">•</span><span>📍 ${item.venue}</span>` : ''}
         </div>
       </div>
       <div class="agenda-list-badges">
@@ -1525,12 +1525,12 @@ function renderLateActivities() {
       const hNum = parseInt(h, 10);
       const ampm = hNum >= 12 ? 'PM' : 'AM';
       const h12 = hNum % 12 || 12;
-      timeFormatted = `â€¢ ${h12}:${m} ${ampm}`;
+      timeFormatted = `• ${h12}:${m} ${ampm}`;
     }
 
     card.innerHTML = `
       <div class="agenda-card-details">
-        <span class="agenda-card-date" style="color:#f87171;">${formatDateString(item.date)} ${timeFormatted} ${item.week ? `â€¢ ${item.week}` : ''} â€” <strong>OVERDUE</strong></span>
+        <span class="agenda-card-date" style="color:#f87171;">${formatDateString(item.date)} ${timeFormatted} ${item.week ? `• ${item.week}` : ''} — <strong>OVERDUE</strong></span>
         <h3 class="agenda-card-title">${item.activity}</h3>
         <div class="agenda-card-badges">
           ${chapterBadge}
