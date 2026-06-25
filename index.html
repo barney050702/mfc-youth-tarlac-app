@@ -153,6 +153,9 @@
         <button class="sidebar-link" onclick="switchTab('agenda')" id="sidebar-tab-agenda">
           <i data-lucide="list-checks"></i> Agenda
         </button>
+        <button class="sidebar-link" onclick="switchTab('leaders')" id="sidebar-tab-leaders">
+          <i data-lucide="users-2"></i> Servant Leaders
+        </button>
         <button class="sidebar-link" onclick="switchTab('orgchart')" id="sidebar-tab-orgchart">
           <i data-lucide="network"></i> Org Chart
         </button>
@@ -253,6 +256,9 @@
       </button>
       <button id="tab-agenda" class="tab-btn">
         <i data-lucide="list-checks"></i> Agenda
+      </button>
+      <button id="tab-leaders" class="tab-btn">
+        <i data-lucide="users-2"></i> Servant Leaders
       </button>
       <button id="tab-orgchart" class="tab-btn">
         <i data-lucide="network"></i> Org Chart
@@ -845,6 +851,40 @@
           <i data-lucide="calendar-plus" class="empty-icon"></i>
           <h3>Select an Activity to Begin</h3>
           <p>Please select an activity from the dropdown at the top to load and record attendance.</p>
+        </div>
+      </main>
+    </div>
+
+    <!-- Panel Servant Leaders -->
+    <div id="panel-leaders" class="hidden">
+      <section class="dashboard-stats" style="margin-bottom: 1rem;">
+        <div class="stat-card" style="flex: 1;">
+          <div class="stat-icon blue"><i data-lucide="users-2"></i></div>
+          <div class="stat-info">
+            <h3 id="stat-total-leaders">0</h3>
+            <p>Total Servant Leaders</p>
+          </div>
+        </div>
+      </section>
+      <main class="table-container" id="leaders-table-container">
+        <table class="activities-table" id="leaders-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Chapter / Area</th>
+              <th>Role / Designation</th>
+              <th>Contact Number</th>
+              <th>Email Address</th>
+            </tr>
+          </thead>
+          <tbody id="leaders-table-body">
+            <!-- Rows dynamically loaded by app.js -->
+          </tbody>
+        </table>
+        <div id="no-leaders-message" class="empty-state hidden">
+          <i data-lucide="user-x" class="empty-icon"></i>
+          <h3>No servant leaders found</h3>
+          <p>Assign a leadership role to a member for them to appear here.</p>
         </div>
       </main>
     </div>

@@ -650,6 +650,7 @@ const tabMembers = document.getElementById('tab-members');
 const tabAttendance = document.getElementById('tab-attendance');
 const tabFunds = document.getElementById('tab-funds');
 const tabAgenda = document.getElementById('tab-agenda');
+const tabLeaders = document.getElementById('tab-leaders');
 const tabOrgChart = document.getElementById('tab-orgchart');
 const panelDashboard = document.getElementById('panel-dashboard');
 const panelActivities = document.getElementById('panel-activities');
@@ -657,6 +658,7 @@ const panelMembers = document.getElementById('panel-members');
 const panelAttendance = document.getElementById('panel-attendance');
 const panelFunds = document.getElementById('panel-funds');
 const panelAgenda = document.getElementById('panel-agenda');
+const panelLeaders = document.getElementById('panel-leaders');
 const panelOrgChart = document.getElementById('panel-orgchart');
 
 // Header action buttons
@@ -680,6 +682,7 @@ function switchTab(tabName, subTabName = null) {
   panelAttendance?.classList.add('hidden');
   panelFunds?.classList.add('hidden');
   panelAgenda?.classList.add('hidden');
+  panelLeaders?.classList.add('hidden');
   panelOrgChart?.classList.add('hidden');
   
   tabDashboard?.classList.remove('active');
@@ -688,6 +691,7 @@ function switchTab(tabName, subTabName = null) {
   tabAttendance?.classList.remove('active');
   tabFunds?.classList.remove('active');
   tabAgenda?.classList.remove('active');
+  tabLeaders?.classList.remove('active');
   tabOrgChart?.classList.remove('active');
   
   document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
@@ -754,6 +758,10 @@ function switchTab(tabName, subTabName = null) {
     renderFullAgendaList();
     renderLateAgendaList();
     renderAccomplishedAgendaList();
+  } else if (tabName === 'leaders') {
+    tabLeaders?.classList.add('active');
+    panelLeaders?.classList.remove('hidden');
+    renderLeaders();
   } else if (tabName === 'orgchart') {
     tabOrgChart?.classList.add('active');
     panelOrgChart?.classList.remove('hidden');
@@ -768,6 +776,7 @@ tabMembers.addEventListener('click', () => switchTab('members'));
 tabAttendance.addEventListener('click', () => switchTab('attendance'));
 tabFunds.addEventListener('click', () => switchTab('funds'));
 tabAgenda.addEventListener('click', () => switchTab('agenda'));
+tabLeaders.addEventListener('click', () => switchTab('leaders'));
 tabOrgChart.addEventListener('click', () => switchTab('orgchart'));
 
 // ==========================================
@@ -3680,6 +3689,49 @@ switchTab('dashboard');
     });
   }
 })();
+
+// ==========================================
+// SERVANT LEADERS CONTROLLER
+// ==========================================
+
+function renderLeaders() {
+  const tbody = document.getElementById('leaders-table-body');
+  const noLeadersMsg = document.getElementById('no-leaders-message');
+  const totalLeadersStat = document.getElementById('stat-total-leaders');
+  if (!tbody) return;
+
+  const allMembers = dbMembers.getAll();
+  // Filter members whose role is not empty and not just 'Member'
+  const leaders = allMembers.filter(m => m.role && m.role.trim() !== '' && m.role.toLowerCase() !== 'member');
+  
+  if (totalLeadersStat) {
+    totalLeadersStat.textContent = leaders.length;
+  }
+
+  if (leaders.length === 0) {
+    tbody.innerHTML = '';
+    noLeadersMsg.classList.remove('hidden');
+  } else {
+    noLeadersMsg.classList.add('hidden');
+    tbody.innerHTML = leaders.map(m => `
+      <tr>
+        <td>
+          <div class="user-info-cell">
+            <div class="user-avatar-sm" style="background-image: url('${m.avatar || ''}'); background-color: var(--primary);">
+              ${!m.avatar ? `<i data-lucide="user"></i>` : ''}
+            </div>
+            <span>${m.name}</span>
+          </div>
+        </td>
+        <td>${m.chapter_area || '-'}</td>
+        <td><span class="role-badge" style="background:var(--primary-glow); color:white; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem;">${m.role}</span></td>
+        <td>${m.contact || '-'}</td>
+        <td>${m.email || '-'}</td>
+      </tr>
+    `).join('');
+  }
+  lucide.createIcons();
+}
 
 // ==========================================
 // ORG CHART CONTROLLER (Drag and Drop)
