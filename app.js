@@ -811,6 +811,7 @@ const panelOrgChart = document.getElementById('panel-orgchart');
 // Header action buttons
 
 const btnAddMember = document.getElementById('btn-add-member');
+const btnAddLeader = document.getElementById('btn-add-leader');
 
 // Admin Auth State & Default Passcode Seed
 if (!localStorage.getItem('admin_passcode') || localStorage.getItem('admin_passcode') === 'mfcyouthtarlac') {
@@ -909,7 +910,6 @@ function switchTab(tabName, subTabName = null) {
     tabLeaders?.classList.add('active');
     panelLeaders?.classList.remove('hidden');
     if (isAdmin) {
-      const btnAddLeader = document.getElementById('btn-add-leader');
       if (btnAddLeader) btnAddLeader.classList.remove('hidden');
     }
     renderLeaders();
@@ -2209,6 +2209,15 @@ btnAddMember.addEventListener('click', () => {
   memberModalTitle.textContent = 'Add Member';
   memberModal.classList.remove('hidden');
 });
+
+if (btnAddLeader) {
+  btnAddLeader.addEventListener('click', () => {
+    memberForm.reset();
+    fieldMemberId.value = '';
+    memberModalTitle.textContent = 'Add Leader';
+    memberModal.classList.remove('hidden');
+  });
+}
 
 function closeMemberModal() {
   memberModal.classList.add('hidden');
