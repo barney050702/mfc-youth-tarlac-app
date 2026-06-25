@@ -811,6 +811,7 @@ const panelOrgChart = document.getElementById('panel-orgchart');
 // Header action buttons
 
 const btnAddMember = document.getElementById('btn-add-member');
+const btnAddLeader = document.getElementById('btn-add-leader');
 
 // Admin Auth State & Default Passcode Seed
 if (!localStorage.getItem('admin_passcode') || localStorage.getItem('admin_passcode') === 'admin123') {
@@ -2205,6 +2206,15 @@ btnAddMember.addEventListener('click', () => {
   memberModalTitle.textContent = 'Add Member';
   memberModal.classList.remove('hidden');
 });
+
+if (btnAddLeader) {
+  btnAddLeader.addEventListener('click', () => {
+    memberForm.reset();
+    fieldMemberId.value = '';
+    memberModalTitle.textContent = 'Add Servant Leader';
+    memberModal.classList.remove('hidden');
+  });
+}
 
 function closeMemberModal() {
   memberModal.classList.add('hidden');
@@ -3658,8 +3668,13 @@ function updateRoleUI() {
     const tabName = activeTab.id.replace('tab-', '');
     if (tabName === 'members') {
       btnAddMember.classList.toggle('hidden', !isAdmin);
+      if (btnAddLeader) btnAddLeader.classList.add('hidden');
+    } else if (tabName === 'leaders') {
+      btnAddMember.classList.add('hidden');
+      if (btnAddLeader) btnAddLeader.classList.toggle('hidden', !isAdmin);
     } else {
       btnAddMember.classList.add('hidden');
+      if (btnAddLeader) btnAddLeader.classList.add('hidden');
     }
   }
   
