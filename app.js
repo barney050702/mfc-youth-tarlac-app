@@ -514,6 +514,7 @@ class MembersDatabase {
           existingNames.add(key);
           added++;
         }
+      });
 
       if (added > 0) {
         this.saveToStorage();
