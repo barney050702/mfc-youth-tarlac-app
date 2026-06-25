@@ -1686,8 +1686,8 @@ function renderMembers() {
   });
   const duplicateNames = new Set(Object.keys(nameCount).filter(k => nameCount[k] > 1));
 
-  // Sort alphabetically by name
-  filteredData.sort((a, b) => a.name.localeCompare(b.name));
+  // Sort alphabetically by name (case-insensitive)
+  filteredData.sort((a, b) => a.name.localeCompare(b.name, undefined, {sensitivity: 'base'}));
 
   memberTableBody.innerHTML = '';
   if (filteredData.length === 0) {
@@ -3704,6 +3704,9 @@ function renderLeaders() {
   // Filter members whose role is not empty and not just 'Member'
   const leaders = allMembers.filter(m => m.role && m.role.trim() !== '' && m.role.toLowerCase() !== 'member');
   
+  // Sort alphabetically by name (case-insensitive)
+  leaders.sort((a, b) => a.name.localeCompare(b.name, undefined, {sensitivity: 'base'}));
+  
   if (totalLeadersStat) {
     totalLeadersStat.textContent = leaders.length;
   }
@@ -3753,6 +3756,7 @@ function renderOrgChart() {
       const chapterMatches = chapterMatch ? (m.chapter_area === chapterMatch) : true;
       return roleMatches && chapterMatches;
     });
+    matched.sort((a, b) => a.name.localeCompare(b.name, undefined, {sensitivity: 'base'}));
     if (matched.length === 0) {
       container.innerHTML = '<p class="empty-names">Vacant</p>';
     } else {
