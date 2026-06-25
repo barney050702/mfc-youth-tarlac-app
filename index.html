@@ -1803,9 +1803,13 @@
         <button id="btn-close-auth-modal" class="btn-close"><i data-lucide="x"></i></button>
       </div>
       <form id="auth-form">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="field-auth-email">Admin Email</label>
+          <input type="email" id="field-auth-email" placeholder="Enter email" required autocomplete="username">
+        </div>
         <div class="form-group">
-          <label for="field-auth-passcode">Enter Admin Passcode</label>
-          <input type="password" id="field-auth-passcode" placeholder="e.g., admin123" required autocomplete="current-password">
+          <label for="field-auth-passcode">Admin Password</label>
+          <input type="password" id="field-auth-passcode" placeholder="Enter password" required autocomplete="current-password">
           <p id="auth-error-msg" class="error-msg hidden" style="color: var(--danger); font-size: 0.8rem; margin-top: 0.5rem;"></p>
         </div>
         <div class="modal-footer" style="margin-top: 1.5rem;">
@@ -2008,5 +2012,6 @@
       });
     }
   </script>
+  <div id="toast-container"></div>
 </body>
 </html>

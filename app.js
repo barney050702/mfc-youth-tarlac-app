@@ -15,11 +15,13 @@ const firebaseConfig = {
 
 let db = null;
 let storage = null;
+let auth = null;
 try {
   if (typeof firebase !== 'undefined') {
     firebase.initializeApp(firebaseConfig);
     db = firebase.firestore();
     storage = firebase.storage();
+    auth = firebase.auth();
     console.log("Firebase initialized successfully.");
   }
 } catch (e) {
@@ -619,7 +621,61 @@ const btnAddLeader = document.getElementById('btn-add-leader');
 if (!localStorage.getItem('admin_passcode') || localStorage.getItem('admin_passcode') === 'mfcyouthtarlac') {
   localStorage.setItem('admin_passcode', 'mfcyouthtarlac');
 }
-let isAdmin = localStorage.getItem('is_admin') === 'true';
+let isAdmin = false;
+if (typeof firebase !== 'undefined' && firebase.auth) {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      isAdmin = true;
+      localStorage.setItem('is_admin', 'true');
+      localStorage.setItem('current_username', user.email);
+    } else {
+      isAdmin = false;
+      localStorage.setItem('is_admin', 'false');
+      localStorage.removeItem('current_username');
+    }
+    
+    // Defer updateRoleUI because elements might not be defined yet
+    if (typeof updateRoleUI === 'function') {
+      updateRoleUI();
+    }
+  });
+}
+
+// ==========================================
+// TOAST NOTIFICATIONS
+// ==========================================
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  
+  let icon = 'info';
+  if (type === 'success') icon = 'check-circle';
+  if (type === 'error') icon = 'alert-circle';
+  if (type === 'warning') icon = 'alert-triangle';
+
+  toast.innerHTML = `
+    <i data-lucide="${icon}" style="width: 20px; height: 20px;"></i>
+    <span>${message}</span>
+  `;
+
+  container.appendChild(toast);
+  
+  if (window.lucide && typeof window.lucide.createIcons === 'function') {
+    window.lucide.createIcons();
+  }
+
+  setTimeout(() => {
+    toast.classList.add('toast-closing');
+    setTimeout(() => {
+      if (container.contains(toast)) {
+        container.removeChild(toast);
+      }
+    }, 300); // match animation duration
+  }, 3000);
+}
 
 // ==========================================
 // TAB CONTROLLER
@@ -2066,7 +2122,7 @@ memberForm.addEventListener('submit', async (e) => {
         avatarUrl = await snapshot.ref.getDownloadURL();
       } catch (err) {
         console.error("Failed to upload image:", err);
-        alert("Failed to upload image. Make sure Firebase Storage is enabled in the console.");
+        showToast("Failed to upload image. Make sure Firebase Storage is enabled in the console.", "error");
         avatarUrl = '';
       } finally {
         if (saveBtn) {
@@ -2929,13 +2985,13 @@ fileImportInput.addEventListener('change', (e) => {
         const data = JSON.parse(event.target.result);
         pendingActivityImport = Array.isArray(data) ? data : [data];
         if (pendingActivityImport.length === 0) {
-          alert('Could not find any activity records in the JSON file.');
+          showToast('Could not find any activity records in the JSON file.', 'warning');
         } else {
           promptActivityImport();
         }
       } catch (err) {
         console.error('JSON parse error:', err);
-        alert('Could not parse the JSON file.');
+        showToast('Could not parse the JSON file.', 'error');
       }
       fileImportInput.value = '';
     };
@@ -2944,7 +3000,7 @@ fileImportInput.addEventListener('change', (e) => {
   }
 
   if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
-    alert('Only Excel files (.xlsx, .xls) and JSON files are allowed.');
+    showToast('Only Excel files (.xlsx, .xls) and JSON files are allowed.', 'error');
     fileImportInput.value = '';
     return;
   }
@@ -2991,7 +3047,7 @@ btnConfirmImport.addEventListener('click', () => {
   dbActivities.import(pendingActivityImport, mode);
   closeImportModal();
   renderActivities();
-  alert('Activities imported successfully!');
+  showToast('Activities imported successfully!', 'success');
 });
 
 const fileImportMemberInput = document.getElementById('file-import-member-input');
@@ -3017,7 +3073,7 @@ fileImportMemberInput.addEventListener('change', (e) => {
         pendingMemberImport = Array.isArray(data) ? data : [data];
         promptMemberImport();
       } catch (err) {
-        alert('Invalid JSON file format.');
+        showToast('Invalid JSON file format.', 'error');
       }
     } else if (file.name.endsWith('.csv')) {
       pendingMemberImport = parseCSV(fileContent, 'members');
@@ -3051,7 +3107,7 @@ btnConfirmImportMember.addEventListener('click', () => {
   dbMembers.import(pendingMemberImport, mode);
   closeImportMemberModal();
   renderMembers();
-  alert('Members directory updated successfully!');
+  showToast('Members directory updated successfully!', 'success');
 });
 
 // Parse an array-of-arrays (from SheetJS) into activity records
@@ -3557,11 +3613,21 @@ document.getElementById('btn-admin-auth').addEventListener('click', () => {
 
 // Dropdown Logout Click
 document.getElementById('btn-dropdown-logout').addEventListener('click', () => {
-  isAdmin = false;
-  localStorage.setItem('is_admin', 'false');
-  updateRoleUI();
-  showWelcomeScreen();
-  document.getElementById('profile-dropdown-menu').classList.remove('active');
+  if (typeof firebase !== 'undefined' && firebase.auth) {
+    firebase.auth().signOut().then(() => {
+      showToast('Logged out successfully', 'success');
+      showWelcomeScreen();
+      document.getElementById('profile-dropdown-menu').classList.remove('active');
+    }).catch(err => {
+      showToast('Error logging out: ' + err.message, 'error');
+    });
+  } else {
+    isAdmin = false;
+    localStorage.setItem('is_admin', 'false');
+    updateRoleUI();
+    showWelcomeScreen();
+    document.getElementById('profile-dropdown-menu').classList.remove('active');
+  }
 });
 
 // Welcome screen Actions
@@ -3611,15 +3677,11 @@ document.getElementById('welcome-admin-form').addEventListener('submit', (e) => 
   if (typeof firebase !== 'undefined' && firebase.auth) {
     firebase.auth().signInWithEmailAndPassword(adminName, inputPasscode)
       .then((userCredential) => {
-        isAdmin = true;
-        localStorage.setItem('is_admin', 'true');
-        localStorage.setItem('current_username', userCredential.user.email);
         welcomeError.classList.add('hidden');
         document.getElementById('welcome-passcode-field').value = '';
         document.getElementById('welcome-admin-username').value = '';
-        updateRoleUI();
         hideWelcomeScreen();
-        lucide.createIcons();
+        showToast('Logged in successfully', 'success');
       })
       .catch((error) => {
         welcomeError.textContent = 'Invalid admin email or password. Please try again.';
@@ -3630,13 +3692,39 @@ document.getElementById('welcome-admin-form').addEventListener('submit', (e) => 
         setTimeout(() => {
           inputField.style.borderColor = '';
           inputField.style.boxShadow = '';
-        }, 1500);
+        }, 3000);
       });
-  } else {
-    welcomeError.textContent = 'Firebase Authentication is not initialized.';
-    welcomeError.classList.remove('hidden');
   }
 });
+
+// Modal Admin Auth Form
+const authForm = document.getElementById('auth-form');
+if (authForm) {
+  authForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('field-auth-email').value;
+    const passcode = document.getElementById('field-auth-passcode').value;
+    const errorMsg = document.getElementById('auth-error-msg');
+    
+    if (typeof firebase !== 'undefined' && firebase.auth) {
+      firebase.auth().signInWithEmailAndPassword(email, passcode)
+        .then(() => {
+          document.getElementById('auth-modal').classList.add('hidden');
+          errorMsg.classList.add('hidden');
+          authForm.reset();
+          showToast('Logged in successfully', 'success');
+        })
+        .catch(err => {
+          errorMsg.textContent = 'Invalid email or password.';
+          errorMsg.classList.remove('hidden');
+        });
+    }
+  });
+}
+
+document.getElementById('btn-close-auth-modal').addEventListener('click', () => document.getElementById('auth-modal').classList.add('hidden'));
+document.getElementById('btn-cancel-auth').addEventListener('click', () => document.getElementById('auth-modal').classList.add('hidden'));
+
 
 // Passcode Modal Triggers
 document.getElementById('btn-change-passcode-trigger').addEventListener('click', () => {
@@ -3652,7 +3740,7 @@ document.getElementById('btn-change-passcode-trigger').addEventListener('click',
 // Account Recovery Options
 document.getElementById('btn-recovery-options-trigger').addEventListener('click', () => {
   document.getElementById('profile-dropdown-menu').classList.remove('active');
-  alert('Account Recovery Options feature will be available in a future update.');
+  showToast('Account Recovery Options feature will be available in a future update.', 'info');
 });
 
 document.getElementById('btn-close-passcode-modal').addEventListener('click', () => {
@@ -3686,7 +3774,7 @@ document.getElementById('change-passcode-form').addEventListener('submit', (e) =
     const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPasscode);
     user.reauthenticateWithCredential(credential).then(() => {
       user.updatePassword(newPasscode).then(() => {
-        alert('Passcode successfully updated!');
+        showToast('Passcode successfully updated!', 'success');
         document.getElementById('change-passcode-modal').classList.add('hidden');
       }).catch((error) => {
         passcodeErrorMsg.textContent = 'Error updating passcode: ' + error.message;
@@ -4157,7 +4245,7 @@ window.downloadActivityPDF = function (activityId, type) {
   if (!activity) return;
 
   if (!window.jspdf) {
-    alert('PDF generator is still loading. Please try again in a moment.');
+    showToast('PDF generator is still loading. Please try again in a moment.', 'warning');
     return;
   }
 
