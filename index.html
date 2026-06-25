@@ -850,19 +850,18 @@
 
     <!-- Panel Servant Leaders -->
     <div id="panel-leaders" class="hidden">
-      <div class="controls-panel" style="justify-content: flex-end; margin-bottom: 1rem;">
-        <button id="btn-add-leader" class="btn btn-primary admin-only hidden">
-          <i data-lucide="plus"></i> Add New
-        </button>
-      </div>
-
       <section class="dashboard-stats" style="margin-bottom: 1rem;">
-        <div class="stat-card" style="flex: 1;">
-          <div class="stat-icon blue"><i data-lucide="users-2"></i></div>
-          <div class="stat-info">
-            <h3 id="stat-total-leaders">0</h3>
-            <p>Total Servant Leaders</p>
+        <div class="stat-card" style="flex: 1; display: flex; justify-content: space-between; align-items: center; padding-right: 1.5rem;">
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div class="stat-icon blue"><i data-lucide="users-2"></i></div>
+            <div class="stat-info" style="margin-left: 0;">
+              <h3 id="stat-total-leaders">0</h3>
+              <p>Total Servant Leaders</p>
+            </div>
           </div>
+          <button id="btn-add-leader" class="btn btn-primary admin-only hidden">
+            <i data-lucide="plus"></i> Add New
+          </button>
         </div>
       </section>
       <main class="table-container" id="leaders-table-container">
