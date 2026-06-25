@@ -667,6 +667,30 @@ body {
   vertical-align: middle;
 }
 
+.user-info-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.user-avatar-sm i {
+  width: 16px;
+  height: 16px;
+  color: #fff;
+}
+
 .activities-table tbody tr {
   transition: background-color 0.15s ease;
 }
