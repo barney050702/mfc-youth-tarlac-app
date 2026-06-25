@@ -3822,7 +3822,7 @@ function renderOrgChart() {
     if (!container) return;
     const matched = members.filter(m => {
       const roleMatches = m.role && m.role.toLowerCase().includes(rolePattern);
-      const chapterMatches = chapterMatch ? (m.chapter_area === chapterMatch) : true;
+      const chapterMatches = chapterMatch ? (m.chapter_area && m.chapter_area.toUpperCase() === chapterMatch.toUpperCase()) : true;
       return roleMatches && chapterMatches;
     });
     matched.sort((a, b) => {
@@ -3853,7 +3853,7 @@ function renderOrgChart() {
     if (containerMember) {
       const baseMembers = members.filter(m => {
         const isBaseRole = !m.role || m.role.toLowerCase() === 'member' || m.role.toLowerCase() === 'participant';
-        const isRegionMatch = m.chapter_area === region;
+        const isRegionMatch = m.chapter_area && m.chapter_area.toUpperCase() === region.toUpperCase();
         return isBaseRole && isRegionMatch;
       });
       if (baseMembers.length === 0) {
