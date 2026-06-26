@@ -3752,7 +3752,7 @@ document.getElementById('welcome-admin-form').addEventListener('submit', (e) => 
   const correctPasscode = localStorage.getItem('admin_passcode') || 'mfcyouthtarlac';
   const welcomeError = document.getElementById('welcome-auth-error');
 
-  if (adminName === 'mfcyouthtarlac' && inputPasscode === correctPasscode) {
+  if (inputPasscode === correctPasscode) {
     isAdmin = true;
     localStorage.setItem('is_admin', 'true');
     localStorage.setItem('current_username', adminName || 'Admin');
