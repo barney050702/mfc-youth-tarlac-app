@@ -1852,14 +1852,33 @@
       if (installBtn) {
         installBtn.classList.remove('hidden');
         installBtn.style.display = 'block';
-        installBtn.addEventListener('click', async () => {
-          installBtn.style.display = 'none';
+        // Remove previous listeners to avoid duplicates
+        const newBtn = installBtn.cloneNode(true);
+        installBtn.parentNode.replaceChild(newBtn, installBtn);
+        
+        newBtn.addEventListener('click', async () => {
+          newBtn.style.display = 'none';
           deferredPrompt.prompt();
           const { outcome } = await deferredPrompt.userChoice;
           deferredPrompt = null;
         });
       }
     });
+
+    // iOS Fallback (iOS Safari does not support beforeinstallprompt)
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    
+    if (isIOS && !isStandalone) {
+      const installBtn = document.getElementById('install-pwa-btn');
+      if (installBtn) {
+        installBtn.classList.remove('hidden');
+        installBtn.style.display = 'block';
+        installBtn.addEventListener('click', () => {
+          alert('To install on your iPhone/iPad:\n\n1. Tap the Share icon (square with up arrow) at the bottom.\n2. Scroll down and tap "Add to Home Screen".');
+        });
+      }
+    }
 
     window.addEventListener('appinstalled', () => {
       const installBtn = document.getElementById('install-pwa-btn');
