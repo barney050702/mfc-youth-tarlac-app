@@ -186,14 +186,6 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook" style="color: var(--primary);"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
             <span class="custom-tooltip">Navigate to Facebook Page...</span>
           </a>
-          <button id="install-pwa-btn" class="web-link-icon" aria-label="Install App" style="background: none; border: none; padding: 0; cursor: pointer; color: inherit; display: block;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download" style="color: var(--primary);">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" x2="12" y1="15" y2="3"/>
-            </svg>
-            <span class="custom-tooltip">Install Mobile App...</span>
-          </button>
           <a href="https://mfcyouth.org/" target="_blank" class="web-link-icon" aria-label="Navigate to MFC Youth Web">
             <i data-lucide="globe"></i>
             <span class="custom-tooltip">Navigate to MFC Youth Web...</span>
@@ -1846,38 +1838,6 @@
           });
       });
     }
-
-    // Handle PWA Installation
-    let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-    });
-
-    // Make the install button handle the prompt if available, otherwise show instructions
-    const installBtn = document.getElementById('install-pwa-btn');
-    if (installBtn) {
-      installBtn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          const { outcome } = await deferredPrompt.userChoice;
-          deferredPrompt = null;
-        } else {
-          // Fallback if beforeinstallprompt didn't fire (iOS or already installed)
-          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-          if (isIOS) {
-             alert('To install on your iPhone/iPad:\n\n1. Tap the Share icon (square with up arrow) at the bottom.\n2. Scroll down and tap "Add to Home Screen".');
-          } else {
-             alert('The installation prompt is not available right now. You may have already installed the app, or your browser requires you to install it from the browser menu (usually "Install App" or "Add to Home screen").');
-          }
-        }
-      });
-    }
-
-    window.addEventListener('appinstalled', () => {
-      deferredPrompt = null;
-    });
   </script>
   <div id="toast-container"></div>
 </body>
