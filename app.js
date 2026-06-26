@@ -1961,7 +1961,9 @@ const btnCancelMemberModal = document.getElementById('btn-cancel-member-modal');
 
 // Fields
 const fieldMemberId = document.getElementById('field-member-id');
-const fieldMemberName = document.getElementById('field-member-name');
+const fieldMemberLastName = document.getElementById('field-member-last-name');
+const fieldMemberFirstName = document.getElementById('field-member-first-name');
+const fieldMemberMiddleName = document.getElementById('field-member-middle-name');
 const fieldMemberChapter = document.getElementById('field-member-chapter');
 const fieldMemberStatus = document.getElementById('field-member-status');
 const fieldMemberRole = document.getElementById('field-member-role');
@@ -2136,7 +2138,13 @@ memberForm.addEventListener('submit', async (e) => {
   }
 
   const record = {
-    name: fieldMemberName.value.trim(),
+    name: (() => {
+      const last = fieldMemberLastName.value.trim();
+      const first = fieldMemberFirstName.value.trim();
+      const mid = fieldMemberMiddleName.value.trim();
+      const midPart = mid ? ` ${mid}` : '';
+      return `${last}, ${first}${midPart}`.trim();
+    })(),
     chapter_area: fieldMemberChapter.value,
     status: fieldMemberStatus.value,
     role: fieldMemberRole.value.trim() || 'Member',
@@ -2166,7 +2174,31 @@ window.editMember = function (id) {
   if (!record) return;
 
   fieldMemberId.value = record.id;
-  fieldMemberName.value = record.name || '';
+  const fullName = record.name || '';
+  let last = '', first = '', middle = '';
+  if (fullName.includes(',')) {
+    const parts = fullName.split(',');
+    last = parts[0].trim();
+    const rest = parts.slice(1).join(',').trim();
+    const spaceIndex = rest.lastIndexOf(' ');
+    if (spaceIndex !== -1) {
+      first = rest.substring(0, spaceIndex).trim();
+      middle = rest.substring(spaceIndex + 1).trim();
+    } else {
+      first = rest;
+    }
+  } else {
+    const parts = fullName.split(' ');
+    if (parts.length > 1) {
+      last = parts[parts.length - 1];
+      first = parts.slice(0, -1).join(' ');
+    } else {
+      first = fullName;
+    }
+  }
+  fieldMemberLastName.value = last;
+  fieldMemberFirstName.value = first;
+  fieldMemberMiddleName.value = middle;
   fieldMemberChapter.value = record.chapter_area || '';
   fieldMemberStatus.value = record.status || 'Active';
   fieldMemberRole.value = record.role || '';
