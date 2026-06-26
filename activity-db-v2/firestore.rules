@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Function to check if a user is logged in
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Default rule: Deny everything unless explicitly allowed
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Allow authenticated admins to read and write to collections
+    match /activities/{document} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /members/{document} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /funds/{document} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /agenda/{document} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

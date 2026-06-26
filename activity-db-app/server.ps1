@@ -14,7 +14,7 @@ try {
         }
         
         $sanitizedPath = $urlPath.Replace("/", "\").TrimStart('\')
-        $localPath = Join-Path "C:\Users\barne\.gemini\antigravity-ide\scratch" $sanitizedPath
+        $localPath = Join-Path "C:\Users\barne\.gemini\antigravity-ide\scratch\activity-db-app" $sanitizedPath
         
         if (Test-Path $localPath -PathType Leaf) {
             $bytes = [System.IO.File]::ReadAllBytes($localPath)
