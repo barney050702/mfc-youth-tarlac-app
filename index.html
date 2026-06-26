@@ -1591,7 +1591,7 @@
           <label for="field-fund-receipt">Receipt Image</label>
           <input type="file" id="field-fund-receipt" accept="image/*" style="display:none;">
           <input type="hidden" id="field-fund-receipt-data">
-          <div id="fund-receipt-area" style="border:2px dashed rgba(255,255,255,0.15);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:border-color 0.2s;" onclick="document.getElementById('field-fund-receipt').click()">
+          <div id="fund-receipt-area" style="background: rgba(255, 255, 255, 0.02); border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 16px; padding: 2rem 1.5rem; text-align: center; cursor: pointer; transition: all 0.2s ease;" onclick="document.getElementById('field-fund-receipt').click()" onmouseover="this.style.borderColor='var(--primary)'; this.style.background='rgba(99, 102, 241, 0.05)';" onmouseout="this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.background='rgba(255, 255, 255, 0.02)';">
             <img id="fund-receipt-preview" src="" alt="Receipt preview" style="display:none;max-height:160px;max-width:100%;border-radius:8px;margin-bottom:8px;">
             <div id="fund-receipt-placeholder" style="color:rgba(255,255,255,0.4);font-size:13px;">
               <i data-lucide="image" style="width:28px;height:28px;margin-bottom:6px;display:block;margin-left:auto;margin-right:auto;"></i>
