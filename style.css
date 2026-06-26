@@ -1015,6 +1015,11 @@ body {
   box-shadow: 0 0 0 4px var(--primary-glow);
 }
 
+select option {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
 .form-row {
   display: grid;
   gap: 1rem;
