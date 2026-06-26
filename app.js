@@ -1727,6 +1727,7 @@ function formatBirthday(val) {
 function renderMembers() {
   const filteredData = dbMembers.getFiltered(currentMemberFilters);
   const allMembers = dbMembers.getAll();
+  window.membersData = filteredData; // Store for export
 
   // Build a set of normalized names that appear more than once across ALL members
   const nameCount = {};
@@ -1931,7 +1932,7 @@ window.editActivity = function (id) {
   if (!record) return;
 
   fieldId.value = record.id;
-  if (/^\d{4}-\d{2}-\d{2}$/.test(record.date)) {
+  if (/^\d{4}-\d-02}-\d{2}$/.test(record.date)) {
     fieldDate.value = record.date;
     if (fieldDateEnd) fieldDateEnd.min = record.date;
   } else {
@@ -2779,6 +2780,10 @@ function loadActivityAttendance(activityId) {
     }
   }
 
+  document.getElementById('btn-load-more')?.addEventListener('click', () => {
+    loadGalleryPage();
+  });
+
   // Load attendance directly from the Activity record
   const act = dbActivities.getAll().find(a => a.id === Number(activityId));
   if (act) {
@@ -3099,7 +3104,7 @@ const btnImportMemberTrigger = document.getElementById('btn-import-member-trigge
 const importMemberModal = document.getElementById('import-member-modal');
 const importMemberCountEl = document.getElementById('import-member-count');
 const btnConfirmImportMember = document.getElementById('btn-confirm-import-member');
-const btnCancelImportMember = document.getElementById('btn-cancel-import-member');
+const btnCancelImportMember = document.getElementById('btn-cancel-member-member');
 const btnCloseImportMemberModal = document.getElementById('btn-close-import-member-modal');
 
 btnImportMemberTrigger.addEventListener('click', () => fileImportMemberInput.click());
@@ -3416,35 +3421,26 @@ function parseCSV(text, type) {
 // EXPORT OPERATIONS
 // ==========================================
 
+function exportToCsv(dataArray, fileName) {
+  if (!Array.isArray(dataArray) || dataArray.length === 0) return;
+  const headers = Object.keys(dataArray[0]);
+  const csvRows = [headers.join(','), ...dataArray.map(row => headers.map(h => "\"" + String(row[h]).replace(/\"/g, '""') + "\"").join(','))];
+  const csvContent = csvRows.join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', fileName);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 // JSON backup helper
 function downloadJSON(data, filename) {
   const jsonStr = JSON.stringify(data, null, 2);
   const blob = new Blob([jsonStr], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-// CSV export helper
-function downloadCSV(headers, rows, filename) {
-  const csvRows = [headers.join(',')];
-  rows.forEach(rowValues => {
-    const escapedRow = rowValues.map(val => {
-      const valStr = String(val);
-      if (valStr.includes(',') || valStr.includes('"') || valStr.includes('\n') || valStr.includes('\r')) {
-        return `"${valStr.replace(/"/g, '""')}"`;
-      }
-      return valStr;
-    });
-    csvRows.push(escapedRow.join(','));
-  });
-  const csvString = csvRows.join('\r\n');
-  const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -3512,42 +3508,18 @@ btnExportCsv.addEventListener('click', () => {
 const btnExportMemberCsv = document.getElementById('btn-export-member-csv');
 const btnExportMemberJson = document.getElementById('btn-export-member-json');
 
+if (btnExportMemberCsv) {
+  btnExportMemberCsv.addEventListener('click', () => {
+    if (typeof membersData !== 'undefined') {
+      exportToCsv(membersData, 'members.csv');
+    } else {
+      console.warn('No members data available for export');
+    }
+  });
+}
+
 btnExportMemberJson.addEventListener('click', () => {
   downloadJSON(dbMembers.getAll(), `members_db_backup_${new Date().toISOString().split('T')[0]}.json`);
-});
-
-btnExportMemberCsv.addEventListener('click', () => {
-  const allMembers = [...dbMembers.getAll()];
-  allMembers.sort((a, b) => a.name.localeCompare(b.name));
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('landscape');
-
-  doc.setFontSize(16);
-  doc.text('Members Export', 14, 15);
-  doc.setFontSize(10);
-  doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 22);
-
-  const headers = [['Name', 'Chapter/Area', 'Role', 'Age', 'Contact', 'Status']];
-  const rows = allMembers.map(item => [
-    item.name || '',
-    item.chapter_area || '',
-    item.role || '',
-    item.age || 0,
-    item.contact || '',
-    item.status || ''
-  ]);
-
-  doc.autoTable({
-    head: headers,
-    body: rows,
-    startY: 28,
-    theme: 'grid',
-    styles: { fontSize: 8 },
-    headStyles: { fillColor: [30, 58, 138] }
-  });
-
-  doc.save(`members_export_${new Date().toISOString().split('T')[0]}.pdf`);
 });
 
 // ==========================================
@@ -3640,6 +3612,39 @@ function updateRoleUI() {
     });
   }
 }
+
+// Gallery pagination implementation
+let lastGalleryDoc = null;
+const PAGE_SIZE = 15;
+function loadGalleryPage(reset = false) {
+  if (reset) {
+    loadedPhotos = [];
+    if (document.getElementById('gallery-grid')) {
+      document.getElementById('gallery-grid').innerHTML = '';
+    }
+    lastGalleryDoc = null;
+  }
+  let query = db.collection('activity_photos').orderBy('timestamp', 'desc').limit(PAGE_SIZE);
+  if (lastGalleryDoc) {
+    query = query.startAfter(lastGalleryDoc);
+  }
+  query.get().then(snapshot => {
+    if (snapshot.empty) {
+      const loadMoreBtn = document.getElementById('btn-load-more');
+      if (loadMoreBtn) loadMoreBtn.classList.add('hidden');
+      return;
+    }
+    lastGalleryDoc = snapshot.docs[snapshot.docs.length - 1];
+    snapshot.forEach(doc => {
+      loadedPhotos.push({ id: doc.id, ...doc.data() });
+    });
+    renderPhotoGrid(filterSelect?.value || 'all');
+    const loadMoreBtn = document.getElementById('btn-load-more');
+    if (loadMoreBtn) loadMoreBtn.classList.remove('hidden');
+  }).catch(err => console.error('Gallery pagination error:', err));
+}
+// Initial load
+loadGalleryPage();
 
 // Screen navigation helpers
 function showWelcomeScreen() {
