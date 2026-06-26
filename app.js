@@ -1688,6 +1688,7 @@ const memberStatusFilter = document.getElementById('filter-member-status');
 // Format member name to "Last Name, First Name Middle Name"
 function formatMemberName(fullName) {
   if (!fullName) return '';
+  if (fullName.includes(',')) return fullName;
   const parts = fullName.trim().split(/\s+/);
   if (parts.length <= 1) return fullName;
   const lastName = parts.pop();
@@ -2843,7 +2844,7 @@ function renderAttendanceSheet() {
       }
 
       tr.innerHTML = `
-        <td><strong>${m.name}</strong></td>
+        <td><strong>${formatMemberName(m.name)}</strong></td>
         <td>${chapterBadge || '-'}</td>
         <td>${m.role || 'Member'}</td>
         <td class="attendance-toggle-cell">
@@ -3916,7 +3917,7 @@ function renderLeaders() {
             <div class="user-avatar-sm" style="background-image: url('${m.avatar || ''}'); background-color: var(--primary);">
               ${!m.avatar ? `<i data-lucide="user"></i>` : ''}
             </div>
-            <span>${m.name}</span>
+            <span>${formatMemberName(m.name)}</span>
           </div>
         </td>
         <td>${m.chapter_area || '-'}</td>
