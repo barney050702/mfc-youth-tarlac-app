@@ -2772,6 +2772,7 @@ body.view-only .agenda-list-actions {
   border: 2px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
   overflow: hidden;
+  margin-bottom: 1rem;
 }
 
 .sidebar-avatar img {
@@ -2779,10 +2780,6 @@ body.view-only .agenda-list-actions {
   height: 100%;
   object-fit: cover;
   clip-path: circle(46% at 50% 50%);
-}
-  justify-content: center;
-  margin-bottom: 1rem;
-  border: 3px solid rgba(255,255,255,0.05);
 }
 
 .sidebar-avatar i {
