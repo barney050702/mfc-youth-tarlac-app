@@ -21,14 +21,16 @@ window.renderReports = function() {
       datasets: [{
         data: chapterCounts,
         backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
-        borderWidth: 0
+        borderWidth: 2,
+        borderColor: '#0f172a',
+        hoverOffset: 15
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { position: 'bottom', labels: { color: '#94a3b8' } }
+        legend: { position: 'bottom', labels: { color: '#f8fafc', padding: 20, font: { family: "'Outfit', sans-serif" } } }
       }
     }
   });
@@ -52,8 +54,11 @@ window.renderReports = function() {
       datasets: [{
         label: 'Attendees',
         data: activityAttendance,
-        backgroundColor: '#6366f1',
-        borderRadius: 4
+        backgroundColor: 'rgba(139, 92, 246, 0.8)',
+        borderColor: '#a855f7',
+        borderWidth: 1,
+        borderRadius: 6,
+        hoverBackgroundColor: '#c084fc'
       }]
     },
     options: {
