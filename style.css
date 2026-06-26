@@ -1998,22 +1998,23 @@ body.view-only .agenda-list-actions {
   }
 
 .welcome-card {
-  background: rgba(17, 24, 39, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color);
-  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8));
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
   padding: 3rem 2.5rem;
   width: 100%;
   max-width: 500px;
   text-align: center;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-  transition: transform var(--transition-speed) ease, border-color var(--transition-speed) ease;
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 
 .welcome-card:hover {
-  border-color: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.2);
   transform: translateY(-4px);
+  box-shadow: 0 40px 70px -15px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .welcome-logo-area {
@@ -2028,7 +2029,8 @@ body.view-only .agenda-list-actions {
   object-fit: cover;
   border-radius: 50%;
   background-color: transparent;
-  filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.35));
+  clip-path: circle(46% at 50% 50%);
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.15));
   animation: welcome-float 4s ease-in-out infinite;
 }
 
@@ -2470,15 +2472,15 @@ body.view-only .agenda-list-actions {
 
 .welcome-input-group input {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.25rem;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  padding: 0.85rem 1rem 0.85rem 2.25rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
   color: #f3f4f6;
   font-family: var(--font-main);
   font-size: 0.95rem;
   outline: none;
-  transition: border var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  transition: border var(--transition-speed) ease, box-shadow var(--transition-speed) ease, background var(--transition-speed) ease;
   text-align: center;
 }
 
@@ -2502,11 +2504,20 @@ body.view-only .agenda-list-actions {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  padding: 0.8rem 1.5rem;
-  font-size: 0.95rem;
-  border-radius: 8px;
+  padding: 0.9rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 12px;
   cursor: pointer;
   border: none;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: white;
+}
+
+.welcome-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
 }
 
 .welcome-admin-form .error-msg {
