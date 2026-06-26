@@ -182,14 +182,14 @@
       </div>
       <div class="header-actions">
         <div style="display: flex; align-items: center; gap: 0.75rem; color: var(--primary); margin-right: 1rem;">
-          <button id="install-pwa-btn" class="web-link-icon hidden" aria-label="Install App" style="background: none; border: none; padding: 0; cursor: pointer; color: inherit;">
-            <i data-lucide="download"></i>
-            <span class="custom-tooltip">Install Mobile App...</span>
-          </button>
           <a href="https://www.facebook.com/MFCYouthTarlac" target="_blank" class="web-link-icon" aria-label="Navigate to Facebook Page">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook" style="color: var(--primary);"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
             <span class="custom-tooltip">Navigate to Facebook Page...</span>
           </a>
+          <button id="install-pwa-btn" class="web-link-icon" aria-label="Install App" style="background: none; border: none; padding: 0; cursor: pointer; color: inherit; display: block;">
+            <i data-lucide="download"></i>
+            <span class="custom-tooltip">Install Mobile App...</span>
+          </button>
           <a href="https://mfcyouth.org/" target="_blank" class="web-link-icon" aria-label="Navigate to MFC Youth Web">
             <i data-lucide="globe"></i>
             <span class="custom-tooltip">Navigate to MFC Youth Web...</span>
@@ -1844,45 +1844,34 @@
     }
 
     // Handle PWA Installation
-    let deferredPrompt;
+    let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      const installBtn = document.getElementById('install-pwa-btn');
-      if (installBtn) {
-        installBtn.classList.remove('hidden');
-        installBtn.style.display = 'block';
-        // Remove previous listeners to avoid duplicates
-        const newBtn = installBtn.cloneNode(true);
-        installBtn.parentNode.replaceChild(newBtn, installBtn);
-        
-        newBtn.addEventListener('click', async () => {
-          newBtn.style.display = 'none';
+    });
+
+    // Make the install button handle the prompt if available, otherwise show instructions
+    const installBtn = document.getElementById('install-pwa-btn');
+    if (installBtn) {
+      installBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (deferredPrompt) {
           deferredPrompt.prompt();
           const { outcome } = await deferredPrompt.userChoice;
           deferredPrompt = null;
-        });
-      }
-    });
-
-    // iOS Fallback (iOS Safari does not support beforeinstallprompt)
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-    
-    if (isIOS && !isStandalone) {
-      const installBtn = document.getElementById('install-pwa-btn');
-      if (installBtn) {
-        installBtn.classList.remove('hidden');
-        installBtn.style.display = 'block';
-        installBtn.addEventListener('click', () => {
-          alert('To install on your iPhone/iPad:\n\n1. Tap the Share icon (square with up arrow) at the bottom.\n2. Scroll down and tap "Add to Home Screen".');
-        });
-      }
+        } else {
+          // Fallback if beforeinstallprompt didn't fire (iOS or already installed)
+          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+          if (isIOS) {
+             alert('To install on your iPhone/iPad:\n\n1. Tap the Share icon (square with up arrow) at the bottom.\n2. Scroll down and tap "Add to Home Screen".');
+          } else {
+             alert('The installation prompt is not available right now. You may have already installed the app, or your browser requires you to install it from the browser menu (usually "Install App" or "Add to Home screen").');
+          }
+        }
+      });
     }
 
     window.addEventListener('appinstalled', () => {
-      const installBtn = document.getElementById('install-pwa-btn');
-      if (installBtn) installBtn.style.display = 'none';
       deferredPrompt = null;
     });
   </script>
