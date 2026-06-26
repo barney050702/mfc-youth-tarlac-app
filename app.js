@@ -1274,7 +1274,7 @@ function renderUpcomingAgenda() {
   lucide.createIcons();
 }
 
-// â”€â”€ Full Upcoming Agenda List â”€â”€
+// -- Full Upcoming Agenda List --
 let fullAgendaShowAll = false;
 const FULL_AGENDA_DEFAULT_LIMIT = 7;
 
@@ -1338,7 +1338,7 @@ function buildAgendaRows(activities) {
     let countdownLbl = 'days';
 
     if (item.status === 'Accomplished') {
-      countdownClass = 'accomplished'; countdownNum = 'âœ”'; countdownLbl = 'DONE';
+      countdownClass = 'accomplished'; countdownNum = '\u2714'; countdownLbl = 'DONE';
     } else if (daysUntil === null) {
       countdownNum = '?'; countdownLbl = '';
     } else if (daysUntil === 0) {
@@ -1615,7 +1615,7 @@ function formatDateString(dateStr) {
   return dateStr;
 }
 
-// Helper: Formats a date range for display in card headers (MONTH DD[â€“DD], YYYY)
+// Helper: Formats a date range for display in card headers (MONTH DD[-DD], YYYY)
 function formatDateRange(dateStart, dateEnd) {
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   if (!dateStart || !/^\d{4}-\d{2}-\d{2}$/.test(dateStart)) return formatDateString(dateStart);
@@ -1633,10 +1633,10 @@ function formatDateRange(dateStart, dateEnd) {
       const endDay = endDate.getDate();
       const endYear = endDate.getFullYear();
       if (sy === ey && sm === em) {
-        // Same month & year: "January 30â€“31, 2026"
+        // Same month & year: "January 30-31, 2026"
         return `${startMonth} ${startDay}\u2013${endDay}, ${startYear}`;
       } else if (sy === ey) {
-        // Same year different month: "January 30 â€“ February 1, 2026"
+        // Same year different month: "January 30 - February 1, 2026"
         return `${startMonth} ${startDay} \u2013 ${endMonth} ${endDay}, ${startYear}`;
       } else {
         // Different years
@@ -1704,7 +1704,7 @@ function formatBirthday(val) {
     const [y, m, d] = val.split('-');
     return `${m}/${d}/${y}`;
   }
-  // Handle M/D/YYYY or MM/DD/YYYY â€” normalize to 2-digit month/day
+  // Handle M/D/YYYY or MM/DD/YYYY - normalize to 2-digit month/day
   const parts = val.split('/');
   if (parts.length === 3) {
     const mm = parts[0].padStart(2, '0');
@@ -2635,7 +2635,7 @@ function renderMonthlySummary() {
     const denominator = g.accomplished * (totalMembers || 1);
     const rate = denominator > 0 ? Math.round((g.attendance / denominator) * 100) : 0;
     const rateClass = rate >= 70 ? 'high' : rate >= 40 ? 'mid' : rate > 0 ? 'low' : 'none';
-    const rateLabel = denominator > 0 ? `${rate}%` : 'â€”';
+    const rateLabel = denominator > 0 ? `${rate}%` : '-';
     return `<tr>
       <td><strong>${month}</strong></td>
       <td>${g.total}</td>
@@ -2665,7 +2665,7 @@ function renderMonthlySummary() {
     <td style="color:#ef4444;">${totals.can}</td>
     <td>${totals.att}</td>
     <td>${totals.uniq.size}</td>
-    <td>â€”</td>
+    <td>-</td>
   </tr>`;
 }
 
@@ -3175,7 +3175,7 @@ function parseSheetRows(rows, type) {
   }
 
   if (type === 'activities') {
-    // Detect column positions â€” all optional, fall back to -1 (blank)
+    // Detect column positions - all optional, fall back to -1 (blank)
     const monthIdx = headers.findIndex(h => h.includes('month'));
     const weekIdx = headers.findIndex(h => h.includes('week'));
     const dateIdx = headers.findIndex(h => h.includes('date') && !h.includes('end'));
@@ -3203,7 +3203,7 @@ function parseSheetRows(rows, type) {
         activityVal = String(firstNonEmpty).trim();
       }
 
-      // Dates â€” handle both string values and native JS Date objects from SheetJS
+      // Dates - handle both string values and native JS Date objects from SheetJS
       const rawDateCell = dateIdx !== -1 ? line[dateIdx] : null;
       const rawDateEndCell = dateEndIdx !== -1 ? line[dateEndIdx] : null;
       const rawDate = getCell(line, dateIdx);
@@ -3219,7 +3219,7 @@ function parseSheetRows(rows, type) {
         if (coordMember) coordId = coordMember.id;
       }
 
-      // Attendees â€” comma-separated names matched against member list
+      // Attendees - comma-separated names matched against member list
       let attIds = [];
       const attendeesStr = getCell(line, attendeesIdx);
       if (attendeesStr) {
@@ -3834,7 +3834,7 @@ updateRoleUI();
 switchTab('dashboard');
 
 // ==========================================
-// TOP SCROLLBAR SYNC â€” Members Table
+// TOP SCROLLBAR SYNC - Members Table
 // ==========================================
 (function initMembersTopScroll() {
   const topScroll = document.getElementById('members-top-scroll');
