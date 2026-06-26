@@ -943,47 +943,141 @@
 
     <!-- Panel Activity Gallery -->
     <div id="panel-gallery" class="hidden">
-      <section class="monthly-summary-section" style="height: 100%; display: flex; flex-direction: column;">
-        <div class="section-header-row">
-          <h2 class="section-title"><i data-lucide="image"></i> Activity Gallery</h2>
-          <span class="section-subtitle">Store and view pictures from your activities.</span>
-        </div>
-        <div style="padding: 1.5rem; flex-grow: 1; overflow-y: auto;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <select id="gallery-filter-select" class="form-control" style="max-width: 300px; background: rgba(15, 23, 42, 0.5);">
-              <option value="all">All Activities</option>
-            </select>
-            <button id="btn-upload-photo" class="btn btn-primary"><i data-lucide="upload-cloud"></i> Upload Photo</button>
+      <section class="gallery-section">
+        <!-- Gallery Header -->
+        <div class="gallery-header">
+          <div class="gallery-header-left">
+            <h2 class="gallery-title"><i data-lucide="images"></i> Activity Gallery</h2>
+            <span class="gallery-subtitle">Capture and relive your community moments</span>
           </div>
-          
-          <div id="gallery-upload-form" class="card hidden" style="margin-bottom: 2rem; background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.1);">
-            <h3 style="margin-top:0;">Upload New Photo</h3>
-            <form id="form-upload-photo">
-              <div class="form-group">
-                <label>Select Activity</label>
-                <select id="gallery-activity-select" class="form-control" required></select>
+          <div class="gallery-header-right">
+            <div class="gallery-photo-count">
+              <i data-lucide="image" style="width:16px;height:16px;"></i>
+              <span id="gallery-count-text">0 Photos</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Stats Bar -->
+        <div class="gallery-stats-bar">
+          <div class="gallery-stat-chip">
+            <i data-lucide="camera" style="width:14px;height:14px;"></i>
+            <span id="gallery-stat-total">0</span> Total
+          </div>
+          <div class="gallery-stat-chip">
+            <i data-lucide="calendar" style="width:14px;height:14px;"></i>
+            <span id="gallery-stat-activities">0</span> Activities
+          </div>
+          <div class="gallery-stat-chip">
+            <i data-lucide="clock" style="width:14px;height:14px;"></i>
+            Latest: <span id="gallery-stat-latest">—</span>
+          </div>
+        </div>
+
+        <!-- Gallery Toolbar -->
+        <div class="gallery-toolbar">
+          <div class="gallery-toolbar-left">
+            <div class="gallery-filter-wrapper">
+              <i data-lucide="filter" style="width:16px;height:16px;position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#64748b;pointer-events:none;"></i>
+              <select id="gallery-filter-select" class="gallery-filter-select">
+                <option value="all">All Activities</option>
+              </select>
+            </div>
+            <div class="gallery-view-toggle">
+              <button class="gallery-view-btn active" data-view="grid" title="Grid View"><i data-lucide="grid-3x3" style="width:16px;height:16px;"></i></button>
+              <button class="gallery-view-btn" data-view="masonry" title="Masonry View"><i data-lucide="layout-grid" style="width:16px;height:16px;"></i></button>
+            </div>
+          </div>
+          <button id="btn-upload-photo" class="gallery-upload-btn">
+            <i data-lucide="plus" style="width:18px;height:18px;"></i>
+            <span>Upload Photos</span>
+          </button>
+        </div>
+
+        <!-- Upload Zone (Hidden by default) -->
+        <div id="gallery-upload-form" class="gallery-upload-zone hidden">
+          <div class="upload-zone-inner">
+            <form id="form-upload-photo" class="upload-form-grid">
+              <div class="upload-dropzone" id="upload-dropzone">
+                <div class="dropzone-content">
+                  <div class="dropzone-icon-wrapper">
+                    <i data-lucide="cloud-upload" style="width:40px;height:40px;"></i>
+                  </div>
+                  <p class="dropzone-text">Drag & drop your photo here</p>
+                  <p class="dropzone-subtext">or click to browse files</p>
+                  <input type="file" id="gallery-photo-input" accept="image/*" required style="display:none;">
+                  <div id="dropzone-preview" class="dropzone-preview hidden">
+                    <img id="dropzone-preview-img" alt="Preview">
+                    <button type="button" id="dropzone-preview-clear" class="dropzone-preview-clear">
+                      <i data-lucide="x" style="width:14px;height:14px;"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Choose Photo</label>
-                <input type="file" id="gallery-photo-input" class="form-control" accept="image/*" required>
-              </div>
-              <div style="display:flex;gap:1rem;margin-top:1rem;">
-                <button type="submit" class="btn btn-primary" id="btn-submit-photo-upload">Upload</button>
-                <button type="button" id="btn-cancel-upload" class="btn btn-secondary">Cancel</button>
-              </div>
-              <div id="upload-progress-container" class="hidden" style="margin-top:1rem;">
-                <div style="height:6px;background:rgba(255,255,255,0.1);border-radius:4px;"><div id="upload-progress-bar" style="height:100%;width:0%;background:var(--primary);transition: width 0.2s;"></div></div>
-                <p id="upload-progress-text" style="text-align:right;font-size:0.8rem;color:#94a3b8;margin-top:0.5rem;">0%</p>
+              <div class="upload-form-fields">
+                <div class="form-group">
+                  <label class="upload-label"><i data-lucide="tag" style="width:14px;height:14px;"></i> Assign to Activity</label>
+                  <select id="gallery-activity-select" class="gallery-filter-select" required></select>
+                </div>
+                <div id="upload-progress-container" class="hidden">
+                  <div class="upload-progress-track">
+                    <div id="upload-progress-bar" class="upload-progress-fill"></div>
+                  </div>
+                  <p id="upload-progress-text" class="upload-progress-label">0%</p>
+                </div>
+                <div class="upload-form-actions">
+                  <button type="submit" class="gallery-upload-btn" id="btn-submit-photo-upload">
+                    <i data-lucide="upload" style="width:16px;height:16px;"></i> Upload
+                  </button>
+                  <button type="button" id="btn-cancel-upload" class="gallery-cancel-btn">Cancel</button>
+                </div>
               </div>
             </form>
           </div>
-          
-          <div id="gallery-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;">
-            <!-- Photos will load here -->
+        </div>
+
+        <!-- Photo Grid -->
+        <div class="gallery-grid-wrapper">
+          <div id="gallery-grid" class="gallery-grid">
+            <!-- Photos will load here dynamically -->
           </div>
+          <div id="gallery-empty-state" class="gallery-empty-state hidden">
+            <div class="gallery-empty-icon"><i data-lucide="image-off" style="width:48px;height:48px;"></i></div>
+            <h3>No photos yet</h3>
+            <p>Upload your first activity photo to get started!</p>
+          </div>
+          <div id="gallery-loading" class="gallery-loading hidden">
+            <div class="gallery-spinner"></div>
+            <span>Loading gallery...</span>
+          </div>
+        </div>
+
+        <!-- Load More -->
+        <div class="gallery-load-more-wrapper">
+          <button id="btn-load-more" class="gallery-load-more-btn hidden">
+            <i data-lucide="chevrons-down" style="width:18px;height:18px;"></i>
+            Load More Photos
+          </button>
         </div>
       </section>
     </div>
+
+    <!-- Lightbox Modal -->
+    <div id="gallery-lightbox" class="gallery-lightbox hidden">
+      <div class="lightbox-overlay"></div>
+      <div class="lightbox-content">
+        <button class="lightbox-close" id="lightbox-close"><i data-lucide="x" style="width:24px;height:24px;"></i></button>
+        <button class="lightbox-nav lightbox-prev" id="lightbox-prev"><i data-lucide="chevron-left" style="width:28px;height:28px;"></i></button>
+        <button class="lightbox-nav lightbox-next" id="lightbox-next"><i data-lucide="chevron-right" style="width:28px;height:28px;"></i></button>
+        <img id="lightbox-img" class="lightbox-img" alt="Gallery Photo">
+        <div class="lightbox-info">
+          <h4 id="lightbox-title"></h4>
+          <span id="lightbox-date"></span>
+          <span id="lightbox-counter" class="lightbox-counter"></span>
+        </div>
+      </div>
+    </div>
+
 
     <!-- Panel Org Chart -->
     <div id="panel-orgchart" class="hidden">
