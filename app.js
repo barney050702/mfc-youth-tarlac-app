@@ -3761,6 +3761,9 @@ document.getElementById('welcome-admin-form').addEventListener('submit', (e) => 
     document.getElementById('welcome-admin-username').value = '';
     updateRoleUI();
     hideWelcomeScreen();
+    // After login, automatically show the Dashboard tab
+    const dashboardTab = document.getElementById('sidebar-tab-dashboard');
+    if (dashboardTab) dashboardTab.click();
     lucide.createIcons();
   } else {
     welcomeError.textContent = 'Invalid admin username or passcode. Please try again.';
