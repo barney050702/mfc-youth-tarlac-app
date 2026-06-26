@@ -690,6 +690,8 @@ function switchTab(tabName, subTabName = null) {
   panelAgenda?.classList.add('hidden');
   panelLeaders?.classList.add('hidden');
   panelOrgChart?.classList.add('hidden');
+  const panelGallery = document.getElementById('panel-gallery');
+  panelGallery?.classList.add('hidden');
 
   const panelReports = document.getElementById('panel-reports');
   panelReports?.classList.add('hidden');
@@ -787,6 +789,14 @@ function switchTab(tabName, subTabName = null) {
     panelReports?.classList.remove('hidden');
     if (typeof window.renderReports === 'function') {
       window.renderReports();
+    }
+  } else if (tabName === 'gallery') {
+    const tabGallery = document.getElementById('sidebar-tab-gallery');
+    const panelGallery = document.getElementById('panel-gallery');
+    tabGallery?.classList.add('active');
+    panelGallery?.classList.remove('hidden');
+    if (typeof window.renderGallery === 'function') {
+      window.renderGallery();
     }
   }
   lucide.createIcons();
