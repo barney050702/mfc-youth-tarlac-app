@@ -633,7 +633,7 @@ if (typeof firebase !== 'undefined' && firebase.auth) {
       localStorage.setItem('is_admin', 'false');
       localStorage.removeItem('current_username');
     }
-    
+
     // Defer updateRoleUI because elements might not be defined yet
     if (typeof updateRoleUI === 'function') {
       updateRoleUI();
@@ -650,7 +650,7 @@ function showToast(message, type = 'success') {
 
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
-  
+
   let icon = 'info';
   if (type === 'success') icon = 'check-circle';
   if (type === 'error') icon = 'alert-circle';
@@ -662,7 +662,7 @@ function showToast(message, type = 'success') {
   `;
 
   container.appendChild(toast);
-  
+
   if (window.lucide && typeof window.lucide.createIcons === 'function') {
     window.lucide.createIcons();
   }
@@ -690,7 +690,7 @@ function switchTab(tabName, subTabName = null) {
   panelAgenda?.classList.add('hidden');
   panelLeaders?.classList.add('hidden');
   panelOrgChart?.classList.add('hidden');
-  
+
   const panelReports = document.getElementById('panel-reports');
   panelReports?.classList.add('hidden');
 
@@ -2102,11 +2102,11 @@ btnCancelMemberModal.addEventListener('click', closeMemberModal);
 memberForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const id = fieldMemberId.value;
-  
+
   let avatarUrl = fieldMemberAvatarData ? fieldMemberAvatarData.value : '';
   const saveBtn = memberForm.querySelector('button[type="submit"]') || document.getElementById('btn-save-member');
   const originalBtnText = saveBtn ? saveBtn.innerHTML : 'Save';
-  
+
   // If avatar is a new data URL, upload to Firebase Storage
   if (avatarUrl && avatarUrl.startsWith('data:image')) {
     if (typeof storage !== 'undefined' && storage !== null) {
@@ -3708,7 +3708,7 @@ if (authForm) {
     const email = document.getElementById('field-auth-email').value;
     const passcode = document.getElementById('field-auth-passcode').value;
     const errorMsg = document.getElementById('auth-error-msg');
-    
+
     if (typeof firebase !== 'undefined' && firebase.auth) {
       firebase.auth().signInWithEmailAndPassword(email, passcode)
         .then(() => {
