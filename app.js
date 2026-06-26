@@ -1,217 +1,3 @@
-// ==========================================
-// PWA Service Worker Registration
-// ==========================================
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then((registration) => {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, (error) => {
-        console.log('ServiceWorker registration failed: ', error);
-      });
-  });
-}
-
-// ==========================================
-// 1. SAMPLE SEED DATA (RELATIONAL WITH 152 MEMBERS)
-// ==========================================
-
-const SAMPLE_MEMBERS = [
-  // Original Seed Leaders (IDs 1-8)
-  { id: 1, name: 'Juan Dela Cruz', chapter_area: 'EAST', role: 'Chapter Servant', contact: '+63 912 345 6789', email: 'juan.east@example.com', status: 'Active', age: 32, birthday: '1994-04-12', address: 'Tarlac City', parents_contact: '' },
-  { id: 2, name: 'Maria Santos', chapter_area: 'WEST', role: 'Household Head', contact: '+63 922 456 7890', email: 'maria.west@example.com', status: 'Active', age: 28, birthday: '1998-09-21', address: 'Sta. Ignacia, Tarlac', parents_contact: '' },
-  { id: 3, name: 'Pedro Penduko', chapter_area: 'AREA', role: 'Unit Head', contact: '+63 933 567 8901', email: 'pedro.area@example.com', status: 'Active', age: 35, birthday: '1991-07-07', address: 'Moncada, Tarlac', parents_contact: '' },
-  { id: 4, name: 'Ana Gomez', chapter_area: 'NORTH', role: 'Area Coordinator', contact: '+63 944 678 9012', email: 'ana.north@example.com', status: 'Active', age: 30, birthday: '1996-11-15', address: 'Moncada, Tarlac', parents_contact: '' },
-  { id: 5, name: 'Jose Rizal', chapter_area: 'SOUTH', role: 'Core Member', contact: '+63 955 789 0123', email: 'jose.south@example.com', status: 'Inactive', age: 40, birthday: '1986-06-19', address: 'Concepcion, Tarlac', parents_contact: '' },
-  { id: 6, name: 'Clara Del Pilar', chapter_area: 'UPPER CORE', role: 'Chapter Servant', contact: '+63 916 234 5678', email: 'clara.uc@example.com', status: 'Active', age: 29, birthday: '1997-03-05', address: 'Paniqui, Tarlac', parents_contact: '' },
-  { id: 7, name: 'Andres Bonifacio', chapter_area: 'LIT', role: 'LIT Head', contact: '+63 927 345 6789', email: 'andres.lit@example.com', status: 'Active', age: 26, birthday: '2000-11-30', address: 'Tarlac City', parents_contact: '' },
-  { id: 8, name: 'Gabriela Silang', chapter_area: 'TRAINING', role: 'Training Head', contact: '+63 938 456 7890', email: 'gabriela.training@example.com', status: 'Active', age: 27, birthday: '1999-05-10', address: 'Paniqui, Tarlac', parents_contact: '' },
-
-  // 64 New Members imported from Spreadsheet (IDs 9-72)
-  { id: 9, name: 'Mark Allen S. Nosaves', chapter_area: 'EAST', role: 'Member', contact: '9923937559', email: '', status: 'Active', age: 13, birthday: '3/23/2013', address: 'Matatalaib, Tarlac', parents_contact: '9919235478' },
-  { id: 10, name: 'Precious Diane Z. Samson', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 13, birthday: '3/20/2013', address: 'San Manuel, Tarlac', parents_contact: '9919235478' },
-  { id: 11, name: 'Clark Kent Z. Samson', chapter_area: 'EAST', role: 'Member', contact: '9933643376', email: '', status: 'Active', age: 10, birthday: '8/24/2016', address: 'San Manuel, Tarlac', parents_contact: '9919235478' },
-  { id: 12, name: 'Cedrick Jewel G. Puyawan', chapter_area: 'EAST', role: 'Member', contact: '9455002513', email: '', status: 'Active', age: 14, birthday: '9/12/2011', address: 'San Manuel, Tarlac', parents_contact: '99546284287' },
-  { id: 13, name: 'Jhozhua L. Corpuz', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 13, birthday: '12/29/2012', address: 'San Manuel, Tarlac', parents_contact: '9108330947' },
-  { id: 14, name: 'Enzo Luis A. Labon', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '10/28/2011', address: 'San Manuel, Tarlac', parents_contact: '' },
-  { id: 15, name: 'Jhaztin Carl Corpuz', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '02/28/2010', address: 'San Manuel, Tarlac', parents_contact: '9108330973' },
-  { id: 16, name: 'John Marion Sigua', chapter_area: 'EAST', role: 'Member', contact: '9122712254', email: '', status: 'Active', age: 12, birthday: '09/08/2013', address: 'Maliwalo Tarlac', parents_contact: '9456885921' },
-  { id: 17, name: 'Carmelo Anthony G. Sigua', chapter_area: 'EAST', role: 'Member', contact: '9153025737', email: '', status: 'Active', age: 16, birthday: '09/28/2009', address: 'Maliwalo Tarlac', parents_contact: '9456885921' },
-  { id: 18, name: 'Jovel D. Garcia', chapter_area: 'EAST', role: 'Member', contact: '9038360124', email: '', status: 'Active', age: 14, birthday: '7/19/2011', address: 'Maliwalo Tarlac', parents_contact: '9386956160' },
-  { id: 19, name: 'Jeanette Mary Salazar', chapter_area: 'EAST', role: 'Member', contact: '9101388805', email: '', status: 'Active', age: 18, birthday: '9/8/2007', address: 'Sitio Buni Bura', parents_contact: '9094708294' },
-  { id: 20, name: 'Jeonard Francis Catap', chapter_area: 'EAST', role: 'Member', contact: '9701807117', email: '', status: 'Active', age: 18, birthday: '8/29/2007', address: 'Culipat, Tarlac City', parents_contact: '9121256554' },
-  { id: 21, name: 'Miguel Antonio Tañedo', chapter_area: 'EAST', role: 'Member', contact: '9919791125', email: '', status: 'Active', age: 18, birthday: '10/18/2011', address: 'San Sebastian, Tarlac City', parents_contact: '9584887998' },
-  { id: 22, name: 'Gabriel R. Magat', chapter_area: 'EAST', role: 'Member', contact: '9604136208', email: '', status: 'Active', age: 14, birthday: '01/16/2012', address: 'Sitio Calevo Tibag, Tarlac City', parents_contact: '9634409663' },
-  { id: 23, name: 'Rajh Bernardo', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '11/21/2014', address: 'San Manuel, Tarlac', parents_contact: '94821456916' },
-  { id: 24, name: 'Jaycee Antonio', chapter_area: 'EAST', role: 'Member', contact: '9202031881', email: '', status: 'Active', age: 14, birthday: '11/23/2011', address: 'Batang Batang Tarlac City', parents_contact: '9389293791' },
-  { id: 25, name: 'Aljune Lagmay', chapter_area: 'EAST', role: 'Member', contact: '9564393473', email: '', status: 'Active', age: 16, birthday: '11/07/2012', address: 'Batang Batang Tarlac City', parents_contact: '' },
-  { id: 26, name: 'Jilian Baquerto', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '05/05/2010', address: 'Lalapac Victoria Tarlac', parents_contact: '965817117' },
-  { id: 27, name: 'Rocel Yusi', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 15, birthday: '7/31/2011', address: 'Lalapac Victoria Tarlac', parents_contact: '965817117' },
-  { id: 28, name: 'Justine A. Officiar', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 15, birthday: '12/5/2010', address: 'Batang Batang Tarlac City', parents_contact: '9092069893' },
-  { id: 29, name: 'Darlina Kathe Seaismundo', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '05/05/2011', address: 'Batang Batang Tarlac City', parents_contact: '9670072185' },
-  { id: 30, name: 'Karl Andrei Nunag', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '4/11/2011', address: 'Batang Batang Tarlac City', parents_contact: '951429950' },
-  { id: 31, name: 'Johnny P. Eugenio', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '1/16/2012', address: 'Batang Batang Tarlac City', parents_contact: '9928788142' },
-  { id: 32, name: 'Reeza Manthas L. Peralta', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '3/8/2010', address: 'Batang Batang Tarlac City', parents_contact: '97723325805' },
-  { id: 33, name: 'Rishelyne S. Balansag', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '4/23/2010', address: 'Batang Batang Tarlac City', parents_contact: '9919857944' },
-  { id: 34, name: 'Ceana Ghail R. Benson', chapter_area: 'EAST', role: 'Member', contact: '9658796230', email: '', status: 'Active', age: 17, birthday: '2/14/2009', address: 'Lapaz', parents_contact: '99109586974' },
-  { id: 35, name: 'Matt Christian L. Pascua', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '2/7/2010', address: 'Batang Batang Tarlac City', parents_contact: '9943765091' },
-  { id: 36, name: 'John Carlo S. Daguro', chapter_area: 'EAST', role: 'Member', contact: '9942527797', email: '', status: 'Active', age: 16, birthday: '12/10/2009', address: 'Batang Batang Tarlac City', parents_contact: '' },
-  { id: 37, name: 'Ella Tolentino', chapter_area: 'EAST', role: 'Member', contact: '9641514850', email: '', status: 'Active', age: 17, birthday: '5/23/2009', address: 'San Pascual, Tarlac City', parents_contact: '9101715799' },
-  { id: 38, name: 'Rona Tacutaco', chapter_area: 'EAST', role: 'Member', contact: '9851636519', email: '', status: 'Active', age: 16, birthday: '8/9/2009', address: 'San Pascual, Tarlac City', parents_contact: '9569470391' },
-  { id: 39, name: 'Aira Landingin', chapter_area: 'EAST', role: 'Member', contact: '9708718879', email: '', status: 'Active', age: 16, birthday: '7/7/2009', address: 'San Pascual, Tarlac City', parents_contact: '9758435309' },
-  { id: 40, name: 'Ayesha B. Gadiana', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 9, birthday: '6/2/2016', address: 'San Isidro, Tarlac City', parents_contact: '9305555256' },
-  { id: 41, name: 'Sean Ilagan', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '10/14/2011', address: 'Paniqui Tarlac', parents_contact: '9457716246' },
-  { id: 42, name: 'Louis Ilagan', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 12, birthday: '12/26/2013', address: 'Paniqui Tarlac', parents_contact: '9457716246' },
-  { id: 43, name: 'Andrean Jade Bravana', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 11, birthday: '8/1/2014', address: 'San Isidro, Tarlac City', parents_contact: '' },
-  { id: 44, name: 'Prince John B. Gadiana', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 12, birthday: '3/26/2014', address: 'San Isidro, Tarlac City', parents_contact: '' },
-  { id: 45, name: 'Kiann Sev B. Tejada', chapter_area: 'NORTH', role: 'Member', contact: '', email: '', status: 'Active', age: 15, birthday: '12/07/2010', address: 'Burgos, Paniqui Tarlac', parents_contact: '9560933949' },
-  { id: 46, name: 'Lysander Uriel Ventura', chapter_area: 'NORTH', role: 'Member', contact: '', email: '', status: 'Active', age: 15, birthday: '1/22/2011', address: 'Paniqui Tarlac', parents_contact: '9395128453' },
-  { id: 47, name: 'Raj Gabriel Pathak', chapter_area: 'NORTH', role: 'Member', contact: '', email: '', status: 'Active', age: 15, birthday: '3/25/2011', address: 'Pob. South Ramos', parents_contact: '9544973975' },
-  { id: 48, name: 'Aljihin B. Caronongan', chapter_area: 'NORTH', role: 'Member', contact: '', email: '', status: 'Active', age: 15, birthday: '12/12/2010', address: 'Coral Paniqui Tarlac', parents_contact: '9276031736' },
-  { id: 49, name: 'April Jane DelaCruz', chapter_area: 'WEST', role: 'Member', contact: '9926539259', email: '', status: 'Active', age: 15, birthday: '04/30/2011', address: 'Cabaruan, Purok 2 Sta. Ignacia, Tarlac', parents_contact: '9770490513' },
-  { id: 50, name: 'Sharina Bona', chapter_area: 'WEST', role: 'Member', contact: '', email: '', status: 'Active', age: 15, birthday: '10/30/2010', address: 'San Francisco, Sta. Ignacia Tarlac', parents_contact: '9635901351' },
-  { id: 51, name: 'Raphael Carl P. Rivera', chapter_area: 'WEST', role: 'Member', contact: '9562477438', email: '', status: 'Active', age: 15, birthday: '12/02/2010', address: 'Pob. West Sta. Ignacia Tarlac', parents_contact: '9275324598' },
-  { id: 52, name: 'Jerecho P. Rivera', chapter_area: 'WEST', role: 'Member', contact: '9885851155', email: '', status: 'Active', age: 17, birthday: '10/19/2008', address: 'Pob. West Sta. Ignacia Tarlac', parents_contact: '9203408895' },
-  { id: 53, name: 'Jay Aldrin A. Marticio', chapter_area: 'EAST', role: 'Member', contact: '9163282336', email: '', status: 'Active', age: 17, birthday: '04/29/2009', address: 'Pob. West Sta. Ignacia Tarlac', parents_contact: '9203408895' },
-  { id: 54, name: 'Cyril John Roque', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '2/14/2012', address: 'Batang Batang Tarlac City', parents_contact: '9519893272' },
-  { id: 55, name: 'Chena Mae Matias', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 17, birthday: '4/14/2010', address: 'Batang Batang Tarlac City', parents_contact: '9670072185' },
-  { id: 56, name: 'Kian L. Notarlz', chapter_area: 'EAST', role: 'Member', contact: '9072536395', email: '', status: 'Active', age: 15, birthday: '12/9/2010', address: 'Batang Batang Tarlac City', parents_contact: '9457784480' },
-  { id: 57, name: 'Fredierick R. Antalan', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '11/09/2011', address: 'Moncada, Tarlac', parents_contact: '' },
-  { id: 58, name: 'Harrieth C. Valdez', chapter_area: 'NORTH', role: 'Member', contact: '9091990427', email: '', status: 'Active', age: 16, birthday: '9/24/2009', address: 'Moncada, Tarlac', parents_contact: '9272328857' },
-  { id: 59, name: 'Evangeline M. Obilio', chapter_area: 'NORTH', role: 'Member', contact: '9648210825', email: '', status: 'Active', age: 14, birthday: '03/23/2012', address: 'Moncada, Tarlac', parents_contact: '9301028385' },
-  { id: 60, name: 'Jona Mariz A. De Venecia', chapter_area: 'NORTH', role: 'Member', contact: '9058660828', email: '', status: 'Active', age: 15, birthday: '6/8/2010', address: 'Moncada, Tarlac', parents_contact: '9550847346' },
-  { id: 61, name: 'Joevelyn Rhixzy G. Espejo', chapter_area: 'NORTH', role: 'Member', contact: '9639097664', email: '', status: 'Active', age: 18, birthday: '3/30/2008', address: 'Moncada, Tarlac', parents_contact: '9124661843' },
-  { id: 62, name: 'Jhazelle E. Balmorez', chapter_area: 'NORTH', role: 'Member', contact: '9816860482', email: '', status: 'Active', age: 15, birthday: '10/20/2010', address: 'Moncada, Tarlac', parents_contact: '935309587' },
-  { id: 63, name: 'Chedz Louise C. Tabilin', chapter_area: 'NORTH', role: 'Member', contact: '9816860482', email: '', status: 'Active', age: 13, birthday: '6/7/2012', address: 'Moncada, Tarlac', parents_contact: '9338156014' },
-  { id: 64, name: 'Aron Kent G. Salvador', chapter_area: 'NORTH', role: 'Member', contact: '9615832773', email: '', status: 'Active', age: 18, birthday: '03/09/2008', address: 'Salumague, Paniqui Tarlac', parents_contact: '9300467865' },
-  { id: 65, name: 'Fernando A. Dar', chapter_area: 'NORTH', role: 'Member', contact: '9454878873', email: '', status: 'Active', age: 18, birthday: '4/26/2008', address: 'Moncada, Tarlac', parents_contact: '9296699956' },
-  { id: 66, name: 'Ma. Yvonne C. Niegos', chapter_area: 'NORTH', role: 'Member', contact: '9289720379', email: '', status: 'Active', age: 17, birthday: '9/9/2008', address: 'Moncada, Tarlac', parents_contact: '9957240313' },
-  { id: 67, name: 'Leah Andrea C. Casica', chapter_area: 'NORTH', role: 'Member', contact: '9181583353', email: '', status: 'Active', age: 17, birthday: '4/5/2009', address: 'PacPaco San Manuel Moncada, Tarlac', parents_contact: '9488473102' },
-  { id: 68, name: 'Renz Cyruz P. Sapla', chapter_area: 'NORTH', role: 'Member', contact: '9685853306', email: '', status: 'Active', age: 17, birthday: '10/14/2008', address: 'Moncada, Tarlac', parents_contact: '' },
-  { id: 69, name: 'Sophia Reign C. Pujol', chapter_area: 'NORTH', role: 'Member', contact: '', email: '', status: 'Active', age: 12, birthday: '7/25/2013', address: 'Moncada, Tarlac', parents_contact: '' },
-  { id: 70, name: 'Riley Tiffany B. Egipto', chapter_area: 'NORTH', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '3/16/2010', address: 'Magaspac, Gerona Tarlac', parents_contact: '9278825052' },
-  { id: 71, name: 'Antonia G. Egipto', chapter_area: 'NORTH', role: 'Member', contact: '', email: '', status: 'Active', age: 12, birthday: '6/28/2013', address: 'Magaspac, Gerona Tarlac', parents_contact: '9672539992' },
-  { id: 72, name: 'Liselle Ondrea B. Egipto', chapter_area: 'NORTH', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '1/9/2012', address: 'Magaspac, Gerona Tarlac', parents_contact: '9278825052' },
-
-  // 80 New Members (IDs 73-152)
-  { id: 73, name: 'Agustin Fritzzy Ann Gabriel', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 74, name: 'Arnzenia Joy', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 75, name: 'Balagtas Jash F', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 76, name: 'Batiancila Crystal Francheska', chapter_area: '', role: 'Member', contact: '9510408904', email: 'skibidisigmaohio635@gmail.com', status: 'Active', age: 13, birthday: '04/03/2011', address: 'San Isidro Zone 1 Farmhouse', parents_contact: '' },
-  { id: 77, name: 'Bautista Red', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 78, name: 'Bedruz Maria Cassandra', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 79, name: 'Bengco Arnie Nares', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 80, name: 'Bengco Reniel M.', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 81, name: 'Bernardo Leona Tolentino', chapter_area: '', role: 'Member', contact: '9635129447', email: 'Josabernardo0518@gmail.com', status: 'Active', age: 17, birthday: '05/18/2007', address: 'Blk. 3 San Manuel, Tarlac City', parents_contact: '' },
-  { id: 82, name: 'Bernardo Rc', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 83, name: 'Bernardo Reycel', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 84, name: 'Briones Kyllie Yalung', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 12, birthday: '09/30/2011', address: 'Brgy. Salapungan', parents_contact: '' },
-  { id: 85, name: 'Cabalu Mary Ann Villanueva', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 86, name: 'Calma Elle Sapphire Tria', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '09/18/2009', address: 'Salapungan, Tarlac City', parents_contact: '' },
-  { id: 87, name: 'Calma Yael', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 13, birthday: '04/05/2011', address: 'Brgy. Salapungan', parents_contact: '' },
-  { id: 88, name: 'Calugay Bryce', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 89, name: 'Canlas Pia', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 90, name: 'Cashero Cedrick', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 91, name: 'Chynna Angela', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 92, name: 'Condes Divine Samson', chapter_area: '', role: 'Member', contact: '9859319777', email: 'condesroylyn@gmail.com', status: 'Active', age: 17, birthday: '06/26/2007', address: 'Blk. 7, Brgy. San Jose, Tarlac City', parents_contact: '' },
-  { id: 93, name: 'Corpuz Arzenia', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 94, name: 'Corpuz Raiza Mariano', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 95, name: 'Cruz Tricia', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 17, birthday: '05/17/2007', address: 'San Pascual, Tarlac City', parents_contact: '' },
-  { id: 96, name: 'Cruz Tristan Jay', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 12, birthday: '05/08/2012', address: 'Brgy. San Pascual, Tarlac City', parents_contact: '' },
-  { id: 97, name: 'Cunanan April', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 98, name: 'Dante', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 99, name: 'Dautil Neil Adrian Galvan', chapter_area: '', role: 'Member', contact: '9855566985', email: 'neiladriandautil@gmail.com', status: 'Active', age: 15, birthday: '08/20/2009', address: 'Sixto Hernandez Street, Block 1, San Manuel, Tarlac City', parents_contact: '' },
-  { id: 100, name: 'De Leon Raymart', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 101, name: 'DeLeon Mika', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 102, name: 'Diesmo Mark', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 103, name: 'Dizon Jhenuary', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 104, name: 'Dizon Mj Quetua', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '11/15/2007', address: 'Brgy. Salapungan', parents_contact: '' },
-  { id: 105, name: 'Dizon Quetua', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 106, name: 'Doel Arriana Merc', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 107, name: 'Espiritu Haven', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 108, name: 'Espiritu Jasmin Anikka', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 109, name: 'Espiritu Jasmine', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 110, name: 'Espiritu Jelina', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 15, birthday: '03/30/2009', address: 'Brgy. BatangBatang, Tarlac City', parents_contact: '' },
-  { id: 111, name: 'Evedientes Yuri Guinto', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 112, name: 'Facunla Sam', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 113, name: 'Felesario Marga', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 114, name: 'Gambito Kenlee', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 115, name: 'Jen Elle', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 116, name: 'Karmela Ina', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 117, name: 'Lacerna Chynna Angela', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 118, name: 'Lacsina Jaycee', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 119, name: 'Lhor Jhulius', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 120, name: 'Liwanag Mj', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 121, name: 'Luto Princess Reign Pangan', chapter_area: '', role: 'Member', contact: '9604104826', email: 'princessreignluto@gmail.com', status: 'Active', age: 13, birthday: '10/08/2011', address: 'San Pascual, Tarlac City', parents_contact: '' },
-  { id: 122, name: 'Luto Reign', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 123, name: 'Ma Yvonne', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 124, name: 'Macapagal Ryza', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 125, name: 'Mañalac Hazel', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 18, birthday: '10/21/2005', address: 'Brgy. Balibago II, Tarlac City', parents_contact: '' },
-  { id: 126, name: 'Mandap Jhelaissa', chapter_area: '', role: 'Member', contact: '9079582030', email: 'jhlsxc@gmail.com', status: 'Active', age: 14, birthday: '03/12/2009', address: 'Blk. 2 San Manuel, Tarlac City', parents_contact: '' },
-  { id: 127, name: 'Mandap Mica', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 17, birthday: '07/28/2007', address: 'Brgy. San Manuel, Tarlac City', parents_contact: '' },
-  { id: 128, name: 'Masangcaty Sean Usher', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '10/24/2009', address: 'Tariji, Tarlac City', parents_contact: '' },
-  { id: 129, name: 'Morales Elizabeth', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 16, birthday: '04/19/2008', address: 'Tariji, Tarlac City', parents_contact: '' },
-  { id: 130, name: 'Obletas Christine Gampoy', chapter_area: '', role: 'Member', contact: '9851638293', email: 'obletaschristine@gmail.com', status: 'Active', age: 17, birthday: '10/08/2006', address: 'Tariji Zone 5, Tarlac City', parents_contact: '' },
-  { id: 131, name: 'Palasigue Dante', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 132, name: 'Pamposa Angela Charlee', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 133, name: 'Razon Janelle P.', chapter_area: '', role: 'Member', contact: '9708288083', email: 'janellerazon966@gmail.com', status: 'Active', age: 19, birthday: '02/07/2005', address: 'Barangay Tariji Zone 6, Tarlac City', parents_contact: '' },
-  { id: 134, name: 'Rivera Princess Fiona', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 135, name: 'Rivera Raylfarra', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 13, birthday: '09/22/2010', address: 'Brgy. Salapungan', parents_contact: '' },
-  { id: 136, name: 'Salazar Tantan', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 137, name: 'Samson Jaezelle', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 138, name: 'Samson Jin Lacerna', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 139, name: 'Samson Juan Miguel L', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 13, birthday: '06/16/2011', address: 'Brgy. San Pascual, Tarlac City', parents_contact: '' },
-  { id: 140, name: 'Sanluis Cara', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 17, birthday: '10/21/2006', address: 'Brgy. San Rafael, Tarlac City', parents_contact: '' },
-  { id: 141, name: 'Sigua Daniel', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 142, name: 'Sosa Jzel', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 143, name: 'Suarez Humphrey Liriel', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 144, name: 'Tabilin Shaira', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 145, name: 'Tacusalme Yvonne', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 146, name: 'Tanedo Casimiro Miguel', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 12, birthday: '07/22/2012', address: 'San Isidro, Tarlac City', parents_contact: '' },
-  { id: 147, name: 'Tolentino Chloe Tabios', chapter_area: '', role: 'Member', contact: '9318061977', email: 'chloetolentino7002@gmail.com', status: 'Active', age: 16, birthday: '09/13/2007', address: 'Blk 6, Brgy. San Manuel, Tarlac City', parents_contact: '' },
-  { id: 148, name: 'Torres Lorrie Ramos', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 149, name: 'Valencia Alaicka', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 150, name: 'Villanueva Kayla', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' },
-  { id: 151, name: 'Villegas Aleine Simon', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '10/21/2009', address: 'Brgy. San Manuel, Tarlac City', parents_contact: '' },
-  { id: 152, name: 'Yalung Nathaniel John Ballon', chapter_area: '', role: 'Member', contact: '', email: '', status: 'Active', age: 0, birthday: '', address: '', parents_contact: '' }
-];
-
-const SAMPLE_ACTIVITIES = [
-  { id: 1, month: 'January', week: '1st Week', date: '2026-01-04', activity: 'Upper Core Household', chapter_area: 'AREA', status: 'Accomplished', held_in: 'Face to Face', participants: 3, venue: '', coordinator_id: 1, attendee_ids: [1, 3, 6] },
-  { id: 2, month: 'January', week: '2nd Week', date: '2026-01-10', activity: 'LCSC Summit', chapter_area: '', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 3, month: 'January', week: '2nd Week', date: '2026-01-10', activity: 'Chapter Household', chapter_area: 'EAST', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 4, month: 'January', week: '2nd Week', date: '2026-01-10', activity: 'Chapter Household', chapter_area: 'WEST', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 5, month: 'January', week: '2nd Week', date: '2026-01-10', activity: 'Chapter Household', chapter_area: 'NORTH', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 6, month: 'January', week: '2nd Week', date: '2026-01-10', activity: 'Chapter Household', chapter_area: 'SOUTH', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 7, month: 'January', week: '', date: '2026-01-18', activity: 'Community Conference', chapter_area: '', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 8, month: 'January', week: '3rd Week', date: '2026-01-17', activity: 'Upper Core Household / MTD', chapter_area: 'AREA', status: 'Accomplished', held_in: 'Online', participants: 2, venue: '', coordinator_id: 3, attendee_ids: [3, 6] },
-  { id: 9, month: 'January', week: '4th Week', date: '2026-01-24', activity: 'Area Assembly', chapter_area: 'AREA', status: 'Accomplished', held_in: 'Face to Face', participants: 7, venue: 'Saint Raymond Nonnatus, Moncada', coordinator_id: 3, attendee_ids: [1, 2, 3, 4, 6, 7, 8] },
-  { id: 10, month: 'January', week: '4th Week', date: '2026-01-25', activity: 'LIT Year Starter', chapter_area: 'LIT', status: 'Accomplished', held_in: 'Face to Face', participants: 1, venue: '', coordinator_id: 7, attendee_ids: [7] },
-  { id: 11, month: 'January', week: '5th Week', date: '2026-01-31', activity: 'LCSC Forum', chapter_area: 'AREA', status: 'Accomplished', held_in: '', participants: 0, venue: 'Our Lady of Ransom', coordinator_id: null, attendee_ids: [] },
-  { id: 12, month: 'January', week: '5th Week', date: '2026-01-31', activity: 'HeartChamp Training', chapter_area: '', status: '', held_in: '', participants: 0, venue: 'Patalan Farm - Paniqui', coordinator_id: null, attendee_ids: [] },
-  { id: 13, month: 'February', week: '1st Week', date: '2026-02-01', activity: 'Servant Leaders Summit', chapter_area: 'UPPER CORE', status: 'Accomplished', held_in: 'Face to Face', participants: 6, venue: '', coordinator_id: 6, attendee_ids: [1, 2, 3, 4, 6, 8] },
-  { id: 14, month: 'February', week: '2nd Week', date: '2026-02-07', activity: 'Couple Coordinators Training', chapter_area: 'TRAINING', status: 'Accomplished', held_in: 'Face to Face', participants: 4, venue: '', coordinator_id: 8, attendee_ids: [1, 2, 6, 8] },
-  { id: 15, month: 'February', week: '2nd Week', date: '2026-02-08', activity: 'Chapter Household', chapter_area: 'SOUTH', status: 'Cancelled', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 16, month: 'February', week: '2nd Week', date: '2026-02-08', activity: 'Chapter Household', chapter_area: 'EAST', status: 'Cancelled', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 17, month: 'February', week: '2nd Week', date: '2026-02-08', activity: 'Chapter Household', chapter_area: 'WEST', status: 'Cancelled', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 18, month: 'February', week: '2nd Week', date: '2026-02-08', activity: 'Chapter Household', chapter_area: 'NORTH', status: 'Rescheduled', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 19, month: 'February', week: '', date: '2026-02-15', activity: 'World Couples Congress', chapter_area: '', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 20, month: 'February', week: '', date: '2026-02-17', activity: 'Chapter Household', chapter_area: 'NORTH', status: 'Accomplished', held_in: 'Face to Face', participants: 2, venue: '', coordinator_id: 4, attendee_ids: [4, 1] },
-  { id: 21, month: 'February', week: '3rd Week', date: '2026-02-21', activity: 'LivePure Forum', chapter_area: 'AREA', status: 'Accomplished', held_in: 'Face to Face', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 22, month: 'February', week: '3rd Week', date: '2026-02-21', activity: 'Upper Core Household', chapter_area: 'AREA', status: 'Accomplished', held_in: 'Face to Face', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 23, month: 'February', week: '3rd Week', date: '2026-02-22', activity: 'Household Servants Training', chapter_area: 'TRAINING', status: 'Accomplished', held_in: 'Face to Face', participants: 2, venue: '', coordinator_id: 8, attendee_ids: [8, 7] },
-  { id: 24, month: 'February', week: '4th Week', date: '2026-02-28', activity: 'Chapter Assembly', chapter_area: 'SOUTH', status: 'Cancelled', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 25, month: 'February', week: '4th Week', date: '2026-02-28', activity: 'Chapter Assembly', chapter_area: 'EAST', status: 'Accomplished', held_in: 'Online', participants: 3, venue: '', coordinator_id: 1, attendee_ids: [1, 2, 5] },
-  { id: 26, month: 'February', week: '4th Week', date: '2026-02-28', activity: 'Chapter Assembly', chapter_area: 'WEST', status: 'Accomplished', held_in: 'Face to Face', participants: 2, venue: '', coordinator_id: 2, attendee_ids: [2, 3] },
-  { id: 27, month: 'February', week: '4th Week', date: '2026-02-28', activity: 'Chapter Assembly', chapter_area: 'NORTH', status: 'Accomplished', held_in: 'Online', participants: 2, venue: '', coordinator_id: 4, attendee_ids: [4, 6] },
-  { id: 28, month: 'March', week: '1st Week', date: '2026-03-01', activity: 'Go Beyond Mission Training', chapter_area: 'UPPER CORE', status: 'Accomplished', held_in: 'Face to Face', participants: 5, venue: '', coordinator_id: 6, attendee_ids: [1, 3, 4, 6, 8] },
-  { id: 29, month: 'March', week: '1st Week', date: '2026-03-08', activity: 'Upper Core Household/MTD', chapter_area: 'AREA', status: 'Accomplished', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 30, month: 'March', week: '2nd Week', date: '2026-03-14', activity: 'Chapter Household', chapter_area: 'SOUTH', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 31, month: 'March', week: '2nd Week', date: '2026-03-14', activity: 'Chapter Household', chapter_area: 'EAST', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 32, month: 'March', week: '2nd Week', date: '2026-03-14', activity: 'Chapter Household', chapter_area: 'WEST', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 33, month: 'March', week: '2nd Week', date: '2026-03-14', activity: 'Chapter Household', chapter_area: 'NORTH', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] },
-  { id: 34, month: 'March', week: '3rd Week', date: '2026-03-21', activity: 'Walk for Life, Walk for Unity', chapter_area: 'AREA', status: '', held_in: '', participants: 0, venue: '', coordinator_id: null, attendee_ids: [] }
-];
 
 // ==========================================
 // 1.5 FIREBASE CLOUD SYNC INITIALIZATION
@@ -228,10 +14,14 @@ const firebaseConfig = {
 };
 
 let db = null;
+let storage = null;
+let auth = null;
 try {
   if (typeof firebase !== 'undefined') {
     firebase.initializeApp(firebaseConfig);
     db = firebase.firestore();
+    storage = firebase.storage();
+    auth = firebase.auth();
     console.log("Firebase initialized successfully.");
   }
 } catch (e) {
@@ -434,7 +224,7 @@ class MembersDatabase {
         { name: 'Jovel D. Garcia', chapter_area: 'EAST', role: 'Member', contact: '9038360124', email: '', status: 'Active', age: 14, birthday: '7/19/2011', address: 'Maliwalo Tarlac', parents_contact: '9386056160' },
         { name: 'Jeanette Mary Salazar', chapter_area: 'EAST', role: 'Member', contact: '9101368605', email: '', status: 'Active', age: 18, birthday: '9/8/2007', address: 'Sitio Buni Bura', parents_contact: '9094708294' },
         { name: 'Jeonard Francis Catap', chapter_area: 'EAST', role: 'Member', contact: '9701807117', email: '', status: 'Active', age: 18, birthday: '8/29/2007', address: 'Culipat, Tarlac City', parents_contact: '9121256554' },
-        { name: 'Miguel Antonio Tañedo', chapter_area: 'EAST', role: 'Member', contact: '9919791125', email: '', status: 'Active', age: 18, birthday: '10/18/2011', address: 'San Sebastian, Tarlac City', parents_contact: '9584867998' },
+        { name: 'Miguel Antonio TaÃ±edo', chapter_area: 'EAST', role: 'Member', contact: '9919791125', email: '', status: 'Active', age: 18, birthday: '10/18/2011', address: 'San Sebastian, Tarlac City', parents_contact: '9584867998' },
         { name: 'Gabriel R. Magat', chapter_area: 'EAST', role: 'Member', contact: '9604138208', email: '', status: 'Active', age: 14, birthday: '01/16/2012', address: 'Sitio Calevo Tibag, Tarlac City', parents_contact: '9634409663' },
         { name: 'Rajh Bernardo', chapter_area: 'EAST', role: 'Member', contact: '', email: '', status: 'Active', age: 14, birthday: '11/21/2014', address: 'San Manuel, Tarlac', parents_contact: '9482145691' },
         { name: 'Jaycee Antonio', chapter_area: 'EAST', role: 'Member', contact: '9202031881', email: '', status: 'Active', age: 14, birthday: '11/23/2011', address: 'Batang Batang Tarlac City', parents_contact: '9389293791' },
@@ -831,7 +621,81 @@ const btnAddLeader = document.getElementById('btn-add-leader');
 if (!localStorage.getItem('admin_passcode') || localStorage.getItem('admin_passcode') === 'mfcyouthtarlac') {
   localStorage.setItem('admin_passcode', 'mfcyouthtarlac');
 }
-let isAdmin = localStorage.getItem('is_admin') === 'true';
+let isAdmin = false;
+if (typeof firebase !== 'undefined' && firebase.auth) {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      isAdmin = true;
+      localStorage.setItem('is_admin', 'true');
+      localStorage.setItem('current_username', 'Admin');
+    } else {
+      isAdmin = false;
+      localStorage.setItem('is_admin', 'false');
+      localStorage.removeItem('current_username');
+    }
+
+    // ================================
+    // 1.6 GOOGLE SIGN‑IN HANDLER
+    // ================================
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
+    const btnGoogleSignin = document.getElementById('btn-google-signin');
+    if (btnGoogleSignin) {
+      btnGoogleSignin.addEventListener('click', () => {
+        firebase.auth()
+          .signInWithPopup(googleProvider)
+          .then(result => {
+            console.log('Google sign‑in successful', result.user);
+            // UI will update via onAuthStateChanged listener
+          })
+          .catch(error => {
+            console.error('Google sign‑in error', error);
+            showToast(error.message, 'error');
+          });
+      });
+    }
+
+    // Defer updateRoleUI because elements might not be defined yet
+    if (typeof updateRoleUI === 'function') {
+      updateRoleUI();
+    }
+  });
+}
+
+// ==========================================
+// TOAST NOTIFICATIONS
+// ==========================================
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+
+  let icon = 'info';
+  if (type === 'success') icon = 'check-circle';
+  if (type === 'error') icon = 'alert-circle';
+  if (type === 'warning') icon = 'alert-triangle';
+
+  toast.innerHTML = `
+    <i data-lucide="${icon}" style="width: 20px; height: 20px;"></i>
+    <span>${message}</span>
+  `;
+
+  container.appendChild(toast);
+
+  if (window.lucide && typeof window.lucide.createIcons === 'function') {
+    window.lucide.createIcons();
+  }
+
+  setTimeout(() => {
+    toast.classList.add('toast-closing');
+    setTimeout(() => {
+      if (container.contains(toast)) {
+        container.removeChild(toast);
+      }
+    }, 300); // match animation duration
+  }, 3000);
+}
 
 // ==========================================
 // TAB CONTROLLER
@@ -846,6 +710,11 @@ function switchTab(tabName, subTabName = null) {
   panelAgenda?.classList.add('hidden');
   panelLeaders?.classList.add('hidden');
   panelOrgChart?.classList.add('hidden');
+  const panelGallery = document.getElementById('panel-gallery');
+  panelGallery?.classList.add('hidden');
+
+  const panelReports = document.getElementById('panel-reports');
+  panelReports?.classList.add('hidden');
 
   tabDashboard?.classList.remove('active');
   tabActivities?.classList.remove('active');
@@ -855,6 +724,8 @@ function switchTab(tabName, subTabName = null) {
   tabAgenda?.classList.remove('active');
   tabLeaders?.classList.remove('active');
   tabOrgChart?.classList.remove('active');
+  const tabReports = document.getElementById('sidebar-tab-reports');
+  tabReports?.classList.remove('active');
 
   document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
   document.querySelectorAll('.sidebar-sublink').forEach(link => link.classList.remove('active'));
@@ -931,6 +802,22 @@ function switchTab(tabName, subTabName = null) {
     tabOrgChart?.classList.add('active');
     panelOrgChart?.classList.remove('hidden');
     renderOrgChart();
+  } else if (tabName === 'reports') {
+    const tabReports = document.getElementById('sidebar-tab-reports');
+    const panelReports = document.getElementById('panel-reports');
+    tabReports?.classList.add('active');
+    panelReports?.classList.remove('hidden');
+    if (typeof window.renderReports === 'function') {
+      window.renderReports();
+    }
+  } else if (tabName === 'gallery') {
+    const tabGallery = document.getElementById('sidebar-tab-gallery');
+    const panelGallery = document.getElementById('panel-gallery');
+    tabGallery?.classList.add('active');
+    panelGallery?.classList.remove('hidden');
+    if (typeof window.renderGallery === 'function') {
+      window.renderGallery();
+    }
   }
   lucide.createIcons();
 }
@@ -1417,7 +1304,7 @@ function renderUpcomingAgenda() {
   lucide.createIcons();
 }
 
-// ── Full Upcoming Agenda List ──
+// -- Full Upcoming Agenda List --
 let fullAgendaShowAll = false;
 const FULL_AGENDA_DEFAULT_LIMIT = 7;
 
@@ -1481,7 +1368,7 @@ function buildAgendaRows(activities) {
     let countdownLbl = 'days';
 
     if (item.status === 'Accomplished') {
-      countdownClass = 'accomplished'; countdownNum = '✔'; countdownLbl = 'DONE';
+      countdownClass = 'accomplished'; countdownNum = '\u2714'; countdownLbl = 'DONE';
     } else if (daysUntil === null) {
       countdownNum = '?'; countdownLbl = '';
     } else if (daysUntil === 0) {
@@ -1651,7 +1538,7 @@ function renderLateActivities() {
     }
 
     const statusLabel = item.status || 'Pending';
-    const statusBadge = `<span class="badge badge-status" style="background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);">🕐 ${statusLabel}</span>`;
+    const statusBadge = `<span class="badge badge-status" style="background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);">ðŸ• ${statusLabel}</span>`;
 
     let markBtn = '';
     if (isAdmin) {
@@ -1758,7 +1645,7 @@ function formatDateString(dateStr) {
   return dateStr;
 }
 
-// Helper: Formats a date range for display in card headers (MONTH DD[–DD], YYYY)
+// Helper: Formats a date range for display in card headers (MONTH DD[-DD], YYYY)
 function formatDateRange(dateStart, dateEnd) {
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   if (!dateStart || !/^\d{4}-\d{2}-\d{2}$/.test(dateStart)) return formatDateString(dateStart);
@@ -1776,10 +1663,10 @@ function formatDateRange(dateStart, dateEnd) {
       const endDay = endDate.getDate();
       const endYear = endDate.getFullYear();
       if (sy === ey && sm === em) {
-        // Same month & year: "January 30–31, 2026"
+        // Same month & year: "January 30-31, 2026"
         return `${startMonth} ${startDay}\u2013${endDay}, ${startYear}`;
       } else if (sy === ey) {
-        // Same year different month: "January 30 – February 1, 2026"
+        // Same year different month: "January 30 - February 1, 2026"
         return `${startMonth} ${startDay} \u2013 ${endMonth} ${endDay}, ${startYear}`;
       } else {
         // Different years
@@ -1831,6 +1718,7 @@ const memberStatusFilter = document.getElementById('filter-member-status');
 // Format member name to "Last Name, First Name Middle Name"
 function formatMemberName(fullName) {
   if (!fullName) return '';
+  if (fullName.includes(',')) return fullName;
   const parts = fullName.trim().split(/\s+/);
   if (parts.length <= 1) return fullName;
   const lastName = parts.pop();
@@ -1846,7 +1734,7 @@ function formatBirthday(val) {
     const [y, m, d] = val.split('-');
     return `${m}/${d}/${y}`;
   }
-  // Handle M/D/YYYY or MM/DD/YYYY — normalize to 2-digit month/day
+  // Handle M/D/YYYY or MM/DD/YYYY - normalize to 2-digit month/day
   const parts = val.split('/');
   if (parts.length === 3) {
     const mm = parts[0].padStart(2, '0');
@@ -1859,6 +1747,7 @@ function formatBirthday(val) {
 function renderMembers() {
   const filteredData = dbMembers.getFiltered(currentMemberFilters);
   const allMembers = dbMembers.getAll();
+  window.membersData = filteredData; // Store for export
 
   // Build a set of normalized names that appear more than once across ALL members
   const nameCount = {};
@@ -1915,6 +1804,7 @@ function renderMembers() {
         <td>${item.contact || '-'}</td>
         <td>${item.email ? `<a href="mailto:${item.email}" class="text-link">${item.email}</a>` : '-'}</td>
         <td>${formatBirthday(item.birthday)}</td>
+        <td>${item.age || '-'}</td>
         <td>${item.parents_contact || '-'}</td>
         <td>${formatBirthday(item.youthcamp_date)}</td>
         <td>${item.youthcamp_title || '-'}</td>
@@ -2062,7 +1952,7 @@ window.editActivity = function (id) {
   if (!record) return;
 
   fieldId.value = record.id;
-  if (/^\d{4}-\d{2}-\d{2}$/.test(record.date)) {
+  if (/^\d{4}-\d-02}-\d{2}$/.test(record.date)) {
     fieldDate.value = record.date;
     if (fieldDateEnd) fieldDateEnd.min = record.date;
   } else {
@@ -2104,7 +1994,9 @@ const btnCancelMemberModal = document.getElementById('btn-cancel-member-modal');
 
 // Fields
 const fieldMemberId = document.getElementById('field-member-id');
-const fieldMemberName = document.getElementById('field-member-name');
+const fieldMemberLastName = document.getElementById('field-member-last-name');
+const fieldMemberFirstName = document.getElementById('field-member-first-name');
+const fieldMemberMiddleName = document.getElementById('field-member-middle-name');
 const fieldMemberChapter = document.getElementById('field-member-chapter');
 const fieldMemberStatus = document.getElementById('field-member-status');
 const fieldMemberRole = document.getElementById('field-member-role');
@@ -2242,11 +2134,50 @@ function closeMemberModal() {
 btnCloseMemberModal.addEventListener('click', closeMemberModal);
 btnCancelMemberModal.addEventListener('click', closeMemberModal);
 
-memberForm.addEventListener('submit', (e) => {
+memberForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const id = fieldMemberId.value;
+
+  let avatarUrl = fieldMemberAvatarData ? fieldMemberAvatarData.value : '';
+  const saveBtn = memberForm.querySelector('button[type="submit"]') || document.getElementById('btn-save-member');
+  const originalBtnText = saveBtn ? saveBtn.innerHTML : 'Save';
+
+  // If avatar is a new data URL, upload to Firebase Storage
+  if (avatarUrl && avatarUrl.startsWith('data:image')) {
+    if (typeof storage !== 'undefined' && storage !== null) {
+      if (saveBtn) {
+        saveBtn.innerHTML = '<i data-lucide="loader-2" class="spin-animation"></i> Uploading...';
+        saveBtn.disabled = true;
+      }
+      try {
+        const storageRef = storage.ref();
+        const fileName = `avatars/member_${Date.now()}.jpg`;
+        const imageRef = storageRef.child(fileName);
+        const snapshot = await imageRef.putString(avatarUrl, 'data_url');
+        avatarUrl = await snapshot.ref.getDownloadURL();
+      } catch (err) {
+        console.error("Failed to upload image:", err);
+        showToast("Failed to upload image. Make sure Firebase Storage is enabled in the console.", "error");
+        avatarUrl = '';
+      } finally {
+        if (saveBtn) {
+          saveBtn.innerHTML = originalBtnText;
+          saveBtn.disabled = false;
+        }
+      }
+    } else {
+      console.warn("Storage not initialized. Proceeding with Base64.");
+    }
+  }
+
   const record = {
-    name: fieldMemberName.value.trim(),
+    name: (() => {
+      const last = fieldMemberLastName.value.trim();
+      const first = fieldMemberFirstName.value.trim();
+      const mid = fieldMemberMiddleName.value.trim();
+      const midPart = mid ? ` ${mid}` : '';
+      return `${last}, ${first}${midPart}`.trim();
+    })(),
     chapter_area: fieldMemberChapter.value,
     status: fieldMemberStatus.value,
     role: fieldMemberRole.value.trim() || 'Member',
@@ -2259,7 +2190,7 @@ memberForm.addEventListener('submit', (e) => {
     youthcamp_date: fieldMemberYouthcampDate.value.trim(),
     youthcamp_title: fieldMemberYouthcampTitle.value.trim(),
     covenanted_date: (document.getElementById('field-member-covenanted-date') || {}).value?.trim() || '',
-    avatar: fieldMemberAvatarData ? fieldMemberAvatarData.value : ''
+    avatar: avatarUrl
   };
 
   if (id) {
@@ -2276,7 +2207,31 @@ window.editMember = function (id) {
   if (!record) return;
 
   fieldMemberId.value = record.id;
-  fieldMemberName.value = record.name || '';
+  const fullName = record.name || '';
+  let last = '', first = '', middle = '';
+  if (fullName.includes(',')) {
+    const parts = fullName.split(',');
+    last = parts[0].trim();
+    const rest = parts.slice(1).join(',').trim();
+    const spaceIndex = rest.lastIndexOf(' ');
+    if (spaceIndex !== -1) {
+      first = rest.substring(0, spaceIndex).trim();
+      middle = rest.substring(spaceIndex + 1).trim();
+    } else {
+      first = rest;
+    }
+  } else {
+    const parts = fullName.split(' ');
+    if (parts.length > 1) {
+      last = parts[parts.length - 1];
+      first = parts.slice(0, -1).join(' ');
+    } else {
+      first = fullName;
+    }
+  }
+  fieldMemberLastName.value = last;
+  fieldMemberFirstName.value = first;
+  fieldMemberMiddleName.value = middle;
   fieldMemberChapter.value = record.chapter_area || '';
   fieldMemberStatus.value = record.status || 'Active';
   fieldMemberRole.value = record.role || '';
@@ -2472,7 +2427,7 @@ const btnAddFund = document.getElementById('btn-add-fund');
 let currentFundsFilters = { search: '', type: '' };
 
 function formatPeso(amount) {
-  return '₱' + Number(amount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return '\u20B1' + Number(amount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function renderFunds() {
@@ -2707,11 +2662,11 @@ function renderMonthlySummary() {
   tbody.innerHTML = sortedMonths.map(month => {
     const g = groups[month];
     const uniqueCount = g.uniqueIds.size;
-    // Avg rate = total attendance / (accomplished activities × total members) × 100
+    // Avg rate = total attendance / (accomplished activities Ã— total members) Ã— 100
     const denominator = g.accomplished * (totalMembers || 1);
     const rate = denominator > 0 ? Math.round((g.attendance / denominator) * 100) : 0;
     const rateClass = rate >= 70 ? 'high' : rate >= 40 ? 'mid' : rate > 0 ? 'low' : 'none';
-    const rateLabel = denominator > 0 ? `${rate}%` : '—';
+    const rateLabel = denominator > 0 ? `${rate}%` : '-';
     return `<tr>
       <td><strong>${month}</strong></td>
       <td>${g.total}</td>
@@ -2741,7 +2696,7 @@ function renderMonthlySummary() {
     <td style="color:#ef4444;">${totals.can}</td>
     <td>${totals.att}</td>
     <td>${totals.uniq.size}</td>
-    <td>—</td>
+    <td>-</td>
   </tr>`;
 }
 
@@ -2845,6 +2800,10 @@ function loadActivityAttendance(activityId) {
     }
   }
 
+  document.getElementById('btn-load-more')?.addEventListener('click', () => {
+    loadGalleryPage();
+  });
+
   // Load attendance directly from the Activity record
   const act = dbActivities.getAll().find(a => a.id === Number(activityId));
   if (act) {
@@ -2920,7 +2879,7 @@ function renderAttendanceSheet() {
       }
 
       tr.innerHTML = `
-        <td><strong>${m.name}</strong></td>
+        <td><strong>${formatMemberName(m.name)}</strong></td>
         <td>${chapterBadge || '-'}</td>
         <td>${m.role || 'Member'}</td>
         <td class="attendance-toggle-cell">
@@ -3095,13 +3054,13 @@ fileImportInput.addEventListener('change', (e) => {
         const data = JSON.parse(event.target.result);
         pendingActivityImport = Array.isArray(data) ? data : [data];
         if (pendingActivityImport.length === 0) {
-          alert('Could not find any activity records in the JSON file.');
+          showToast('Could not find any activity records in the JSON file.', 'warning');
         } else {
           promptActivityImport();
         }
       } catch (err) {
         console.error('JSON parse error:', err);
-        alert('Could not parse the JSON file.');
+        showToast('Could not parse the JSON file.', 'error');
       }
       fileImportInput.value = '';
     };
@@ -3110,7 +3069,7 @@ fileImportInput.addEventListener('change', (e) => {
   }
 
   if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
-    alert('Only Excel files (.xlsx, .xls) and JSON files are allowed.');
+    showToast('Only Excel files (.xlsx, .xls) and JSON files are allowed.', 'error');
     fileImportInput.value = '';
     return;
   }
@@ -3157,7 +3116,7 @@ btnConfirmImport.addEventListener('click', () => {
   dbActivities.import(pendingActivityImport, mode);
   closeImportModal();
   renderActivities();
-  alert('Activities imported successfully!');
+  showToast('Activities imported successfully!', 'success');
 });
 
 const fileImportMemberInput = document.getElementById('file-import-member-input');
@@ -3165,7 +3124,7 @@ const btnImportMemberTrigger = document.getElementById('btn-import-member-trigge
 const importMemberModal = document.getElementById('import-member-modal');
 const importMemberCountEl = document.getElementById('import-member-count');
 const btnConfirmImportMember = document.getElementById('btn-confirm-import-member');
-const btnCancelImportMember = document.getElementById('btn-cancel-import-member');
+const btnCancelImportMember = document.getElementById('btn-cancel-member-member');
 const btnCloseImportMemberModal = document.getElementById('btn-close-import-member-modal');
 
 btnImportMemberTrigger.addEventListener('click', () => fileImportMemberInput.click());
@@ -3183,7 +3142,7 @@ fileImportMemberInput.addEventListener('change', (e) => {
         pendingMemberImport = Array.isArray(data) ? data : [data];
         promptMemberImport();
       } catch (err) {
-        alert('Invalid JSON file format.');
+        showToast('Invalid JSON file format.', 'error');
       }
     } else if (file.name.endsWith('.csv')) {
       pendingMemberImport = parseCSV(fileContent, 'members');
@@ -3217,7 +3176,7 @@ btnConfirmImportMember.addEventListener('click', () => {
   dbMembers.import(pendingMemberImport, mode);
   closeImportMemberModal();
   renderMembers();
-  alert('Members directory updated successfully!');
+  showToast('Members directory updated successfully!', 'success');
 });
 
 // Parse an array-of-arrays (from SheetJS) into activity records
@@ -3251,7 +3210,7 @@ function parseSheetRows(rows, type) {
   }
 
   if (type === 'activities') {
-    // Detect column positions — all optional, fall back to -1 (blank)
+    // Detect column positions - all optional, fall back to -1 (blank)
     const monthIdx = headers.findIndex(h => h.includes('month'));
     const weekIdx = headers.findIndex(h => h.includes('week'));
     const dateIdx = headers.findIndex(h => h.includes('date') && !h.includes('end'));
@@ -3279,7 +3238,7 @@ function parseSheetRows(rows, type) {
         activityVal = String(firstNonEmpty).trim();
       }
 
-      // Dates — handle both string values and native JS Date objects from SheetJS
+      // Dates - handle both string values and native JS Date objects from SheetJS
       const rawDateCell = dateIdx !== -1 ? line[dateIdx] : null;
       const rawDateEndCell = dateEndIdx !== -1 ? line[dateEndIdx] : null;
       const rawDate = getCell(line, dateIdx);
@@ -3295,7 +3254,7 @@ function parseSheetRows(rows, type) {
         if (coordMember) coordId = coordMember.id;
       }
 
-      // Attendees — comma-separated names matched against member list
+      // Attendees - comma-separated names matched against member list
       let attIds = [];
       const attendeesStr = getCell(line, attendeesIdx);
       if (attendeesStr) {
@@ -3482,35 +3441,26 @@ function parseCSV(text, type) {
 // EXPORT OPERATIONS
 // ==========================================
 
+function exportToCsv(dataArray, fileName) {
+  if (!Array.isArray(dataArray) || dataArray.length === 0) return;
+  const headers = Object.keys(dataArray[0]);
+  const csvRows = [headers.join(','), ...dataArray.map(row => headers.map(h => "\"" + String(row[h]).replace(/\"/g, '""') + "\"").join(','))];
+  const csvContent = csvRows.join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', fileName);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 // JSON backup helper
 function downloadJSON(data, filename) {
   const jsonStr = JSON.stringify(data, null, 2);
   const blob = new Blob([jsonStr], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-// CSV export helper
-function downloadCSV(headers, rows, filename) {
-  const csvRows = [headers.join(',')];
-  rows.forEach(rowValues => {
-    const escapedRow = rowValues.map(val => {
-      const valStr = String(val);
-      if (valStr.includes(',') || valStr.includes('"') || valStr.includes('\n') || valStr.includes('\r')) {
-        return `"${valStr.replace(/"/g, '""')}"`;
-      }
-      return valStr;
-    });
-    csvRows.push(escapedRow.join(','));
-  });
-  const csvString = csvRows.join('\r\n');
-  const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -3578,42 +3528,18 @@ btnExportCsv.addEventListener('click', () => {
 const btnExportMemberCsv = document.getElementById('btn-export-member-csv');
 const btnExportMemberJson = document.getElementById('btn-export-member-json');
 
+if (btnExportMemberCsv) {
+  btnExportMemberCsv.addEventListener('click', () => {
+    if (typeof membersData !== 'undefined') {
+      exportToCsv(membersData, 'members.csv');
+    } else {
+      console.warn('No members data available for export');
+    }
+  });
+}
+
 btnExportMemberJson.addEventListener('click', () => {
   downloadJSON(dbMembers.getAll(), `members_db_backup_${new Date().toISOString().split('T')[0]}.json`);
-});
-
-btnExportMemberCsv.addEventListener('click', () => {
-  const allMembers = [...dbMembers.getAll()];
-  allMembers.sort((a, b) => a.name.localeCompare(b.name));
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('landscape');
-
-  doc.setFontSize(16);
-  doc.text('Members Export', 14, 15);
-  doc.setFontSize(10);
-  doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 22);
-
-  const headers = [['Name', 'Chapter/Area', 'Role', 'Age', 'Contact', 'Status']];
-  const rows = allMembers.map(item => [
-    item.name || '',
-    item.chapter_area || '',
-    item.role || '',
-    item.age || 0,
-    item.contact || '',
-    item.status || ''
-  ]);
-
-  doc.autoTable({
-    head: headers,
-    body: rows,
-    startY: 28,
-    theme: 'grid',
-    styles: { fontSize: 8 },
-    headStyles: { fillColor: [30, 58, 138] }
-  });
-
-  doc.save(`members_export_${new Date().toISOString().split('T')[0]}.pdf`);
 });
 
 // ==========================================
@@ -3629,6 +3555,7 @@ function updateRoleUI() {
   const dropdownAvatar = document.getElementById('dropdown-avatar');
   const saveStatusText = document.getElementById('save-status-text');
   const attendanceSaveStatus = document.getElementById('attendance-save-status');
+  const bannerUserName = document.getElementById('banner-user-name');
 
   if (isAdmin) {
     body.classList.remove('view-only');
@@ -3636,6 +3563,7 @@ function updateRoleUI() {
     if (btnAuth) btnAuth.classList.add('hidden'); // Hide login button from menu
     const currentName = localStorage.getItem('current_username') || 'MFC Youth Tarlac Moderator';
     if (dropdownUserName) dropdownUserName.textContent = currentName;
+    if (bannerUserName) bannerUserName.textContent = currentName;
     if (dropdownUserEmail) dropdownUserEmail.textContent = 'Full Access Mode';
     const sidebarUserName = document.getElementById('sidebar-user-name');
     const sidebarUserRole = document.getElementById('sidebar-user-role');
@@ -3658,6 +3586,7 @@ function updateRoleUI() {
     if (btnAuth) btnAuth.classList.remove('hidden'); // Show login button in menu
     const currentName = localStorage.getItem('current_username') || 'Guest User';
     if (dropdownUserName) dropdownUserName.textContent = currentName;
+    if (bannerUserName) bannerUserName.textContent = currentName;
     if (dropdownUserEmail) dropdownUserEmail.textContent = 'View-Only Mode';
     const sidebarUserName = document.getElementById('sidebar-user-name');
     const sidebarUserRole = document.getElementById('sidebar-user-role');
@@ -3704,6 +3633,39 @@ function updateRoleUI() {
   }
 }
 
+// Gallery pagination implementation
+let lastGalleryDoc = null;
+const PAGE_SIZE = 15;
+function loadGalleryPage(reset = false) {
+  if (reset) {
+    loadedPhotos = [];
+    if (document.getElementById('gallery-grid')) {
+      document.getElementById('gallery-grid').innerHTML = '';
+    }
+    lastGalleryDoc = null;
+  }
+  let query = db.collection('activity_photos').orderBy('timestamp', 'desc').limit(PAGE_SIZE);
+  if (lastGalleryDoc) {
+    query = query.startAfter(lastGalleryDoc);
+  }
+  query.get().then(snapshot => {
+    if (snapshot.empty) {
+      const loadMoreBtn = document.getElementById('btn-load-more');
+      if (loadMoreBtn) loadMoreBtn.classList.add('hidden');
+      return;
+    }
+    lastGalleryDoc = snapshot.docs[snapshot.docs.length - 1];
+    snapshot.forEach(doc => {
+      loadedPhotos.push({ id: doc.id, ...doc.data() });
+    });
+    renderPhotoGrid(filterSelect?.value || 'all');
+    const loadMoreBtn = document.getElementById('btn-load-more');
+    if (loadMoreBtn) loadMoreBtn.classList.remove('hidden');
+  }).catch(err => console.error('Gallery pagination error:', err));
+}
+// Initial load
+loadGalleryPage();
+
 // Screen navigation helpers
 function showWelcomeScreen() {
   document.getElementById('welcome-screen').classList.remove('hidden');
@@ -3716,18 +3678,81 @@ function hideWelcomeScreen() {
 }
 
 // Authentication button click
-document.getElementById('btn-admin-auth').addEventListener('click', () => {
-  showWelcomeScreen();
-  document.getElementById('profile-dropdown-menu').classList.remove('active');
+document.getElementById('btn-admin-auth').addEventListener('click', () => <div class="header-actions">
+          <div style="display: flex; align-items: center; gap: 0.75rem; color: var(--primary); margin-right: 1rem;">
+            <a href="https://www.facebook.com/MFCYouthTarlac" target="_blank" class="web-link-icon" aria-label="Navigate to Facebook Page">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook" style="color: var(--primary);">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+              <span class="custom-tooltip">Navigate to Facebook Page...</span>
+            </a>
+            <a href="https://mfcyouth.org/" target="_blank" class="web-link-icon" aria-label="Navigate to MFC Youth Web">
+              <i data-lucide="globe"></i>
+              <span class="custom-tooltip">Navigate to MFC Youth Web...</span>
+            </a>
+            <!-- Google Sign‑In button -->
+            <button id="btn-google-signin" class="sign-in-btn" style="background:none;border:none;color:var(--primary);cursor:pointer;display:flex;align-items:center;gap:0.4rem;">
+              <i data-lucide="google"></i> Sign in with Google
+            </button>
+          </div>
+          <div class="profile-dropdown-container">
+            <div class="profile-trigger" id="profile-trigger" onclick="document.getElementById('profile-dropdown-menu').classList.toggle('active'); event.stopPropagation();" style="padding: 0.5rem; border-radius: 8px; margin: 0;">
+              <i data-lucide="user" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div class="profile-dropdown-menu" id="profile-dropdown-menu">
+              <div class="dropdown-header">
+                <div class="dropdown-avatar" id="dropdown-avatar"></div>
+                <div class="dropdown-user-info">
+                  <span class="dropdown-user-name" id="dropdown-user-name">Guest User</span>
+                  <span class="dropdown-user-email" id="dropdown-user-email">View-Only Mode</span>
+                </div>
+              </div>
+              <div class="dropdown-body">
+                <button class="dropdown-item" id="btn-admin-auth">
+                  <i data-lucide="log-in"></i> <span>Admin Login</span>
+                </button>
+                <div class="admin-only-menu hidden" id="admin-only-menu">
+                  <div class="dropdown-divider"></div>
+                  <button class="dropdown-item" id="btn-change-passcode-trigger">
+                    <i data-lucide="key-round"></i> <span>Change Passcode</span>
+                  </button>
+                  <div class="dropdown-divider"></div>
+                  <button class="dropdown-item" id="btn-recovery-options-trigger">
+                    <i data-lucide="user-cog"></i> <span>Change Account Recovery Options</span>
+                  </button>
+                  <div class="dropdown-divider"></div>
+                  <button class="dropdown-item" id="btn-dropdown-logout" style="color: #f87171;">
+                    <i data-lucide="log-out" style="color: #f87171;"></i> <span>Log Out</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="width: 1px; height: 28px; background-color: rgba(255,255,255,0.15);"></div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <img src="logo.png" alt="MFC Youth Logo" style="height: 32px; width: 32px; object-fit: cover; border-radius: 50%; background-color: transparent;">
+            <h1 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin: 0; white-space: nowrap;">MFC YOUTH TARLAC PORTAL</h1>
+          </div>
+        </div>classList.remove('active');
 });
 
 // Dropdown Logout Click
 document.getElementById('btn-dropdown-logout').addEventListener('click', () => {
-  isAdmin = false;
-  localStorage.setItem('is_admin', 'false');
-  updateRoleUI();
-  showWelcomeScreen();
-  document.getElementById('profile-dropdown-menu').classList.remove('active');
+  if (typeof firebase !== 'undefined' && firebase.auth) {
+    firebase.auth().signOut().then(() => {
+      showToast('Logged out successfully', 'success');
+      showWelcomeScreen();
+      document.getElementById('profile-dropdown-menu').classList.remove('active');
+    }).catch(err => {
+      showToast('Error logging out: ' + err.message, 'error');
+    });
+  } else {
+    isAdmin = false;
+    localStorage.setItem('is_admin', 'false');
+    updateRoleUI();
+    showWelcomeScreen();
+    document.getElementById('profile-dropdown-menu').classList.remove('active');
+  }
 });
 
 // Welcome screen Actions
@@ -3770,23 +3795,25 @@ document.getElementById('welcome-visitor-form').addEventListener('submit', (e) =
 
 document.getElementById('welcome-admin-form').addEventListener('submit', (e) => {
   e.preventDefault();
-  const adminName = document.getElementById('welcome-admin-username').value;
   const inputPasscode = document.getElementById('welcome-passcode-field').value;
-  const correctPasscode = localStorage.getItem('admin_passcode') || 'mfcyouthtarlac';
   const welcomeError = document.getElementById('welcome-auth-error');
 
-  if (adminName === 'mfcyouthtarlac' && inputPasscode === correctPasscode) {
-    isAdmin = true;
-    localStorage.setItem('is_admin', 'true');
-    localStorage.setItem('current_username', adminName || 'Admin');
+  const storedPasscode = localStorage.getItem('admin_passcode') || 'mfcyouthtarlac';
+
+  if (inputPasscode === storedPasscode) {
     welcomeError.classList.add('hidden');
     document.getElementById('welcome-passcode-field').value = '';
     document.getElementById('welcome-admin-username').value = '';
+    
+    isAdmin = true;
+    localStorage.setItem('is_admin', 'true');
+    localStorage.setItem('current_username', 'Admin');
     updateRoleUI();
+    
     hideWelcomeScreen();
-    lucide.createIcons();
+    showToast('Logged in successfully', 'success');
   } else {
-    welcomeError.textContent = 'Invalid admin username or passcode. Please try again.';
+    welcomeError.textContent = 'Invalid admin passcode. Please try again.';
     welcomeError.classList.remove('hidden');
     const inputField = document.getElementById('welcome-passcode-field');
     inputField.style.borderColor = 'var(--danger)';
@@ -3794,9 +3821,41 @@ document.getElementById('welcome-admin-form').addEventListener('submit', (e) => 
     setTimeout(() => {
       inputField.style.borderColor = '';
       inputField.style.boxShadow = '';
-    }, 1500);
+    }, 3000);
   }
 });
+
+// Modal Admin Auth Form
+const authForm = document.getElementById('auth-form');
+if (authForm) {
+  authForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const passcode = document.getElementById('field-auth-passcode').value;
+    const errorMsg = document.getElementById('auth-error-msg');
+
+    const storedPasscode = localStorage.getItem('admin_passcode') || 'mfcyouthtarlac';
+
+    if (passcode === storedPasscode) {
+      document.getElementById('auth-modal').classList.add('hidden');
+      errorMsg.classList.add('hidden');
+      authForm.reset();
+      
+      isAdmin = true;
+      localStorage.setItem('is_admin', 'true');
+      localStorage.setItem('current_username', 'Admin');
+      updateRoleUI();
+      
+      showToast('Logged in successfully', 'success');
+    } else {
+      errorMsg.textContent = 'Invalid passcode.';
+      errorMsg.classList.remove('hidden');
+    }
+  });
+}
+
+document.getElementById('btn-close-auth-modal').addEventListener('click', () => document.getElementById('auth-modal').classList.add('hidden'));
+document.getElementById('btn-cancel-auth').addEventListener('click', () => document.getElementById('auth-modal').classList.add('hidden'));
+
 
 // Passcode Modal Triggers
 document.getElementById('btn-change-passcode-trigger').addEventListener('click', () => {
@@ -3812,7 +3871,7 @@ document.getElementById('btn-change-passcode-trigger').addEventListener('click',
 // Account Recovery Options
 document.getElementById('btn-recovery-options-trigger').addEventListener('click', () => {
   document.getElementById('profile-dropdown-menu').classList.remove('active');
-  alert('Account Recovery Options feature will be available in a future update.');
+  showToast('Account Recovery Options feature will be available in a future update.', 'info');
 });
 
 document.getElementById('btn-close-passcode-modal').addEventListener('click', () => {
@@ -3827,17 +3886,10 @@ document.getElementById('change-passcode-form').addEventListener('submit', (e) =
   const currentPasscode = document.getElementById('field-current-passcode').value;
   const newPasscode = document.getElementById('field-new-passcode').value;
   const confirmPasscode = document.getElementById('field-confirm-passcode').value;
-  const correctPasscode = localStorage.getItem('admin_passcode');
   const passcodeErrorMsg = document.getElementById('passcode-error-msg');
 
-  if (currentPasscode !== correctPasscode) {
-    passcodeErrorMsg.textContent = 'Current passcode is incorrect.';
-    passcodeErrorMsg.classList.remove('hidden');
-    return;
-  }
-
-  if (newPasscode.length < 4) {
-    passcodeErrorMsg.textContent = 'New passcode must be at least 4 characters long.';
+  if (newPasscode.length < 6) {
+    passcodeErrorMsg.textContent = 'New passcode must be at least 6 characters long.';
     passcodeErrorMsg.classList.remove('hidden');
     return;
   }
@@ -3848,9 +3900,25 @@ document.getElementById('change-passcode-form').addEventListener('submit', (e) =
     return;
   }
 
-  localStorage.setItem('admin_passcode', newPasscode);
-  document.getElementById('change-passcode-modal').classList.add('hidden');
-  alert('Admin passcode updated successfully!');
+  const user = firebase.auth().currentUser;
+  if (user) {
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPasscode);
+    user.reauthenticateWithCredential(credential).then(() => {
+      user.updatePassword(newPasscode).then(() => {
+        showToast('Passcode successfully updated!', 'success');
+        document.getElementById('change-passcode-modal').classList.add('hidden');
+      }).catch((error) => {
+        passcodeErrorMsg.textContent = 'Error updating passcode: ' + error.message;
+        passcodeErrorMsg.classList.remove('hidden');
+      });
+    }).catch((error) => {
+      passcodeErrorMsg.textContent = 'Current passcode is incorrect.';
+      passcodeErrorMsg.classList.remove('hidden');
+    });
+  } else {
+    passcodeErrorMsg.textContent = 'You must be logged in to change your passcode.';
+    passcodeErrorMsg.classList.remove('hidden');
+  }
 });
 
 // ==========================================
@@ -3860,7 +3928,7 @@ updateRoleUI();
 switchTab('dashboard');
 
 // ==========================================
-// TOP SCROLLBAR SYNC — Members Table
+// TOP SCROLLBAR SYNC - Members Table
 // ==========================================
 (function initMembersTopScroll() {
   const topScroll = document.getElementById('members-top-scroll');
@@ -3943,11 +4011,11 @@ function renderLeaders() {
             <div class="user-avatar-sm" style="background-image: url('${m.avatar || ''}'); background-color: var(--primary);">
               ${!m.avatar ? `<i data-lucide="user"></i>` : ''}
             </div>
-            <span>${m.name}</span>
+            <span>${formatMemberName(m.name)}</span>
           </div>
         </td>
         <td>${m.chapter_area || '-'}</td>
-        <td><span class="role-badge" style="background:var(--primary-glow); color:white; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem;">${m.role}</span></td>
+        <td><span class="role-badge" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.85), rgba(139, 92, 246, 0.85)); color: #ffffff; padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 0 10px rgba(139, 92, 246, 0.4); text-transform: uppercase;">${m.role}</span></td>
         <td>${m.contact || '-'}</td>
         <td>${m.email || '-'}</td>
       </tr>
@@ -3973,7 +4041,7 @@ function renderOrgChart() {
     if (!container) return;
     const matched = members.filter(m => {
       const roleMatches = m.role && m.role.toLowerCase().includes(rolePattern);
-      const chapterMatches = chapterMatch ? (m.chapter_area === chapterMatch) : true;
+      const chapterMatches = chapterMatch ? (m.chapter_area && m.chapter_area.toUpperCase() === chapterMatch.toUpperCase()) : true;
       return roleMatches && chapterMatches;
     });
     matched.sort((a, b) => {
@@ -4004,7 +4072,7 @@ function renderOrgChart() {
     if (containerMember) {
       const baseMembers = members.filter(m => {
         const isBaseRole = !m.role || m.role.toLowerCase() === 'member' || m.role.toLowerCase() === 'participant';
-        const isRegionMatch = m.chapter_area === region;
+        const isRegionMatch = m.chapter_area && m.chapter_area.toUpperCase() === region.toUpperCase();
         return isBaseRole && isRegionMatch;
       });
       if (baseMembers.length === 0) {
@@ -4308,7 +4376,7 @@ window.downloadActivityPDF = function (activityId, type) {
   if (!activity) return;
 
   if (!window.jspdf) {
-    alert('PDF generator is still loading. Please try again in a moment.');
+    showToast('PDF generator is still loading. Please try again in a moment.', 'warning');
     return;
   }
 
