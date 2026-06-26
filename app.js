@@ -3921,7 +3921,7 @@ function renderLeaders() {
           </div>
         </td>
         <td>${m.chapter_area || '-'}</td>
-        <td><span class="role-badge" style="background:var(--primary-glow); color:white; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem;">${m.role}</span></td>
+        <td><span class="role-badge" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.85), rgba(139, 92, 246, 0.85)); color: #ffffff; padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 0 10px rgba(139, 92, 246, 0.4); text-transform: uppercase;">${m.role}</span></td>
         <td>${m.contact || '-'}</td>
         <td>${m.email || '-'}</td>
       </tr>
