@@ -418,13 +418,13 @@ body {
 
 /* Control & Filter Panel */
 .controls-panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 1.25rem;
-  box-shadow: var(--shadow);
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -641,22 +641,25 @@ body {
 }
 
 .activities-table th {
-  background: rgba(15, 23, 42, 0.8);
-  padding: 1.1rem 1.25rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  font-size: 0.85rem;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1.25rem;
+  color: #94a3b8;
+  font-weight: 700;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid var(--border-color);
+  letter-spacing: 0.1em;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.08);
   position: sticky;
   top: 0;
+  z-index: 10;
 }
 
 .activities-table td {
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  color: var(--text-main);
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: #f8fafc;
   vertical-align: middle;
 }
 
