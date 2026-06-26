@@ -627,7 +627,7 @@ if (typeof firebase !== 'undefined' && firebase.auth) {
     if (user) {
       isAdmin = true;
       localStorage.setItem('is_admin', 'true');
-      localStorage.setItem('current_username', user.displayName || (user.email ? user.email.split('@')[0] : 'Admin'));
+      localStorage.setItem('current_username', 'Admin');
     } else {
       isAdmin = false;
       localStorage.setItem('is_admin', 'false');
