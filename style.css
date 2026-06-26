@@ -986,8 +986,11 @@ body {
 }
 
 .form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
 .form-group input[type="number"],
 .form-group input[type="date"],
+.form-group input[type="url"],
 .form-group select {
   width: 100%;
   padding: 0.85rem 1.25rem;
