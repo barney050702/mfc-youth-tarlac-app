@@ -1772,6 +1772,7 @@ function renderMembers() {
         <td>${item.contact || '-'}</td>
         <td>${item.email ? `<a href="mailto:${item.email}" class="text-link">${item.email}</a>` : '-'}</td>
         <td>${formatBirthday(item.birthday)}</td>
+        <td>${item.age || '-'}</td>
         <td>${item.parents_contact || '-'}</td>
         <td>${formatBirthday(item.youthcamp_date)}</td>
         <td>${item.youthcamp_title || '-'}</td>
