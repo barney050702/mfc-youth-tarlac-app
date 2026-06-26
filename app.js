@@ -2362,7 +2362,7 @@ const btnAddFund = document.getElementById('btn-add-fund');
 let currentFundsFilters = { search: '', type: '' };
 
 function formatPeso(amount) {
-  return 'â‚±' + Number(amount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return '\u20B1' + Number(amount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function renderFunds() {
