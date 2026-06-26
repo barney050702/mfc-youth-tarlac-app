@@ -2967,15 +2967,15 @@ body.view-only .agenda-list-actions {
   right: -320px;
   width: 320px;
   height: 100vh;
-  background-color: var(--bg-card);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-left: 1px solid var(--border-color);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.85), rgba(9, 14, 23, 0.95));
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
   z-index: 999;
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
-  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: -5px 0 25px rgba(0,0,0,0.5);
 }
 
 .theme-drawer.active {
@@ -3027,9 +3027,9 @@ body.view-only .agenda-list-actions {
 .theme-mode-btn {
   flex: 1;
   height: 50px;
-  border-radius: 8px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text-main);
   cursor: pointer;
   display: flex;
@@ -3049,9 +3049,10 @@ body.view-only .agenda-list-actions {
 }
 
 .theme-mode-btn.active {
-  background: white;
-  color: #0f172a;
-  border-color: white;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 [data-theme="light"] .theme-mode-btn.active {
@@ -3068,8 +3069,8 @@ body.view-only .agenda-list-actions {
 
 .theme-color-btn {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
   height: 54px;
   display: flex;
   align-items: center;
@@ -3080,27 +3081,27 @@ body.view-only .agenda-list-actions {
 
 .theme-color-btn:hover {
   background: rgba(255, 255, 255, 0.06);
-  border-color: var(--border-hover);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .theme-color-btn.active {
   border-color: var(--primary);
-  background: var(--primary-glow);
-  box-shadow: 0 0 0 1px var(--primary);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 15px var(--primary-glow), inset 0 0 0 1px var(--primary);
 }
 
 .theme-color-leaf {
   width: 24px;
-  height: 12px;
-  border-radius: 12px;
-  transform: rotate(-35deg);
-  background-color: var(--btn-color);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-  transition: transform 0.2s ease;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--btn-color);
+  box-shadow: 0 4px 10px var(--btn-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .theme-color-btn:hover .theme-color-leaf {
-  transform: rotate(-35deg) scale(1.1);
+  transform: scale(1.15);
+  box-shadow: 0 6px 15px var(--btn-color);
 }
 
 .theme-slider-header {
@@ -3133,17 +3134,18 @@ body.view-only .agenda-list-actions {
 .theme-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--primary);
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  transition: transform 0.1s ease;
+  box-shadow: 0 0 15px var(--primary), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .theme-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
+  transform: scale(1.15);
+  box-shadow: 0 0 20px var(--primary), inset 0 2px 4px rgba(255, 255, 255, 0.6);
 }
 
 /* Floating Theme Trigger Tab */
