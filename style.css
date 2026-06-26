@@ -2113,8 +2113,8 @@ body.view-only .agenda-list-actions {
 .welcome-divider::after {
   content: '';
   flex-grow: 1;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .welcome-admin-form {
@@ -2483,7 +2483,7 @@ body.view-only .agenda-list-actions {
 }
 
 .welcome-input-group input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .welcome-input-group input:focus {
